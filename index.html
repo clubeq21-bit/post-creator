@@ -124,6 +124,18 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .prog-fill{height:100%;background:linear-gradient(to right,var(--gold),var(--gold2));border-radius:1px;transition:width .3s}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(70px);background:var(--panel2);border:1px solid var(--border2);border-radius:8px;padding:11px 22px;font-size:13px;color:var(--text);transition:transform .25s;z-index:998;max-width:500px;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,0.4)}
 .toast.show{transform:translateX(-50%) translateY(0)}.toast.ok{border-color:rgba(63,185,80,0.4);color:var(--green)}.toast.err{border-color:rgba(193,98,42,0.4);color:var(--red)}
+.btn-colar{background:rgba(201,169,110,0.12);border:1px solid rgba(201,169,110,0.3);border-radius:var(--radius);color:var(--gold);font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:7px 14px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:6px}
+.btn-colar:hover{background:rgba(201,169,110,0.2);border-color:var(--gold)}
+.paste-modal-bg{display:none;position:fixed;inset:0;background:rgba(13,17,23,0.95);z-index:600;align-items:center;justify-content:center}
+.paste-modal-bg.show{display:flex}
+.paste-modal{background:var(--panel);border:1px solid var(--border2);border-radius:12px;width:680px;max-height:90vh;display:flex;flex-direction:column;padding:28px}
+.paste-modal-title{font-size:18px;font-weight:800;margin-bottom:6px}
+.paste-modal-sub{font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6}
+.paste-ta{width:100%;flex:1;min-height:320px;background:var(--panel3);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:'Inter',sans-serif;font-size:12px;padding:14px;outline:none;resize:none;line-height:1.6;transition:border-color .15s}
+.paste-ta:focus{border-color:var(--gold)}
+.paste-footer{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:10px}
+.paste-info{font-size:11px;color:var(--muted)}
+.paste-info span{color:var(--gold);font-weight:700}
 </style>
 </head>
 <body>
@@ -146,6 +158,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
     <div class="top-tab" data-tab="ajustes" onclick="switchTab(this)">⚙ AJUSTES</div>
   </div>
   <div class="top-right">
+    <button class="btn-colar" onclick="openPasteModal()">📋 Colar Carrossel</button>
     <button class="btn-template" onclick="openModal()">⊞ Template</button>
     <input class="nome-input" id="nomeInput" placeholder="nome-do-carrossel" value="meu-carrossel">
     <button class="btn-export" id="btnExport" onclick="exportar()">↓ Exportar!</button>
@@ -215,6 +228,22 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
     </div>
   </div>
 </div>
+<!-- PASTE MODAL -->
+<div class="paste-modal-bg" id="pasteBg">
+  <div class="paste-modal">
+    <div class="paste-modal-title">📋 Colar Carrossel</div>
+    <div class="paste-modal-sub">Cole o output do seu agente GPT abaixo. O app detecta automaticamente o visual escolhido (Magazine Dark, Case Clean ou Impact Bold), o formato narrativo e preenche todos os 9 slides.</div>
+    <textarea class="paste-ta" id="pasteTa" placeholder="Cole aqui o output completo do agente GPT..."></textarea>
+    <div class="paste-footer">
+      <div class="paste-info" id="pasteInfo">Aguardando conteúdo...</div>
+      <div style="display:flex;gap:10px">
+        <button class="btn-cancel" onclick="closePasteModal()">Cancelar</button>
+        <button class="btn-confirm" onclick="applyPaste()">Aplicar nos slides →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="loading-bg" id="loadingBg">
   <div class="loading-title">Gerando PNGs...</div>
   <div class="loading-sub" id="loadingSub">Preparando slides</div>
@@ -631,6 +660,108 @@ function setImagePos(num,pos){
   const sl=state.slides.find(s=>s.num===num);
   if(sl){sl.imagePos=pos;saveState();reloadPreview(num);}
   document.querySelectorAll(`[data-imgpos="${num}"]`).forEach(b=>{b.classList.toggle('sel',b.dataset.pos===pos);});
+}
+
+// ── COLAR CARROSSEL ────────────────────────────────────────────────────────────
+function openPasteModal() {
+  document.getElementById('pasteTa').value = '';
+  document.getElementById('pasteInfo').innerHTML = 'Aguardando conteúdo...';
+  document.getElementById('pasteBg').classList.add('show');
+}
+function closePasteModal() {
+  document.getElementById('pasteBg').classList.remove('show');
+}
+
+function getField(block, name) {
+  const esc = name.replace(/\s+/g, '\\s+');
+  const nextLabels = 'TAG|HEADLINE|BLOCO\\s+1|BLOCO\\s+2|EXTRA';
+  const re = new RegExp(esc + ':\\s*\\n?([\\s\\S]*?)(?=\\n[ \\t]*(?:' + nextLabels + '):|\\n---\\s*\\n|$)', 'i');
+  const m = block.match(re);
+  if (!m || !m[1]) return '';
+  return m[1]
+    .split('\n')
+    .map(l => l.replace(/\s+$/, ''))
+    .join('\n')
+    .trim();
+}
+
+function parseCarrossel(raw) {
+  let detectedVisual = null, detectedTemplate = null;
+
+  // Detectar visual
+  const vm = raw.match(/MODELO VISUAL[^:]*:\s*\*?\*?(MAGAZINE DARK|CASE CLEAN|IMPACT BOLD)\*?\*?/i);
+  if (vm) {
+    const v = vm[1].toUpperCase();
+    if (v.includes('MAGAZINE')) detectedVisual = 'magazine';
+    else if (v.includes('CLEAN')) detectedVisual = 'clean';
+    else if (v.includes('IMPACT')) detectedVisual = 'impact';
+  }
+
+  // Detectar formato narrativo
+  const tm = raw.match(/FORMATO NARRATIVO[^:]*:\s*\*?\*?(EXPLICATIVO|LISTA NUMERADA|STORYTELLING|COMPARATIVO)[^\n]*/i);
+  if (tm) {
+    const t = tm[1].toUpperCase();
+    if (t.includes('LISTA')) detectedTemplate = 'lista';
+    else if (t.includes('STORY')) detectedTemplate = 'storytelling';
+    else if (t.includes('COMPARATIVO')) detectedTemplate = 'comparativo';
+    else detectedTemplate = 'explicativo';
+  }
+
+  // Separar slides — divide antes de cada ## SLIDE
+  const slideStart = raw.search(/##\s*SLIDE\s+0?1/i);
+  if (slideStart === -1) return { filled: 0, visual: null, template: null };
+  const slidesSection = raw.substring(slideStart);
+  const chunks = slidesSection.split(/(?=##\s*SLIDE\s+\d+)/i).filter(s => s.trim());
+
+  let filled = 0;
+  chunks.forEach((chunk, i) => {
+    if (i >= state.slides.length) return;
+    const sl = state.slides[i];
+    sl.tag     = getField(chunk, 'TAG');
+    sl.headline = getField(chunk, 'HEADLINE');
+    sl.bloco1  = getField(chunk, 'BLOCO 1');
+    sl.bloco2  = getField(chunk, 'BLOCO 2');
+    sl.extra   = getField(chunk, 'EXTRA');
+    filled++;
+  });
+
+  return { filled, visual: detectedVisual, template: detectedTemplate };
+}
+
+function applyPaste() {
+  const raw = document.getElementById('pasteTa').value.trim();
+  if (!raw) { toast('Cole o conteúdo primeiro', 'err'); return; }
+
+  const result = parseCarrossel(raw);
+  if (result.filled === 0) {
+    document.getElementById('pasteInfo').innerHTML = '<span style="color:var(--red)">Formato não reconhecido. Verifique o output do agente.</span>';
+    return;
+  }
+
+  // Aplicar visual detectado
+  if (result.visual) {
+    state.visual = result.visual;
+    const vs = VISUAL_STYLES[result.visual];
+    state.colors.bg = vs.bg; state.colors.text = vs.text;
+    state.colors.accent = vs.accent; state.colors.accent2 = vs.accent2;
+    syncColorPickers();
+    document.querySelectorAll('.style-card').forEach(c => c.classList.remove('sel'));
+    const vc = document.getElementById(`vc-${result.visual}`);
+    if (vc) vc.classList.add('sel');
+  }
+
+  // Aplicar template detectado
+  if (result.template) state.template = result.template;
+
+  saveState();
+  buildTexto();
+  reloadAll();
+  updateCanvasInfo();
+  closePasteModal();
+
+  const vLabel = result.visual ? VISUAL_STYLES[result.visual]?.label : '—';
+  const tLabel = result.template ? TEMPLATES_META[result.template]?.label : '—';
+  toast(`✅ ${result.filled} slides preenchidos · ${vLabel} · ${tLabel}`, 'ok');
 }
 
 // ── TIMERS ─────────────────────────────────────────────────────────────────────
