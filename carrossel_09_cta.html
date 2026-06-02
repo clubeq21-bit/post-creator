@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --dourado: #C9A96E;
+    --dourado-claro: #E8C98A;
+    --bg-escuro: #1A1510;
+    --texto-claro: #F5EFE6;
+    --texto-sutil: #9A8870;
+    --terracota: #C1622A;
+  }
+
+  body {
+    width: 1080px;
+    height: 1350px;
+    overflow: hidden;
+    background: var(--bg-escuro);
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+
+  .slide {
+    width: 1080px;
+    height: 1350px;
+    background: var(--bg-escuro);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Fundo atmosférico — halo dourado central suave */
+  .slide::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 45%, rgba(201,169,110,0.10) 0%, transparent 60%),
+      radial-gradient(ellipse at 50% 100%, rgba(201,169,110,0.05) 0%, transparent 40%);
+  }
+
+  /* Linha topo dupla para marcar fim do carrossel */
+  .linha-topo-dupla {
+    position: absolute;
+    top: 50px;
+    left: 60px;
+    right: 60px;
+  }
+
+  .linha-topo-dupla .l1 {
+    height: 2px;
+    background: var(--dourado);
+    margin-bottom: 5px;
+  }
+
+  .linha-topo-dupla .l2 {
+    height: 1px;
+    background: rgba(201,169,110,0.35);
+  }
+
+  .tag {
+    position: absolute;
+    top: 76px;
+    left: 60px;
+    color: var(--dourado);
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+  }
+
+  /* Bloco central — CTA principal */
+  .cta-central {
+    position: absolute;
+    top: 180px;
+    left: 60px;
+    right: 60px;
+  }
+
+  /* CTA headline */
+  .cta-central h2 {
+    font-size: 80px;
+    font-weight: 900;
+    line-height: 0.92;
+    letter-spacing: -2px;
+    text-transform: uppercase;
+    color: var(--texto-claro);
+    margin-bottom: 36px;
+  }
+
+  .cta-central h2 .dourado { color: var(--dourado); }
+
+  /* Motivo de salvar */
+  .motivo-salvar {
+    font-size: 30px;
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.55;
+    color: var(--texto-claro);
+    opacity: 0.75;
+    margin-bottom: 60px;
+    max-width: 860px;
+  }
+
+  /* Divisor */
+  .divisor-cta {
+    width: 100%;
+    height: 1px;
+    background: rgba(201,169,110,0.25);
+    margin-bottom: 50px;
+  }
+
+  /* Caixa de ação direta */
+  .acao-direta {
+    background: rgba(201,169,110,0.08);
+    border: 1px solid rgba(201,169,110,0.3);
+    padding: 40px 44px;
+  }
+
+  .acao-direta .acao-label {
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--dourado);
+    margin-bottom: 16px;
+  }
+
+  .acao-direta .acao-texto {
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--texto-claro);
+  }
+
+  .acao-direta .acao-texto strong {
+    font-weight: 900;
+    color: var(--dourado-claro);
+  }
+
+  /* Bloco handle e perfil */
+  .perfil-bloco {
+    position: absolute;
+    bottom: 165px;
+    left: 60px;
+    right: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .perfil-bloco .handle-grande {
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: var(--dourado);
+    text-transform: lowercase;
+  }
+
+  .perfil-bloco .descricao-perfil {
+    font-size: 18px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--texto-claro);
+    opacity: 0.45;
+    text-align: right;
+    line-height: 1.4;
+  }
+
+  .linha-base-dupla {
+    position: absolute;
+    bottom: 100px;
+    left: 60px;
+    right: 60px;
+  }
+
+  .linha-base-dupla .l1 {
+    height: 2px;
+    background: var(--dourado);
+    margin-bottom: 5px;
+  }
+
+  .linha-base-dupla .l2 {
+    height: 1px;
+    background: rgba(201,169,110,0.3);
+  }
+
+  .slide-label {
+    position: absolute;
+    bottom: 58px;
+    right: 60px;
+    color: var(--texto-sutil);
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .slide-label-left {
+    position: absolute;
+    bottom: 58px;
+    left: 60px;
+    color: var(--texto-sutil);
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="linha-topo-dupla">
+    <div class="l1"></div>
+    <div class="l2"></div>
+  </div>
+  <div class="tag">Ação</div>
+
+  <div class="cta-central">
+    <h2>
+      Salva<br>
+      esse<br>
+      <span class="dourado">carrossel.</span>
+    </h2>
+
+    <p class="motivo-salvar">
+      Você vai precisar dele quando estiver<br>
+      reescrevendo a oferta pela quinta vez<br>
+      em vez de pegar o telefone.
+    </p>
+
+    <div class="divisor-cta"></div>
+
+    <div class="acao-direta">
+      <div class="acao-label">Próximo passo</div>
+      <div class="acao-texto">
+        Se você quer construir uma mentoria<br>
+        que vende com consistência —<br>
+        manda <strong>"VOLUME"</strong> no meu direct.
+      </div>
+    </div>
+  </div>
+
+  <div class="perfil-bloco">
+    <div class="handle-grande">@glendonassis</div>
+    <div class="descricao-perfil">Método · Mentorias<br>Alta Performance</div>
+  </div>
+
+  <div class="linha-base-dupla">
+    <div class="l1"></div>
+    <div class="l2"></div>
+  </div>
+  <div class="slide-label-left">Fim do carrossel</div>
+  <div class="slide-label">09 / 09</div>
+</div>
+</body>
+</html>

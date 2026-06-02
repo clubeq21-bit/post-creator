@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --dourado: #C9A96E;
+    --dourado-claro: #E8C98A;
+    --bg-escuro: #1A1510;
+    --bg-medio: #2D2419;
+    --texto-claro: #F5EFE6;
+    --texto-sutil: #9A8870;
+    --terracota: #C1622A;
+  }
+
+  body {
+    width: 1080px;
+    height: 1350px;
+    overflow: hidden;
+    background: var(--bg-escuro);
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+
+  .slide {
+    width: 1080px;
+    height: 1350px;
+    background: var(--bg-escuro);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 80% 80%, rgba(201,169,110,0.06) 0%, transparent 55%);
+  }
+
+  .linha-topo {
+    position: absolute;
+    top: 55px;
+    left: 60px;
+    right: 60px;
+    height: 1.5px;
+    background: linear-gradient(to right, var(--dourado), rgba(201,169,110,0.3));
+  }
+
+  .tag {
+    position: absolute;
+    top: 75px;
+    left: 60px;
+    color: var(--dourado);
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+  }
+
+  .num-slide {
+    position: absolute;
+    top: -20px;
+    right: 30px;
+    font-size: 340px;
+    font-weight: 900;
+    color: var(--dourado);
+    opacity: 0.04;
+    line-height: 1;
+  }
+
+  /* Headline principal */
+  .headline-bloco {
+    position: absolute;
+    top: 155px;
+    left: 60px;
+    right: 60px;
+  }
+
+  .headline-bloco h2 {
+    font-size: 64px;
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -1.5px;
+    text-transform: uppercase;
+    color: var(--texto-claro);
+  }
+
+  .headline-bloco h2 .dourado { color: var(--dourado); }
+  .headline-bloco h2 .terracota { color: var(--terracota); }
+
+  /* Comparação visual — dois cenários */
+  .cenarios {
+    position: absolute;
+    top: 480px;
+    left: 60px;
+    right: 60px;
+  }
+
+  .cenario {
+    padding: 30px 32px;
+    margin-bottom: 22px;
+    border-left: 4px solid;
+  }
+
+  .cenario.ruim {
+    border-left-color: rgba(193,98,42,0.5);
+    background: rgba(193,98,42,0.05);
+  }
+
+  .cenario.bom {
+    border-left-color: var(--dourado);
+    background: rgba(201,169,110,0.07);
+  }
+
+  .cenario-label {
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .cenario.ruim .cenario-label { color: var(--terracota); }
+  .cenario.bom .cenario-label { color: var(--dourado); }
+
+  .cenario-texto {
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 1.45;
+    color: var(--texto-claro);
+  }
+
+  .cenario.ruim .cenario-texto { opacity: 0.65; }
+  .cenario.bom .cenario-texto { opacity: 0.9; }
+
+  .cenario-texto strong { font-weight: 700; }
+
+  /* Conclusão */
+  .conclusao {
+    position: absolute;
+    bottom: 155px;
+    left: 60px;
+    right: 60px;
+    border-top: 1px solid rgba(201,169,110,0.25);
+    padding-top: 36px;
+  }
+
+  .conclusao p {
+    font-size: 33px;
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--texto-claro);
+    opacity: 0.85;
+  }
+
+  .conclusao p strong {
+    font-style: normal;
+    font-weight: 700;
+    color: var(--dourado-claro);
+  }
+
+  .linha-base {
+    position: absolute;
+    bottom: 100px;
+    left: 60px;
+    right: 60px;
+    height: 1px;
+    background: rgba(201,169,110,0.2);
+  }
+
+  .handle {
+    position: absolute;
+    bottom: 62px;
+    left: 60px;
+    color: var(--dourado);
+    font-size: 19px;
+    font-weight: 400;
+    letter-spacing: 3px;
+  }
+
+  .slide-label {
+    position: absolute;
+    bottom: 65px;
+    right: 60px;
+    color: var(--texto-sutil);
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="num-slide">6</div>
+  <div class="linha-topo"></div>
+  <div class="tag">O Problema Real</div>
+
+  <div class="headline-bloco">
+    <h2>
+      Com <span class="terracota">3 ligações</span><br>
+      por semana,<br>
+      você não tem<br>
+      <span class="dourado">dados.</span>
+    </h2>
+  </div>
+
+  <div class="cenarios">
+    <div class="cenario ruim">
+      <div class="cenario-label">Cenário A — o que a maioria faz</div>
+      <div class="cenario-texto">
+        3 ligações/semana = 12 por mês.<br>
+        <strong>Você não tem dados suficientes<br>para otimizar nada.</strong><br>
+        Tem suposição.
+      </div>
+    </div>
+
+    <div class="cenario bom">
+      <div class="cenario-label">Cenário B — o que funciona</div>
+      <div class="cenario-texto">
+        20 ligações/semana = 80 por mês.<br>
+        <strong>Em 30 dias, você sabe exatamente<br>o que funciona.</strong><br>
+        Com precisão cirúrgica.
+      </div>
+    </div>
+  </div>
+
+  <div class="conclusao">
+    <p>
+      O mentor que não vende não tem<br>problema de oferta.<br>
+      Tem problema de <strong>volume.</strong>
+    </p>
+  </div>
+
+  <div class="linha-base"></div>
+  <div class="handle">@glendonassis</div>
+  <div class="slide-label">06 / 09</div>
+</div>
+</body>
+</html>

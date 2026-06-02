@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --dourado: #C9A96E;
+    --dourado-claro: #E8C98A;
+    --bg-escuro: #1A1510;
+    --texto-claro: #F5EFE6;
+    --texto-sutil: #9A8870;
+    --terracota: #C1622A;
+  }
+
+  body {
+    width: 1080px;
+    height: 1350px;
+    overflow: hidden;
+    background: var(--bg-escuro);
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+
+  .slide {
+    width: 1080px;
+    height: 1350px;
+    background: var(--bg-escuro);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 50%, rgba(201,169,110,0.07) 0%, transparent 65%);
+  }
+
+  .linha-topo {
+    position: absolute;
+    top: 55px;
+    left: 60px;
+    right: 60px;
+    height: 1.5px;
+    background: linear-gradient(to right, var(--dourado), rgba(201,169,110,0.3));
+  }
+
+  .tag {
+    position: absolute;
+    top: 75px;
+    left: 60px;
+    color: var(--dourado);
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+  }
+
+  /* Headline síntese */
+  .headline-sintese {
+    position: absolute;
+    top: 150px;
+    left: 60px;
+    right: 60px;
+  }
+
+  .headline-sintese h2 {
+    font-size: 62px;
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -1.5px;
+    text-transform: uppercase;
+    color: var(--texto-claro);
+    margin-bottom: 8px;
+  }
+
+  .headline-sintese h2 .dourado { color: var(--dourado); }
+
+  /* Cadeia de causalidade */
+  .cadeia {
+    position: absolute;
+    top: 480px;
+    left: 60px;
+    right: 60px;
+  }
+
+  .cadeia-titulo {
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--texto-sutil);
+    margin-bottom: 44px;
+  }
+
+  .etapa {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 0;
+  }
+
+  .etapa-bloco {
+    flex: 1;
+    padding: 22px 24px;
+    background: rgba(201,169,110,0.06);
+    border: 1px solid rgba(201,169,110,0.18);
+    text-align: center;
+  }
+
+  .etapa-bloco .etapa-nome {
+    font-size: 24px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--dourado);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  .etapa-bloco .etapa-desc {
+    font-size: 18px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--texto-claro);
+    opacity: 0.55;
+  }
+
+  .seta {
+    width: 32px;
+    text-align: center;
+    font-size: 22px;
+    color: var(--dourado);
+    opacity: 0.5;
+    flex-shrink: 0;
+  }
+
+  .cadeia-linhas {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .linha-etapa {
+    display: flex;
+    align-items: stretch;
+    height: 88px;
+  }
+
+  .linha-etapa:not(:last-child) {
+    border-bottom: none;
+  }
+
+  /* Bloco de síntese final */
+  .sintese-final {
+    position: absolute;
+    bottom: 160px;
+    left: 60px;
+    right: 60px;
+    border-top: 1px solid rgba(201,169,110,0.3);
+    padding-top: 36px;
+  }
+
+  .sintese-final p {
+    font-size: 33px;
+    font-weight: 700;
+    font-style: italic;
+    line-height: 1.45;
+    color: var(--dourado-claro);
+  }
+
+  .linha-base {
+    position: absolute;
+    bottom: 100px;
+    left: 60px;
+    right: 60px;
+    height: 1px;
+    background: rgba(201,169,110,0.2);
+  }
+
+  .handle {
+    position: absolute;
+    bottom: 62px;
+    left: 60px;
+    color: var(--dourado);
+    font-size: 19px;
+    font-weight: 400;
+    letter-spacing: 3px;
+  }
+
+  .slide-label {
+    position: absolute;
+    bottom: 65px;
+    right: 60px;
+    color: var(--texto-sutil);
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="linha-topo"></div>
+  <div class="tag">O Padrão</div>
+
+  <div class="headline-sintese">
+    <h2>
+      O mentor que mais vende<br>
+      não é o melhor<br>em fechar.<br>
+      É o que <span class="dourado">mais liga.</span>
+    </h2>
+  </div>
+
+  <!-- Cadeia de causalidade -->
+  <div class="cadeia">
+    <div class="cadeia-titulo">A cadeia que explica tudo</div>
+
+    <!-- Usando tabela simples para layout da cadeia -->
+    <table style="width:100%; border-collapse:collapse;">
+      <tr>
+        <td style="width:20%; padding:18px 20px; background:rgba(201,169,110,0.08); border:1px solid rgba(201,169,110,0.2); text-align:center; vertical-align:middle;">
+          <div style="font-size:22px; font-weight:900; color:var(--dourado); text-transform:uppercase; letter-spacing:0px;">Volume</div>
+          <div style="font-size:16px; font-style:italic; color:var(--texto-claro); opacity:0.5; margin-top:4px;">de ligações</div>
+        </td>
+        <td style="width:5%; text-align:center; vertical-align:middle; color:var(--dourado); font-size:26px; opacity:0.6;">→</td>
+        <td style="width:20%; padding:18px 20px; background:rgba(201,169,110,0.08); border:1px solid rgba(201,169,110,0.2); text-align:center; vertical-align:middle;">
+          <div style="font-size:22px; font-weight:900; color:var(--dourado); text-transform:uppercase;">Dados</div>
+          <div style="font-size:16px; font-style:italic; color:var(--texto-claro); opacity:0.5; margin-top:4px;">reais</div>
+        </td>
+        <td style="width:5%; text-align:center; vertical-align:middle; color:var(--dourado); font-size:26px; opacity:0.6;">→</td>
+        <td style="width:20%; padding:18px 20px; background:rgba(201,169,110,0.08); border:1px solid rgba(201,169,110,0.2); text-align:center; vertical-align:middle;">
+          <div style="font-size:22px; font-weight:900; color:var(--dourado); text-transform:uppercase;">Aprendi-<br>zado</div>
+          <div style="font-size:16px; font-style:italic; color:var(--texto-claro); opacity:0.5; margin-top:4px;">acelerado</div>
+        </td>
+        <td style="width:5%; text-align:center; vertical-align:middle; color:var(--dourado); font-size:26px; opacity:0.6;">→</td>
+        <td style="width:20%; padding:18px 20px; background:rgba(201,169,110,0.13); border:1px solid rgba(201,169,110,0.35); text-align:center; vertical-align:middle;">
+          <div style="font-size:22px; font-weight:900; color:var(--dourado-claro); text-transform:uppercase;">Resultado</div>
+          <div style="font-size:16px; font-style:italic; color:var(--texto-claro); opacity:0.7; margin-top:4px;">consistente</div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="sintese-final">
+    <p>Você estava tentando pular etapas.<br>A cadeia não perdoa.</p>
+  </div>
+
+  <div class="linha-base"></div>
+  <div class="handle">@glendonassis</div>
+  <div class="slide-label">07 / 09</div>
+</div>
+</body>
+</html>
