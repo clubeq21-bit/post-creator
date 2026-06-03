@@ -359,7 +359,8 @@ function makeSlide(s) {
   if (!sl.el_colors) sl.el_colors = {headline:'',bloco1:'',bloco2:''};
   if (!sl.image) sl.image = '';
   if (!sl.imagePos) sl.imagePos = 'float';
-  if (!sl.offsets) sl.offsets = {headline:0,bloco1:0,bloco2:0};
+  if (!sl.offsets) sl.offsets = {headline:0,bloco1:0,bloco2:0,extra:0};
+  if (!sl.sizes.extra) sl.sizes.extra = 22;
   return sl;
 }
 let state = {
@@ -680,7 +681,7 @@ function renderSerif(s,c,fk){
         <p style="font-family:'DM Sans',sans-serif;font-size:${b1s}px;font-weight:300;line-height:1.6;color:${finalBody};max-width:700px;margin:0 auto">${b1Html}</p>
         ${b2Html?`<p style="font-family:'DM Sans',sans-serif;font-size:${b2s}px;font-weight:400;line-height:1.5;color:${s.image?accent:accent};margin-top:30px">${b2Html}</p>`:''}
       </div>
-      ${s.extra?`<div style="position:absolute;bottom:120px;left:0;right:0;text-align:center;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;letter-spacing:2px;text-transform:uppercase;color:${handleColor};${z}">${s.extra}</div>`:''}`;
+      ${s.extra?`<div style="position:absolute;bottom:calc(120px - ${offY(s,'extra')}px);left:70px;right:70px;text-align:center;font-family:'DM Sans',sans-serif;font-size:${sz(s,'extra',18)}px;font-weight:300;letter-spacing:2px;text-transform:uppercase;color:${handleColor};z-index:3">${s.extra}</div>`:''}`;
   } else if(s.type==='sintese'){
     // Quote-style centered layout
     mainContent = `
@@ -704,7 +705,8 @@ function renderSerif(s,c,fk){
   } else {
     // Default: tag fixed top, headline mid, bloco bottom
     const tagEl = s.tag ? `<div style="position:absolute;top:75px;left:70px;right:70px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;letter-spacing:4px;text-transform:uppercase;color:${s.image?'rgba(244,239,230,0.6)':accent};z-index:3">${s.tag}</div>` : '';
-    const extraEl = s.extra ? `<div style="position:absolute;bottom:110px;left:70px;right:70px;font-family:'DM Sans',sans-serif;font-size:${b2s}px;font-weight:500;font-style:italic;line-height:1.5;color:${s.image?accent:accent};border-top:1px solid ${lineColor};padding-top:24px;z-index:3">${parseInline(s.extra,accent)}</div>` : '';
+    const exs=sz(s,'extra',22);
+    const extraEl = s.extra ? `<div style="position:absolute;bottom:calc(110px - ${offY(s,'extra')}px);left:70px;right:70px;font-family:'DM Sans',sans-serif;font-size:${exs}px;font-weight:400;font-style:italic;line-height:1.5;color:${s.image?accent:accent};border-top:1px solid ${lineColor};padding-top:24px;z-index:3">${parseInline(s.extra,accent)}</div>` : '';
     mainContent = `
       ${tagEl}
       <div style="position:absolute;top:calc(150px + ${offY(s,'headline')}px);left:70px;right:70px;${z}">
@@ -941,7 +943,9 @@ function buildTexto(){
     // Tamanhos
     const szSec=document.createElement('div');szSec.className='el-section';
     szSec.innerHTML='<div class="el-section-title">Tamanho dos elementos</div>';
-    [['headline','Headline',14,160],['bloco1','Bloco 1',14,160],['bloco2','Bloco 2',14,160]].forEach(([elName,lbl,min,max])=>{
+    const szFields=[['headline','Headline',14,160],['bloco1','Bloco 1',14,160],['bloco2','Bloco 2',14,160]];
+    if(['dados','cenarios'].includes(slide.type))szFields.push(['extra','Extra',14,100]);
+    szFields.forEach(([elName,lbl,min,max])=>{
       const dv=(slide.sizes&&slide.sizes[elName])||40;
       const row=document.createElement('div');row.className='sz-row';
       row.innerHTML=`<span class="sz-lbl">${lbl}</span><input type="range" class="sz-slider" min="${min}" max="${max}" value="${dv}" data-num="${slide.num}" data-el="${elName}" id="sz-${slide.num}-${elName}" oninput="onSizeChange(this)"><span class="sz-val" id="sv-${slide.num}-${elName}">${dv}px</span>`;
@@ -951,7 +955,9 @@ function buildTexto(){
     // Posição vertical
     const posSec=document.createElement('div');posSec.className='el-section';
     posSec.innerHTML='<div class="el-section-title">Posição vertical</div>';
-    [['headline','Headline'],['bloco1','Bloco 1'],['bloco2','Bloco 2']].forEach(([elName,lbl])=>{
+    const posFields=[['headline','Headline'],['bloco1','Bloco 1'],['bloco2','Bloco 2']];
+    if(['dados','cenarios'].includes(slide.type))posFields.push(['extra','Extra']);
+    posFields.forEach(([elName,lbl])=>{
       const dv=(slide.offsets&&slide.offsets[elName])||0;
       const row=document.createElement('div');row.className='sz-row';
       row.innerHTML=`<span class="sz-lbl">${lbl}</span><input type="range" class="sz-slider" min="-150" max="150" value="${dv}" data-num="${slide.num}" data-el="${elName}" id="pos-${slide.num}-${elName}" oninput="onOffsetChange(this)"><span class="sz-val" id="pv-${slide.num}-${elName}">${dv>0?'+':''}${dv}px</span>`;
@@ -961,7 +967,9 @@ function buildTexto(){
     // Cores elementos
     const ecSec=document.createElement('div');ecSec.className='el-section';
     ecSec.innerHTML='<div class="el-section-title">Cor dos elementos</div>';
-    [['headline','Headline'],['bloco1','Bloco 1'],['bloco2','Bloco 2']].forEach(([elName,lbl])=>{
+    const posFields=[['headline','Headline'],['bloco1','Bloco 1'],['bloco2','Bloco 2']];
+    if(['dados','cenarios'].includes(slide.type))posFields.push(['extra','Extra']);
+    posFields.forEach(([elName,lbl])=>{
       const curV=(slide.el_colors&&slide.el_colors[elName])||'#C9A96E';
       const row=document.createElement('div');row.className='ec-row';
       row.innerHTML=`<div class="ec-sw" id="ecsw-${slide.num}-${elName}" style="background:${curV}"><input type="color" value="${curV}" data-num="${slide.num}" data-el="${elName}" oninput="onElColorChange(this)"></div><span class="ec-lbl">${lbl}</span><button class="btn-ec-reset" onclick="resetElColor(${slide.num},'${elName}')">Reset</button>`;
