@@ -139,22 +139,19 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .paste-info{font-size:11px;color:var(--muted)}
 .paste-info span{color:var(--gold);font-weight:700}
 
-/* ── MOBILE RESPONSIVE ──────────────────────────────────────────────────────── */
-.mobile-fab{display:none}
-.mobile-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:199;backdrop-filter:blur(4px)}
-.mobile-overlay.show{display:block}
-.panel-close-btn{display:none}
+  .mobile-overlay{display:none!important}
+  .panel-close-btn{display:none!important}
+  
+}
 
+/* ── MOBILE ───────────────────────────────────────────────────────────────── */
+#mobileFab,#mobileOverlay,.panel-close-btn,.mobile-panel-header{display:none}
 @media(max-width:768px){
-  /* Layout: single column, canvas full width */
-  .layout{grid-template-columns:1fr;grid-template-rows:52px 1fr}
-
-  /* Topbar: horizontal scroll */
-  .topbar{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .layout{display:flex;flex-direction:column;height:auto;min-height:100vh}
+  .topbar{flex-shrink:0;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
   .topbar::-webkit-scrollbar{display:none}
-  .top-brand{min-width:110px;padding:0 10px;border-right:none}
+  .top-brand{min-width:100px;padding:0 10px;border-right:none}
   .top-sub{display:none}
-  .top-title{font-size:13px}
   .top-tabs{flex-shrink:0;padding:0 6px;gap:3px}
   .top-tab{padding:4px 8px;font-size:10px}
   .top-sep{display:none}
@@ -162,67 +159,29 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
   .nome-input{width:80px;font-size:11px;padding:4px 8px}
   .btn-colar{font-size:10px;padding:4px 8px}
   .btn-template{font-size:10px;padding:4px 8px}
-  .btn-export{font-size:10px;padding:5px 10px;letter-spacing:0.5px}
-
-  /* Panel: hidden by default, slides up as drawer */
-  .panel{
-    display:none;
-    position:fixed;bottom:0;left:0;right:0;
-    height:78vh;z-index:200;
-    border-radius:16px 16px 0 0;
-    border-right:none;
-    border-top:none;
-    box-shadow:0 -12px 48px rgba(0,0,0,0.6);
-    animation:slideUp .28s cubic-bezier(.32,.72,0,1);
-    overflow:hidden;
-  }
-  .panel.mobile-open{display:flex}
-  @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-
-  /* Panel header with drag handle + close btn */
-  .mobile-panel-header{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:0 16px;height:44px;flex-shrink:0;
-    background:var(--panel);border-bottom:1px solid var(--border2);
-  }
-  .mobile-drag-handle{
-    width:36px;height:4px;background:rgba(255,255,255,0.15);
-    border-radius:2px;position:absolute;left:50%;transform:translateX(-50%);top:10px;
-  }
-
-  /* Close button */
-  .panel-close-btn{
-    display:flex;background:rgba(255,255,255,0.06);border:1px solid var(--border2);
-    color:var(--muted);font-size:14px;cursor:pointer;z-index:10;
-    width:30px;height:30px;align-items:center;justify-content:center;
-    border-radius:50%;margin-left:auto;transition:all .15s;
-  }
-  .panel-close-btn:active{background:rgba(255,255,255,0.12);color:var(--text)}
-
-  /* Canvas: full width */
-  .canvas{grid-column:1/-1;padding:12px 10px}
-  .canvas-header{margin-bottom:14px}
+  .btn-export{font-size:10px;padding:5px 10px}
+  .panel{border-right:none;border-bottom:1px solid var(--border2);max-height:65vh;overflow-y:auto}
+  .panel.mobile-hidden{display:none}
+  .canvas{flex:1;padding:12px 10px}
   .slides-grid{grid-template-columns:repeat(2,1fr);gap:10px}
-
-  /* FAB button to open panel */
-  .mobile-fab{
-    display:flex;position:fixed;bottom:20px;right:16px;
-    width:50px;height:50px;border-radius:50%;
-    background:linear-gradient(135deg,var(--gold),#A07840);
-    color:#0D1117;border:none;font-size:20px;
-    align-items:center;justify-content:center;
-    cursor:pointer;z-index:150;
-    box-shadow:0 4px 20px rgba(201,169,110,0.45);
-    transition:transform .15s;
+  /* Bottom nav bar */
+  .mobile-nav{
+    display:flex;position:sticky;bottom:0;
+    background:var(--panel);border-top:1px solid var(--border2);
+    z-index:100;flex-shrink:0;
   }
-  .mobile-fab:active{transform:scale(0.92)}
+  .mobile-nav-btn{
+    flex:1;padding:12px;border:none;background:transparent;
+    color:var(--muted);font-size:12px;font-weight:600;
+    font-family:'Inter',sans-serif;cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;gap:4px;
+    letter-spacing:0.5px;text-transform:uppercase;transition:color .15s;
+  }
+  .mobile-nav-btn.active{color:var(--gold)}
+  .mobile-nav-icon{font-size:18px}
 }
-
 @media(min-width:769px){
-  .mobile-fab{display:none!important}
-  .mobile-overlay{display:none!important}
-  .panel-close-btn{display:none!important}
-  .mobile-panel-header{display:none!important}
+  .mobile-nav{display:none}
 }
 </style>
 </head>
@@ -992,7 +951,7 @@ function switchTab(el){
   document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
   document.getElementById('tab-'+el.dataset.tab).classList.add('active');
-  if(window._isMobile&&window._isMobile())openMobilePanel();
+
 }
 
 // ── TEXTO TAB ──────────────────────────────────────────────────────────────────
@@ -1260,69 +1219,29 @@ function init(){
 }
 init();
 
-// ── MOBILE PANEL ──────────────────────────────────────────────────────────────
-var _panelOpen = false;
 
-function openMobilePanel(){
-  if(!window._isMobile())return;
-  var p=document.getElementById('sidePanel');
-  var o=document.getElementById('mobileOverlay');
-  var f=document.getElementById('mobileFab');
-  if(!p||!o||!f)return;
-  p.style.display='flex';
-  p.style.position='fixed';
-  p.style.bottom='0';
-  p.style.left='0';
-  p.style.right='0';
-  p.style.height='78vh';
-  p.style.zIndex='200';
-  p.style.borderRadius='16px 16px 0 0';
-  p.style.boxShadow='0 -12px 48px rgba(0,0,0,0.6)';
-  p.style.flexDirection='column';
-  p.style.overflow='hidden';
-  o.style.display='block';
-  f.innerHTML='✕';
-  _panelOpen=true;
-}
 
-function closeMobilePanel(){
-  var p=document.getElementById('sidePanel');
-  var o=document.getElementById('mobileOverlay');
-  var f=document.getElementById('mobileFab');
-  if(!p||!o||!f)return;
-  p.removeAttribute('style');
-  o.style.display='none';
-  f.innerHTML='✎';
-  _panelOpen=false;
-}
 
-function toggleMobilePanel(){
-  if(_panelOpen){closeMobilePanel();}else{openMobilePanel();}
-}
-
-window._isMobile=function(){return window.innerWidth<=768;};
-
-// Show/hide FAB based on screen size
-function _updateFab(){
-  var f=document.getElementById('mobileFab');
-  if(!f)return;
-  if(window._isMobile()){
-    f.style.display='flex';
+// ── MOBILE NAV ────────────────────────────────────────────────────────────────
+function mobileShow(view){
+  var panel=document.getElementById('sidePanel');
+  var canvas=document.querySelector('.canvas');
+  var btnEdit=document.getElementById('mnavEdit');
+  var btnSlides=document.getElementById('mnavSlides');
+  if(!panel||!canvas)return;
+  if(view==='edit'){
+    panel.classList.remove('mobile-hidden');
+    canvas.style.display='none';
+    if(btnEdit)btnEdit.classList.add('active');
+    if(btnSlides)btnSlides.classList.remove('active');
   } else {
-    f.style.display='none';
-    // Reset panel on resize to desktop
-    if(_panelOpen)closeMobilePanel();
+    panel.classList.add('mobile-hidden');
+    canvas.style.display='';
+    if(btnSlides)btnSlides.classList.add('active');
+    if(btnEdit)btnEdit.classList.remove('active');
   }
 }
-window.addEventListener('resize',_updateFab);
 document.addEventListener('DOMContentLoaded',function(){
-  _updateFab();
-  // Attach close to panel close button via JS (more reliable than onclick)
-  var btn=document.querySelector('.panel-close-btn');
-  var overlay=document.getElementById('mobileOverlay');
-  if(btn)btn.addEventListener('click',function(e){e.stopPropagation();closeMobilePanel();});
-  if(overlay)overlay.addEventListener('click',closeMobilePanel);
+  if(window.innerWidth<=768) mobileShow('edit');
 });
-setTimeout(_updateFab,200);
-
 </script>
