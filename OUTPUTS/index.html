@@ -927,12 +927,13 @@ function parseCarrossel(raw) {
   let detectedVisual = null, detectedTemplate = null;
 
   // Detectar visual
-  const vm = raw.match(/MODELO VISUAL[^:]*:\s*\*?\*?(MAGAZINE DARK|CASE CLEAN|IMPACT BOLD)\*?\*?/i);
+  const vm = raw.match(/MODELO VISUAL[^:]*:\s*\*?\*?(MAGAZINE DARK|CASE CLEAN|IMPACT BOLD|EDITORIAL SERIF)\*?\*?/i);
   if (vm) {
     const v = vm[1].toUpperCase();
     if (v.includes('MAGAZINE')) detectedVisual = 'magazine';
     else if (v.includes('CLEAN')) detectedVisual = 'clean';
     else if (v.includes('IMPACT')) detectedVisual = 'impact';
+    else if (v.includes('EDITORIAL') || v.includes('SERIF')) detectedVisual = 'serif';
   }
 
   // Detectar formato narrativo
