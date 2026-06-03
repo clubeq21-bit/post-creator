@@ -73,6 +73,11 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .cor-sw input[type=color]{position:absolute;inset:-4px;opacity:0;cursor:pointer;width:120%;height:120%}
 .cor-nm{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}.cor-hx{font-size:13px;color:var(--text);font-family:monospace;margin-top:2px}
 .btn-ac{background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--gold);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 9px;cursor:pointer;white-space:nowrap;transition:all .15s}
+.btn-save-base{background:rgba(63,185,80,0.1);border:1px solid rgba(63,185,80,0.25);border-radius:4px;color:var(--green);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 10px;cursor:pointer;white-space:nowrap;transition:all .15s;display:none;margin-top:8px;width:100%}
+.btn-save-base:hover{background:rgba(63,185,80,0.2)}
+.btn-save-base.visible{display:block}
+.base-saved-badge{font-size:9px;color:var(--green);letter-spacing:1px;opacity:0.7;margin-top:4px;display:none;text-align:center}
+.base-saved-badge.visible{display:block}
 .btn-ac:hover{border-color:var(--gold);background:rgba(201,169,110,0.06)}
 .btn-todas{width:100%;background:rgba(201,169,110,0.08);border:1px solid rgba(201,169,110,0.25);border-radius:4px;color:var(--gold);font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:9px;cursor:pointer;transition:all .15s;margin-top:6px}
 .btn-todas:hover{background:rgba(201,169,110,0.15)}
@@ -1151,26 +1156,65 @@ function resetElColor(num,elName){
 function buildVisual(){
   const c=document.getElementById('styleCards');c.innerHTML='';
   Object.entries(VISUAL_STYLES).forEach(([key,vs])=>{
-    const card=document.createElement('div');card.className='style-card'+(state.visual===key?' sel':'');card.id=`vc-${key}`;
+    const hasSaved=!!localStorage.getItem('pc_base_'+key);
+    const isSel=state.visual===key;
+    const wrap=document.createElement('div');wrap.style.cssText='margin-bottom:4px';
+    const card=document.createElement('div');card.className='style-card'+(isSel?' sel':'');card.id=`vc-${key}`;
     card.innerHTML=`<div class="style-preview" style="background:${vs.preview.bg};color:${vs.preview.accent}">${vs.preview.label}</div>
       <div class="style-info"><div class="style-name">${vs.label}</div><div class="style-desc">${vs.desc}</div></div>
       <div class="style-check"></div>`;
-    card.onclick=()=>selectVisual(key);c.appendChild(card);
+    card.onclick=()=>selectVisual(key);
+    const btn=document.createElement('button');
+    btn.className='btn-save-base'+(isSel?' visible':'');
+    btn.id=`btn-base-${key}`;
+    btn.textContent='💾 Salvar como base deste modelo';
+    btn.onclick=(e)=>{e.stopPropagation();saveVisualBase(key);};
+    const badge=document.createElement('div');
+    badge.className='base-saved-badge'+(hasSaved?' visible':'');
+    badge.id=`badge-base-${key}`;
+    badge.textContent='✓ Base salva';
+    wrap.appendChild(card);wrap.appendChild(btn);wrap.appendChild(badge);
+    c.appendChild(wrap);
   });
 }
 function selectVisual(key){
-  state.visual=key;
-  const vs=VISUAL_STYLES[key];
-  // Apply default colors for this style
-  if(key!=='magazine'){
-    state.colors.bg=vs.bg;state.colors.text=vs.text;state.colors.accent=vs.accent;state.colors.accent2=vs.accent2;
-    syncColorPickers();
+  // Load saved base if exists, otherwise apply default colors
+  const savedBase=localStorage.getItem('pc_base_'+key);
+  if(savedBase){
+    try{
+      const base=JSON.parse(savedBase);
+      // Keep current template but load saved slides+colors+font
+      state.visual=key;
+      if(base.colors)state.colors=Object.assign({},state.colors,base.colors);
+      if(base.slides&&base.slides.length>0)state.slides=base.slides.map(makeSlide);
+      if(base.font)state.font=base.font;
+      if(base.template)state.template=base.template;
+      syncColorPickers();
+      toast(`✓ Visual: ${VISUAL_STYLES[key].label} (base salva carregada)`,'ok');
+    }catch(e){applyDefaultVisual(key);}
+  } else {
+    applyDefaultVisual(key);
   }
   saveState();
   document.querySelectorAll('.style-card').forEach(c=>c.classList.remove('sel'));
   document.getElementById(`vc-${key}`).classList.add('sel');
-  reloadAll();updateCanvasInfo();
+  // Show save button only for selected style
+  document.querySelectorAll('.btn-save-base').forEach(b=>b.classList.remove('visible'));
+  const btn=document.getElementById(`btn-base-${key}`);if(btn)btn.classList.add('visible');
+  buildTexto();reloadAll();updateCanvasInfo();
+}
+function applyDefaultVisual(key){
+  state.visual=key;
+  const vs=VISUAL_STYLES[key];
+  state.colors.bg=vs.bg;state.colors.text=vs.text;state.colors.accent=vs.accent;state.colors.accent2=vs.accent2;
+  syncColorPickers();
   toast(`✓ Visual: ${vs.label}`,'ok');
+}
+function saveVisualBase(key){
+  const base={visual:key,colors:Object.assign({},state.colors),slides:state.slides,font:state.font,template:state.template};
+  localStorage.setItem('pc_base_'+key,JSON.stringify(base));
+  const badge=document.getElementById(`badge-base-${key}`);if(badge)badge.classList.add('visible');
+  toast(`✓ Base do ${VISUAL_STYLES[key].label} salva!`,'ok');
 }
 function syncColorPickers(){
   ['bg','text','accent','accent2'].forEach(k=>{
