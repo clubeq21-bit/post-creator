@@ -138,6 +138,88 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .paste-footer{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:10px}
 .paste-info{font-size:11px;color:var(--muted)}
 .paste-info span{color:var(--gold);font-weight:700}
+
+/* ── MOBILE RESPONSIVE ──────────────────────────────────────────────────────── */
+.mobile-fab{display:none}
+.mobile-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:199;backdrop-filter:blur(4px)}
+.mobile-overlay.show{display:block}
+.panel-close-btn{display:none}
+
+@media(max-width:768px){
+  /* Layout: single column, canvas full width */
+  .layout{grid-template-columns:1fr;grid-template-rows:52px 1fr}
+
+  /* Topbar: horizontal scroll */
+  .topbar{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .topbar::-webkit-scrollbar{display:none}
+  .top-brand{min-width:110px;padding:0 10px;border-right:none}
+  .top-sub{display:none}
+  .top-title{font-size:13px}
+  .top-tabs{flex-shrink:0;padding:0 6px;gap:3px}
+  .top-tab{padding:4px 8px;font-size:10px}
+  .top-sep{display:none}
+  .top-right{padding:0 8px;gap:4px;flex-shrink:0}
+  .nome-input{width:80px;font-size:11px;padding:4px 8px}
+  .btn-colar{font-size:10px;padding:4px 8px}
+  .btn-template{font-size:10px;padding:4px 8px}
+  .btn-export{font-size:10px;padding:5px 10px;letter-spacing:0.5px}
+
+  /* Panel: hidden by default, slides up as drawer */
+  .panel{
+    display:none;
+    position:fixed;bottom:0;left:0;right:0;
+    height:72vh;z-index:200;
+    border-radius:16px 16px 0 0;
+    border-right:none;
+    border-top:1px solid var(--border2);
+    box-shadow:0 -8px 40px rgba(0,0,0,0.5);
+    animation:slideUp .25s ease;
+  }
+  .panel.mobile-open{display:flex}
+  @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+
+  /* Drag handle at top of panel */
+  .panel::before{
+    content:'';display:block;
+    width:36px;height:4px;
+    background:rgba(255,255,255,0.15);
+    border-radius:2px;
+    margin:10px auto 0;
+    flex-shrink:0;
+  }
+
+  /* Close button inside panel */
+  .panel-close-btn{
+    display:flex;position:absolute;top:10px;right:14px;
+    background:transparent;border:none;color:var(--muted);
+    font-size:20px;cursor:pointer;z-index:10;
+    width:28px;height:28px;align-items:center;justify-content:center;
+  }
+
+  /* Canvas: full width */
+  .canvas{grid-column:1/-1;padding:12px 10px}
+  .canvas-header{margin-bottom:14px}
+  .slides-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+
+  /* FAB button to open panel */
+  .mobile-fab{
+    display:flex;position:fixed;bottom:20px;right:16px;
+    width:50px;height:50px;border-radius:50%;
+    background:linear-gradient(135deg,var(--gold),#A07840);
+    color:#0D1117;border:none;font-size:20px;
+    align-items:center;justify-content:center;
+    cursor:pointer;z-index:150;
+    box-shadow:0 4px 20px rgba(201,169,110,0.45);
+    transition:transform .15s;
+  }
+  .mobile-fab:active{transform:scale(0.92)}
+}
+
+@media(min-width:769px){
+  .mobile-fab{display:none!important}
+  .mobile-overlay{display:none!important}
+  .panel-close-btn{display:none!important}
+}
 </style>
 </head>
 <body>
@@ -166,7 +248,10 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
     <button class="btn-export" id="btnExport" onclick="exportar()">↓ Exportar!</button>
   </div>
 </div>
-<div class="panel">
+<div class="mobile-overlay" id="mobileOverlay" onclick="closeMobilePanel()"></div>
+<button class="mobile-fab" id="mobileFab" onclick="toggleMobilePanel()">✎</button>
+<div class="panel" id="sidePanel">
+  <button class="panel-close-btn" onclick="closeMobilePanel()">✕</button>
   <div class="tab-content active" id="tab-texto"></div>
   <div class="tab-content" id="tab-visual">
     <div style="padding:16px 12px 8px">
@@ -253,7 +338,21 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 </div>
 <div class="toast" id="toast"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
+// ── MOBILE PANEL ──────────────────────────────────────────────────────────────
+function toggleMobilePanel(){
+  const panel=document.getElementById('sidePanel');
+  const overlay=document.getElementById('mobileOverlay');
+  const open=panel.classList.toggle('mobile-open');
+  overlay.classList.toggle('show',open);
+  document.getElementById('mobileFab').textContent=open?'✕':'✎';
+}
+function closeMobilePanel(){
+  document.getElementById('sidePanel').classList.remove('mobile-open');
+  document.getElementById('mobileOverlay').classList.remove('show');
+  document.getElementById('mobileFab').textContent='✎';
+}
+</script>
 <script>
 // ── VISUAL STYLES ──────────────────────────────────────────────────────────────
 const VISUAL_STYLES = {
