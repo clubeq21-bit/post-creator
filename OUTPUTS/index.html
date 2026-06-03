@@ -467,7 +467,17 @@ let state = {
   colors:{bg:'#1A1510',text:'#F5EFE6',accent:'#C9A96E',accent2:'#C1622A',handle:'@glendonassis',copyright:'© COPYRIGHT 2025'},
   slides: TEMPLATES.explicativo.slides.map(makeSlide)
 };
-try { const saved=localStorage.getItem('pc_state'); if(saved){const p=JSON.parse(saved);state=Object.assign(state,p);state.slides=state.slides.map(makeSlide);} } catch(e){}
+try {
+  const saved=localStorage.getItem('pc_state');
+  if(saved){
+    const p=JSON.parse(saved);
+    // Version check — if slides have no offsets, they're from old version; normalize
+    if(p.slides&&p.slides.length>0){
+      state=Object.assign(state,p);
+      state.slides=state.slides.map(makeSlide);
+    }
+  }
+} catch(e){ localStorage.removeItem('pc_state'); }
 function saveState(){try{localStorage.setItem('pc_state',JSON.stringify(state));}catch(e){}}
 function offY(s,key){return(s.offsets&&s.offsets[key])||0;}
 
