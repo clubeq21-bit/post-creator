@@ -1279,7 +1279,18 @@ function init(){
   document.getElementById('copyrightInput').value=state.colors.copyright||'© COPYRIGHT 2025';
   document.getElementById('nomeInput').addEventListener('input',function(){state.nome=this.value;saveState();});
   syncColorPickers();
-  buildTexto();buildFontes();buildVisual();buildGrid();buildTmplGrid();updateCanvasInfo();
+  try{buildTexto();}catch(e){console.error('buildTexto:',e);}
+  try{buildFontes();}catch(e){console.error('buildFontes:',e);}
+  try{buildVisual();}catch(e){console.error('buildVisual:',e);}
+  try{
+    buildGrid();
+  }catch(e){
+    console.error('buildGrid error:',e);
+    var g=document.getElementById('slidesGrid');
+    if(g)g.innerHTML='<div style="color:#ef4b4b;padding:20px;font-size:13px;grid-column:1/-1">ERRO buildGrid: '+e.message+'</div>';
+  }
+  try{buildTmplGrid();}catch(e){console.error('buildTmplGrid:',e);}
+  updateCanvasInfo();
 }
 init();
 
