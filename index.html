@@ -252,8 +252,6 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
     <button class="btn-export" id="btnExport" onclick="exportar()">↓ Exportar!</button>
   </div>
 </div>
-<div class="mobile-overlay" id="mobileOverlay" onclick="closeMobilePanel()"></div>
-<button class="mobile-fab" id="mobileFab" onclick="toggleMobilePanel()">✎</button>
 <div class="panel" id="sidePanel">
   <div class="mobile-panel-header" id="mobilePanelHeader">
     <div class="mobile-drag-handle"></div>
@@ -1283,5 +1281,7 @@ function init(){
 }
 init();
 </script>
+<div class="mobile-overlay" id="mobileOverlay" onclick="closeMobilePanel()"></div>
+<button class="mobile-fab" id="mobileFab" onclick="toggleMobilePanel()">✎</button>
 </body>
 </html>
