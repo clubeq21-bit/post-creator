@@ -345,50 +345,70 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
 // ── MOBILE PANEL ──────────────────────────────────────────────────────────────
-function toggleMobilePanel(){
-  var panel=document.getElementById('sidePanel');
-  var overlay=document.getElementById('mobileOverlay');
-  var fab=document.getElementById('mobileFab');
-  if(!panel||!overlay||!fab)return;
-  var isOpen=panel.style.display==='flex';
-  if(isOpen){
-    panel.style.display='none';
-    overlay.style.display='none';
-    fab.innerHTML='✎';
-  } else {
-    panel.style.cssText='display:flex!important;position:fixed;bottom:0;left:0;right:0;height:78vh;z-index:200;border-radius:16px 16px 0 0;box-shadow:0 -12px 48px rgba(0,0,0,0.6);flex-direction:column;overflow:hidden;background:var(--panel)';
-    overlay.style.cssText='display:block;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:199;backdrop-filter:blur(4px)';
-    fab.innerHTML='✕';
-  }
-}
-function closeMobilePanel(){
-  var panel=document.getElementById('sidePanel');
-  var overlay=document.getElementById('mobileOverlay');
-  var fab=document.getElementById('mobileFab');
-  if(!panel||!overlay||!fab)return;
-  panel.style.display='';
-  overlay.style.display='none';
-  fab.innerHTML='✎';
+var _panelOpen = false;
+
+function openMobilePanel(){
+  if(!window._isMobile())return;
+  var p=document.getElementById('sidePanel');
+  var o=document.getElementById('mobileOverlay');
+  var f=document.getElementById('mobileFab');
+  if(!p||!o||!f)return;
+  p.style.display='flex';
+  p.style.position='fixed';
+  p.style.bottom='0';
+  p.style.left='0';
+  p.style.right='0';
+  p.style.height='78vh';
+  p.style.zIndex='200';
+  p.style.borderRadius='16px 16px 0 0';
+  p.style.boxShadow='0 -12px 48px rgba(0,0,0,0.6)';
+  p.style.flexDirection='column';
+  p.style.overflow='hidden';
+  o.style.display='block';
+  f.innerHTML='✕';
+  _panelOpen=true;
 }
 
-// Show FAB on mobile
-(function(){
-  function checkMobile(){
-    var fab=document.getElementById('mobileFab');
-    if(!fab)return;
-    if(window.innerWidth<=768){
-      fab.style.display='flex';
-    } else {
-      fab.style.display='none';
-      // Ensure panel is visible on desktop
-      var panel=document.getElementById('sidePanel');
-      if(panel)panel.style.display='';
-    }
+function closeMobilePanel(){
+  var p=document.getElementById('sidePanel');
+  var o=document.getElementById('mobileOverlay');
+  var f=document.getElementById('mobileFab');
+  if(!p||!o||!f)return;
+  p.removeAttribute('style');
+  o.style.display='none';
+  f.innerHTML='✎';
+  _panelOpen=false;
+}
+
+function toggleMobilePanel(){
+  if(_panelOpen){closeMobilePanel();}else{openMobilePanel();}
+}
+
+window._isMobile=function(){return window.innerWidth<=768;};
+
+// Show/hide FAB based on screen size
+function _updateFab(){
+  var f=document.getElementById('mobileFab');
+  if(!f)return;
+  if(window._isMobile()){
+    f.style.display='flex';
+  } else {
+    f.style.display='none';
+    // Reset panel on resize to desktop
+    if(_panelOpen)closeMobilePanel();
   }
-  window.addEventListener('resize',checkMobile);
-  document.addEventListener('DOMContentLoaded',checkMobile);
-  setTimeout(checkMobile,100);
-})();
+}
+window.addEventListener('resize',_updateFab);
+document.addEventListener('DOMContentLoaded',function(){
+  _updateFab();
+  // Attach close to panel close button via JS (more reliable than onclick)
+  var btn=document.querySelector('.panel-close-btn');
+  var overlay=document.getElementById('mobileOverlay');
+  if(btn)btn.addEventListener('click',function(e){e.stopPropagation();closeMobilePanel();});
+  if(overlay)overlay.addEventListener('click',closeMobilePanel);
+});
+setTimeout(_updateFab,200);
+
 </script>
 <script>
 // ── VISUAL STYLES ──────────────────────────────────────────────────────────────
@@ -1038,17 +1058,7 @@ function switchTab(el){
   document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
   document.getElementById('tab-'+el.dataset.tab).classList.add('active');
-  // On mobile, open panel automatically when tab is clicked
-  if(window.innerWidth<=768){
-    var panel=document.getElementById('sidePanel');
-    var overlay=document.getElementById('mobileOverlay');
-    var fab=document.getElementById('mobileFab');
-    if(panel&&overlay&&fab){
-      panel.style.cssText='display:flex!important;position:fixed;bottom:0;left:0;right:0;height:78vh;z-index:200;border-radius:16px 16px 0 0;box-shadow:0 -12px 48px rgba(0,0,0,0.6);flex-direction:column;overflow:hidden;background:var(--panel)';
-      overlay.style.cssText='display:block;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:199;backdrop-filter:blur(4px)';
-      fab.innerHTML='✕';
-    }
-  }
+  if(window._isMobile&&window._isMobile())openMobilePanel();
 }
 
 // ── TEXTO TAB ──────────────────────────────────────────────────────────────────
