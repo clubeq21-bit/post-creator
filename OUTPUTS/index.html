@@ -967,9 +967,7 @@ function buildTexto(){
     // Cores elementos
     const ecSec=document.createElement('div');ecSec.className='el-section';
     ecSec.innerHTML='<div class="el-section-title">Cor dos elementos</div>';
-    const posFields=[['headline','Headline'],['bloco1','Bloco 1'],['bloco2','Bloco 2']];
-    if(['dados','cenarios'].includes(slide.type))posFields.push(['extra','Extra']);
-    posFields.forEach(([elName,lbl])=>{
+    [['headline','Headline'],['bloco1','Bloco 1'],['bloco2','Bloco 2']].forEach(([elName,lbl])=>{
       const curV=(slide.el_colors&&slide.el_colors[elName])||'#C9A96E';
       const row=document.createElement('div');row.className='ec-row';
       row.innerHTML=`<div class="ec-sw" id="ecsw-${slide.num}-${elName}" style="background:${curV}"><input type="color" value="${curV}" data-num="${slide.num}" data-el="${elName}" oninput="onElColorChange(this)"></div><span class="ec-lbl">${lbl}</span><button class="btn-ec-reset" onclick="resetElColor(${slide.num},'${elName}')">Reset</button>`;
