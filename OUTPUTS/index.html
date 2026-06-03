@@ -467,6 +467,11 @@ let state = {
   colors:{bg:'#1A1510',text:'#F5EFE6',accent:'#C9A96E',accent2:'#C1622A',handle:'@glendonassis',copyright:'© COPYRIGHT 2025'},
   slides: TEMPLATES.explicativo.slides.map(makeSlide)
 };
+// Reset localStorage via URL param
+if(new URLSearchParams(location.search).get('reset')==='1'){
+  localStorage.removeItem('pc_state');
+  history.replaceState(null,'',location.pathname);
+}
 try {
   const saved=localStorage.getItem('pc_state');
   if(saved){
