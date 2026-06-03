@@ -519,17 +519,13 @@ function rMagCapa(s,c,fk){
   const hc=ec(s,'headline','var(--text)'),b1c=ec(s,'bloco1','var(--text)'),b2c=ec(s,'bloco2','var(--accent)');
   const imgH=s.image&&s.imagePos==='float'?`<img src="${s.image}" style="position:absolute;bottom:130px;right:40px;width:400px;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,0.6)">`:
              s.image&&s.imagePos==='background'?`<div style="position:absolute;inset:0;background:url('${s.image}') center/cover;opacity:0.15"></div>`:'';
-  return wrapMag(`${imgH}
-    <div style="position:absolute;top:${160+offY(s,'headline')}px;left:60px;right:60px">
-      <div class="acento"></div>
-      <h1 style="font-size:${hs}px;font-weight:900;line-height:0.95;letter-spacing:-2px;text-transform:uppercase;color:${hc}">${hlFn(s.headline,c.accent)}</h1>
-    </div>
-    <div style="position:absolute;top:${460+offY(s,'bloco1')}px;left:60px;right:60px">
-      <div style="width:100%;height:1px;background:rgba(201,169,110,0.2);margin-bottom:32px"></div>
-      <p style="font-size:${b1s}px;font-style:italic;line-height:1.5;color:${b1c};opacity:0.78">${parseInline(brk(s.bloco1),c.accent)}</p>
-    </div>
-    ${s.bloco2?`<div style="position:absolute;top:${600+offY(s,'bloco2')}px;left:60px;right:60px"><p style="font-size:${b2s}px;font-weight:700;line-height:1.5;color:${b2c}">${parseInline(brk(s.bloco2),c.accent)}</p></div>`:''}
-  `,c,s,fk);
+  return wrapMag(`${imgH}<div style="position:absolute;top:${160+offY(s,'headline')}px;left:60px;right:60px">
+    <div class="acento"></div>
+    <h1 style="font-size:${hs}px;font-weight:900;line-height:0.95;letter-spacing:-2px;text-transform:uppercase;color:${hc};transform:translateY(${offY(s,'headline')}px);display:block">${hlFn(s.headline,c.accent)}</h1>
+    <div style="width:100%;height:1px;background:rgba(201,169,110,0.2);margin:48px 0"></div>
+    <p style="font-size:${b1s}px;font-style:italic;line-height:1.5;color:${b1c};opacity:0.78;transform:translateY(${offY(s,'bloco1')}px);display:block">${parseInline(brk(s.bloco1),c.accent)}</p>
+    ${s.bloco2?`<p style="font-size:${b2s}px;font-weight:700;line-height:1.5;color:${b2c};margin-top:14px;transform:translateY(${offY(s,'bloco2')}px);display:block">${parseInline(brk(s.bloco2),c.accent)}</p>`:''}
+  </div>`,c,s,fk);
 }
 function rMagContexto(s,c,fk){
   const hs=sz(s,'headline',60),b1s=sz(s,'bloco1',31),b2s=sz(s,'bloco2',32);
@@ -554,7 +550,7 @@ function rMagDados(s,c,fk){
     <div style="position:absolute;top:${672+offY(s,'bloco2')}px;left:60px;right:60px">
     <div style="font-size:${b2s}px;font-weight:900;color:${b2c};line-height:0.9;letter-spacing:-3px">${num2}</div>
     <p style="margin-top:14px;font-size:${Math.max(22,b1s-3)}px;line-height:1.45;color:${b1c}">${brk(ctx2)}</p></div>
-    <div style="position:absolute;bottom:${118-offY(s,'extra')}px;left:60px;font-size:14px;color:rgba(154,136,112,0.65);letter-spacing:2px;text-transform:uppercase">${s.extra||''}</div>`,c,s,fk);
+    <div style="position:absolute;bottom:118px;left:60px;font-size:14px;color:rgba(154,136,112,0.65);letter-spacing:2px;text-transform:uppercase">${s.extra||''}</div>`,c,s,fk);
 }
 function rMagVirada(s,c,fk){
   const hs=sz(s,'headline',60),b1s=sz(s,'bloco1',33),b2s=sz(s,'bloco2',33);
@@ -566,9 +562,8 @@ function rMagVirada(s,c,fk){
     <div style="font-size:16px;font-style:italic;color:var(--accent);letter-spacing:1px;margin-bottom:22px">O que a maioria não percebe:</div>
     <h2 style="font-size:${hs}px;font-weight:900;line-height:1.0;letter-spacing:-1.5px;text-transform:uppercase">${hhtml}</h2></div>
     <div style="position:absolute;top:${600+offY(s,'bloco1')}px;left:60px;right:60px;border-top:1px solid rgba(201,169,110,0.2);padding-top:38px">
-    <p style="font-size:${b1s}px;line-height:1.5;color:${b1c};opacity:0.85;margin-bottom:24px">${parseInline(brk(s.bloco1),c.accent)}</p></div>
-    <div style="position:absolute;top:${780+offY(s,'bloco2')}px;left:60px;right:60px">
-    <p style="font-size:${b2s}px;line-height:1.5;color:${b2c};opacity:0.85">${parseInline(brk(s.bloco2),c.accent)}</p></div>`,c,s,fk);
+    <p style="font-size:${b1s}px;line-height:1.5;color:${b1c};opacity:0.85;margin-bottom:24px">${parseInline(brk(s.bloco1),c.accent)}</p>
+    <p style="font-size:${b2s}px;line-height:1.5;color:${b2c};opacity:0.85;transform:translateY(${offY(s,'bloco2')}px);display:block">${parseInline(brk(s.bloco2),c.accent)}</p></div>`,c,s,fk);
 }
 function rMagDoisCol(s,c,fk){
   const hs=sz(s,'headline',54),b1s=sz(s,'bloco1',25),b2s=sz(s,'bloco2',25);
@@ -579,11 +574,11 @@ function rMagDoisCol(s,c,fk){
   return wrapMag(`<div style="position:absolute;top:${148+offY(s,'headline')}px;left:60px;right:60px">
     <h2 style="font-size:${hs}px;font-weight:900;line-height:1.0;letter-spacing:-1px;text-transform:uppercase;color:${hc}">${hlFn(s.headline,c.accent)}</h2>
     <div style="width:100%;height:1px;background:rgba(201,169,110,0.2);margin:26px 0"></div></div>
-    <div style="position:absolute;top:${368+offY(s,'bloco1')}px;left:60px;right:${offY(s,'bloco2')>0?60-offY(s,'bloco2'):60}px;display:flex;gap:22px;bottom:115px">
+    <div style="position:absolute;top:${368+offY(s,'bloco1')}px;left:60px;right:60px;display:flex;gap:22px;bottom:115px">
     <div style="flex:1;padding:26px 24px;background:rgba(193,98,42,0.07);border:1px solid rgba(193,98,42,0.25);border-top:3px solid var(--accent2)">
       <div style="font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--accent2);margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,0.05)">${t1}</div>
       ${items(i1,'rgba(193,98,42,0.3)',b1s,b1c)}</div>
-    <div style="flex:1;padding:26px 24px;background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.22);border-top:3px solid var(--accent)">
+    <div style="flex:1;padding:26px 24px;background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.22);border-top:3px solid var(--accent);transform:translateY(${offY(s,'bloco2')}px)">
       <div style="font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--accent);margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,0.05)">${t2}</div>
       ${items(i2,'rgba(201,169,110,0.3)',b2s,b2c)}</div></div>`,c,s,fk);
 }
@@ -644,14 +639,12 @@ function rMagCta(s,c,fk){
   const b2=(s.bloco2||'').replace(/"([^"]+)"/g,`<strong style="color:var(--accent);font-size:${b2s+4}px">"$1"</strong>`);
   return wrapMag(`<div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,rgba(201,169,110,0.09) 0%,transparent 60%)"></div>
     <div style="position:absolute;top:${175+offY(s,'headline')}px;left:60px;right:60px">
-    <h2 style="font-size:${hs}px;font-weight:900;line-height:0.92;letter-spacing:-2px;text-transform:uppercase;color:${hc}">${hlFn(s.headline,c.accent)}</h2></div>
-    <div style="position:absolute;top:${460+offY(s,'bloco1')}px;left:60px;right:60px">
-    <p style="font-size:${b1s}px;font-style:italic;line-height:1.55;color:${b1c};opacity:0.7;max-width:820px">${parseInline(brk(s.bloco1),c.accent)}</p>
-    <div style="width:100%;height:1px;background:rgba(201,169,110,0.2);margin:40px 0"></div></div>
-    <div style="position:absolute;bottom:${120-offY(s,'bloco2')}px;left:60px;right:60px;background:rgba(201,169,110,0.08);border:1px solid rgba(201,169,110,0.3);padding:32px 38px">
+    <h2 style="font-size:${hs}px;font-weight:900;line-height:0.92;letter-spacing:-2px;text-transform:uppercase;color:${hc}">${hlFn(s.headline,c.accent)}</h2>
+    <p style="margin-top:30px;font-size:${b1s}px;font-style:italic;line-height:1.55;color:${b1c};opacity:0.7;max-width:820px;transform:translateY(${offY(s,'bloco1')}px);display:block">${parseInline(brk(s.bloco1),c.accent)}</p>
+    <div style="width:100%;height:1px;background:rgba(201,169,110,0.2);margin:40px 0"></div>
+    <div style="background:rgba(201,169,110,0.08);border:1px solid rgba(201,169,110,0.3);padding:32px 38px;transform:translateY(${offY(s,'bloco2')}px)">
     <div style="font-size:12px;letter-spacing:5px;text-transform:uppercase;color:var(--accent);margin-bottom:13px">Próximo passo</div>
-    <p style="font-size:${b2s}px;line-height:1.55;color:${b2c}">${b2}</p></div>
-  `,c,s,fk);
+    <p style="font-size:${b2s}px;line-height:1.55;color:${b2c}">${b2}</p></div></div>`,c,s,fk);
 }
 const MAG_RENDERERS={capa:rMagCapa,contexto:rMagContexto,dados:rMagDados,virada:rMagVirada,dois_col:rMagDoisCol,cenarios:rMagCenarios,sintese:rMagSintese,aplicacao:rMagAplicacao,cta:rMagCta};
 
