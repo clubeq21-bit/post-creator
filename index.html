@@ -327,7 +327,9 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 </div>
 <div class="toast" id="toast"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+
 // ── MOBILE ────────────────────────────────────────────────────────────────────
 var _mobileOpen=false;
 function _openPanel(){
@@ -348,7 +350,6 @@ document.addEventListener('DOMContentLoaded',function(){
   if(ov)ov.addEventListener('click',_closePanel);
 });
 
-<script>
 // ── VISUAL STYLES ──────────────────────────────────────────────────────────────
 const VISUAL_STYLES = {
   magazine: {
