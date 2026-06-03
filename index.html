@@ -343,73 +343,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 </div>
 <div class="toast" id="toast"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
-// ── MOBILE PANEL ──────────────────────────────────────────────────────────────
-var _panelOpen = false;
-
-function openMobilePanel(){
-  if(!window._isMobile())return;
-  var p=document.getElementById('sidePanel');
-  var o=document.getElementById('mobileOverlay');
-  var f=document.getElementById('mobileFab');
-  if(!p||!o||!f)return;
-  p.style.display='flex';
-  p.style.position='fixed';
-  p.style.bottom='0';
-  p.style.left='0';
-  p.style.right='0';
-  p.style.height='78vh';
-  p.style.zIndex='200';
-  p.style.borderRadius='16px 16px 0 0';
-  p.style.boxShadow='0 -12px 48px rgba(0,0,0,0.6)';
-  p.style.flexDirection='column';
-  p.style.overflow='hidden';
-  o.style.display='block';
-  f.innerHTML='✕';
-  _panelOpen=true;
-}
-
-function closeMobilePanel(){
-  var p=document.getElementById('sidePanel');
-  var o=document.getElementById('mobileOverlay');
-  var f=document.getElementById('mobileFab');
-  if(!p||!o||!f)return;
-  p.removeAttribute('style');
-  o.style.display='none';
-  f.innerHTML='✎';
-  _panelOpen=false;
-}
-
-function toggleMobilePanel(){
-  if(_panelOpen){closeMobilePanel();}else{openMobilePanel();}
-}
-
-window._isMobile=function(){return window.innerWidth<=768;};
-
-// Show/hide FAB based on screen size
-function _updateFab(){
-  var f=document.getElementById('mobileFab');
-  if(!f)return;
-  if(window._isMobile()){
-    f.style.display='flex';
-  } else {
-    f.style.display='none';
-    // Reset panel on resize to desktop
-    if(_panelOpen)closeMobilePanel();
-  }
-}
-window.addEventListener('resize',_updateFab);
-document.addEventListener('DOMContentLoaded',function(){
-  _updateFab();
-  // Attach close to panel close button via JS (more reliable than onclick)
-  var btn=document.querySelector('.panel-close-btn');
-  var overlay=document.getElementById('mobileOverlay');
-  if(btn)btn.addEventListener('click',function(e){e.stopPropagation();closeMobilePanel();});
-  if(overlay)overlay.addEventListener('click',closeMobilePanel);
-});
-setTimeout(_updateFab,200);
-
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
 // ── VISUAL STYLES ──────────────────────────────────────────────────────────────
 const VISUAL_STYLES = {
@@ -1325,8 +1259,70 @@ function init(){
   buildTexto();buildFontes();buildVisual();buildGrid();buildTmplGrid();updateCanvasInfo();
 }
 init();
+
+// ── MOBILE PANEL ──────────────────────────────────────────────────────────────
+var _panelOpen = false;
+
+function openMobilePanel(){
+  if(!window._isMobile())return;
+  var p=document.getElementById('sidePanel');
+  var o=document.getElementById('mobileOverlay');
+  var f=document.getElementById('mobileFab');
+  if(!p||!o||!f)return;
+  p.style.display='flex';
+  p.style.position='fixed';
+  p.style.bottom='0';
+  p.style.left='0';
+  p.style.right='0';
+  p.style.height='78vh';
+  p.style.zIndex='200';
+  p.style.borderRadius='16px 16px 0 0';
+  p.style.boxShadow='0 -12px 48px rgba(0,0,0,0.6)';
+  p.style.flexDirection='column';
+  p.style.overflow='hidden';
+  o.style.display='block';
+  f.innerHTML='✕';
+  _panelOpen=true;
+}
+
+function closeMobilePanel(){
+  var p=document.getElementById('sidePanel');
+  var o=document.getElementById('mobileOverlay');
+  var f=document.getElementById('mobileFab');
+  if(!p||!o||!f)return;
+  p.removeAttribute('style');
+  o.style.display='none';
+  f.innerHTML='✎';
+  _panelOpen=false;
+}
+
+function toggleMobilePanel(){
+  if(_panelOpen){closeMobilePanel();}else{openMobilePanel();}
+}
+
+window._isMobile=function(){return window.innerWidth<=768;};
+
+// Show/hide FAB based on screen size
+function _updateFab(){
+  var f=document.getElementById('mobileFab');
+  if(!f)return;
+  if(window._isMobile()){
+    f.style.display='flex';
+  } else {
+    f.style.display='none';
+    // Reset panel on resize to desktop
+    if(_panelOpen)closeMobilePanel();
+  }
+}
+window.addEventListener('resize',_updateFab);
+document.addEventListener('DOMContentLoaded',function(){
+  _updateFab();
+  // Attach close to panel close button via JS (more reliable than onclick)
+  var btn=document.querySelector('.panel-close-btn');
+  var overlay=document.getElementById('mobileOverlay');
+  if(btn)btn.addEventListener('click',function(e){e.stopPropagation();closeMobilePanel();});
+  if(overlay)overlay.addEventListener('click',closeMobilePanel);
+});
+setTimeout(_updateFab,200);
+
 </script>
-<div id="mobileOverlay" onclick="closeMobilePanel()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:199;backdrop-filter:blur(4px)"></div>
-<button id="mobileFab" onclick="toggleMobilePanel()" style="display:none;position:fixed;bottom:20px;right:16px;width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#C9A96E,#A07840);color:#0D1117;border:none;font-size:20px;align-items:center;justify-content:center;cursor:pointer;z-index:300;box-shadow:0 4px 20px rgba(201,169,110,0.45)">✎</button>
-</body>
-</html>
