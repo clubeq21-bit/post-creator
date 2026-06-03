@@ -346,17 +346,49 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
 // ── MOBILE PANEL ──────────────────────────────────────────────────────────────
 function toggleMobilePanel(){
-  const panel=document.getElementById('sidePanel');
-  const overlay=document.getElementById('mobileOverlay');
-  const open=panel.classList.toggle('mobile-open');
-  overlay.classList.toggle('show',open);
-  document.getElementById('mobileFab').textContent=open?'✕':'✎';
+  var panel=document.getElementById('sidePanel');
+  var overlay=document.getElementById('mobileOverlay');
+  var fab=document.getElementById('mobileFab');
+  if(!panel||!overlay||!fab)return;
+  var isOpen=panel.style.display==='flex';
+  if(isOpen){
+    panel.style.display='none';
+    overlay.style.display='none';
+    fab.innerHTML='✎';
+  } else {
+    panel.style.cssText='display:flex!important;position:fixed;bottom:0;left:0;right:0;height:78vh;z-index:200;border-radius:16px 16px 0 0;box-shadow:0 -12px 48px rgba(0,0,0,0.6);flex-direction:column;overflow:hidden;background:var(--panel)';
+    overlay.style.cssText='display:block;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:199;backdrop-filter:blur(4px)';
+    fab.innerHTML='✕';
+  }
 }
 function closeMobilePanel(){
-  document.getElementById('sidePanel').classList.remove('mobile-open');
-  document.getElementById('mobileOverlay').classList.remove('show');
-  document.getElementById('mobileFab').textContent='✎';
+  var panel=document.getElementById('sidePanel');
+  var overlay=document.getElementById('mobileOverlay');
+  var fab=document.getElementById('mobileFab');
+  if(!panel||!overlay||!fab)return;
+  panel.style.display='';
+  overlay.style.display='none';
+  fab.innerHTML='✎';
 }
+
+// Show FAB on mobile
+(function(){
+  function checkMobile(){
+    var fab=document.getElementById('mobileFab');
+    if(!fab)return;
+    if(window.innerWidth<=768){
+      fab.style.display='flex';
+    } else {
+      fab.style.display='none';
+      // Ensure panel is visible on desktop
+      var panel=document.getElementById('sidePanel');
+      if(panel)panel.style.display='';
+    }
+  }
+  window.addEventListener('resize',checkMobile);
+  document.addEventListener('DOMContentLoaded',checkMobile);
+  setTimeout(checkMobile,100);
+})();
 </script>
 <script>
 // ── VISUAL STYLES ──────────────────────────────────────────────────────────────
@@ -1008,11 +1040,14 @@ function switchTab(el){
   document.getElementById('tab-'+el.dataset.tab).classList.add('active');
   // On mobile, open panel automatically when tab is clicked
   if(window.innerWidth<=768){
-    const panel=document.getElementById('sidePanel');
-    const overlay=document.getElementById('mobileOverlay');
-    panel.classList.add('mobile-open');
-    overlay.classList.add('show');
-    document.getElementById('mobileFab').textContent='✕';
+    var panel=document.getElementById('sidePanel');
+    var overlay=document.getElementById('mobileOverlay');
+    var fab=document.getElementById('mobileFab');
+    if(panel&&overlay&&fab){
+      panel.style.cssText='display:flex!important;position:fixed;bottom:0;left:0;right:0;height:78vh;z-index:200;border-radius:16px 16px 0 0;box-shadow:0 -12px 48px rgba(0,0,0,0.6);flex-direction:column;overflow:hidden;background:var(--panel)';
+      overlay.style.cssText='display:block;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:199;backdrop-filter:blur(4px)';
+      fab.innerHTML='✕';
+    }
   }
 }
 
@@ -1281,7 +1316,7 @@ function init(){
 }
 init();
 </script>
-<div class="mobile-overlay" id="mobileOverlay" onclick="closeMobilePanel()"></div>
-<button class="mobile-fab" id="mobileFab" onclick="toggleMobilePanel()">✎</button>
+<div id="mobileOverlay" onclick="closeMobilePanel()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:199;backdrop-filter:blur(4px)"></div>
+<button id="mobileFab" onclick="toggleMobilePanel()" style="display:none;position:fixed;bottom:20px;right:16px;width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#C9A96E,#A07840);color:#0D1117;border:none;font-size:20px;align-items:center;justify-content:center;cursor:pointer;z-index:300;box-shadow:0 4px 20px rgba(201,169,110,0.45)">✎</button>
 </body>
 </html>
