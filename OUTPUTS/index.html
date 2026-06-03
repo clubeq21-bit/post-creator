@@ -241,10 +241,6 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 <div class="mobile-overlay" id="mobileOverlay"></div>
 <div class="panel" id="sidePanel">
   <div class="panel-handle"><button class="panel-handle-close" id="panelCloseBtn">&#10005;</button></div>
-  <div class="mobile-panel-header" id="mobilePanelHeader">
-    <div class="mobile-drag-handle"></div>
-    <button class="panel-close-btn" onclick="closeMobilePanel()">✕</button>
-  </div>
   <div class="tab-content active" id="tab-texto"></div>
   <div class="tab-content" id="tab-visual">
     <div style="padding:16px 12px 8px">
@@ -1183,6 +1179,7 @@ function selectFont(key){
 // ── GRID ───────────────────────────────────────────────────────────────────────
 function buildGrid(){
   const grid=document.getElementById('slidesGrid');grid.innerHTML='';
+  console.log('[PC] buildGrid start, slides:',state.slides.length,'grid:',grid?'ok':'null');
   state.slides.forEach(slide=>{
     const card=document.createElement('div');card.className='slide-card';card.id=`card-${slide.num}`;
     card.innerHTML=`<div class="thumb-wrap"><iframe srcdoc="" id="ifr-${slide.num}" scrolling="no" onload="scaleIfr(${slide.num})"></iframe></div>
@@ -1190,6 +1187,7 @@ function buildGrid(){
     card.onclick=()=>{switchTab(document.querySelector('[data-tab="texto"]'));const hd=document.getElementById(`hd-${slide.num}`);if(!hd.classList.contains('open'))toggleSec(slide.num);setTimeout(()=>document.getElementById(`sec-${slide.num}`).scrollIntoView({behavior:'smooth',block:'start'}),150);};
     grid.appendChild(card);reloadPreview(slide.num);
   });
+  console.log('[PC] buildGrid done, cards in DOM:',grid.children.length);
 }
 function scaleIfr(num){
   const wrap=document.querySelector(`#card-${num} .thumb-wrap`),ifr=document.getElementById(`ifr-${num}`);
@@ -1284,6 +1282,12 @@ function init(){
   try{buildVisual();}catch(e){console.error('buildVisual:',e);}
   try{
     buildGrid();
+    var g=document.getElementById('slidesGrid');
+    var info=document.getElementById('canvasTitle');
+    if(g&&info){
+      var cards=g.querySelectorAll('.slide-card');
+      info.textContent=(state.slides.length)+' slides | '+cards.length+' cards | grid:'+g.offsetWidth+'x'+g.offsetHeight;
+    }
   }catch(e){
     console.error('buildGrid error:',e);
     var g=document.getElementById('slidesGrid');
