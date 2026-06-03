@@ -359,6 +359,7 @@ function makeSlide(s) {
   if (!sl.el_colors) sl.el_colors = {headline:'',bloco1:'',bloco2:''};
   if (!sl.image) sl.image = '';
   if (!sl.imagePos) sl.imagePos = 'float';
+  if (!sl.offsets) sl.offsets = {headline:0,bloco1:0,bloco2:0};
   return sl;
 }
 let state = {
@@ -368,6 +369,7 @@ let state = {
 };
 try { const saved=localStorage.getItem('pc_state'); if(saved){const p=JSON.parse(saved);state=Object.assign(state,p);state.slides=state.slides.map(makeSlide);} } catch(e){}
 function saveState(){try{localStorage.setItem('pc_state',JSON.stringify(state));}catch(e){}}
+function offY(s,key){return(s.offsets&&s.offsets[key])||0;}
 
 // ── HELPERS ────────────────────────────────────────────────────────────────────
 function sz(s,el,def){return(s.sizes&&s.sizes[el])||def;}
@@ -417,7 +419,7 @@ function rMagCapa(s,c,fk){
   const hc=ec(s,'headline','var(--text)'),b1c=ec(s,'bloco1','var(--text)'),b2c=ec(s,'bloco2','var(--accent)');
   const imgH=s.image&&s.imagePos==='float'?`<img src="${s.image}" style="position:absolute;bottom:130px;right:40px;width:400px;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,0.6)">`:
              s.image&&s.imagePos==='background'?`<div style="position:absolute;inset:0;background:url('${s.image}') center/cover;opacity:0.15"></div>`:'';
-  return wrapMag(`${imgH}<div style="position:absolute;top:160px;left:60px;right:60px">
+  return wrapMag(`${imgH}<div style="position:absolute;top:${160+offY(s,'headline')}px;left:60px;right:60px">
     <div class="acento"></div>
     <h1 style="font-size:${hs}px;font-weight:900;line-height:0.95;letter-spacing:-2px;text-transform:uppercase;color:${hc}">${hlFn(s.headline,c.accent)}</h1>
     <div style="width:100%;height:1px;background:rgba(201,169,110,0.2);margin:48px 0"></div>
@@ -430,9 +432,9 @@ function rMagContexto(s,c,fk){
   const hc=ec(s,'headline','var(--text)'),b1c=ec(s,'bloco1','var(--text)'),b2c=ec(s,'bloco2','var(--accent)');
   const itens=(s.bloco1||'').split('\n').filter(i=>i.trim());
   const ihtml=itens.map(i=>`<div style="display:flex;align-items:flex-start;gap:16px;margin-bottom:22px"><div style="width:5px;height:5px;border-radius:50%;background:var(--accent);margin-top:15px;flex-shrink:0"></div><span style="font-size:${b1s}px;color:${b1c};opacity:0.8;line-height:1.35">${parseInline(i,c.accent)}</span></div>`).join('');
-  return wrapMag(`<div style="position:absolute;top:155px;left:60px;right:60px"><div class="acento"></div>
+  return wrapMag(`<div style="position:absolute;top:${155+offY(s,'headline')}px;left:60px;right:60px"><div class="acento"></div>
     <h2 style="font-size:${hs}px;font-weight:900;line-height:1.0;letter-spacing:-1.5px;text-transform:uppercase;color:${hc}">${hlFn(s.headline,c.accent)}</h2></div>
-    <div style="position:absolute;top:490px;left:60px;right:60px">${ihtml}</div>
+    <div style="position:absolute;top:${490+offY(s,'bloco1')}px;left:60px;right:60px">${ihtml}</div>
     <div style="position:absolute;bottom:128px;left:60px;right:60px;border-top:1px solid rgba(201,169,110,0.2);padding-top:32px">
     <p style="font-size:${b2s}px;font-weight:700;font-style:italic;line-height:1.4;color:${b2c}">${parseInline(brk(s.bloco2),c.accent)}</p></div>`,c,s,fk);
 }
@@ -662,7 +664,7 @@ function renderSerif(s,c,fk){
     // Large headline at bottom with accent bar
     const topText = s.tag ? `<div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;letter-spacing:3px;text-transform:uppercase;color:${s.image?'rgba(244,239,230,0.6)':handleColor};${z}">${s.tag}</div>` : '';
     mainContent = `
-      <div style="position:absolute;bottom:130px;left:70px;right:70px;text-align:center;z-index:3">
+      <div style="position:absolute;bottom:calc(130px - ${offY(s,'bloco1')}px);left:70px;right:70px;text-align:center;z-index:3">
         ${topText}
         <div style="width:50px;height:1px;background:${s.image?accent:accent};margin:18px auto"></div>
         <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:${hs}px;font-weight:400;line-height:1.05;color:${finalHeadline};margin-bottom:24px">${hHtml}</h1>
@@ -672,7 +674,7 @@ function renderSerif(s,c,fk){
   } else if(s.type==='dados'){
     // Large number centered
     mainContent = `
-      <div style="position:absolute;top:50%;left:70px;right:70px;transform:translateY(-52%);text-align:center;${z}">
+      <div style="position:absolute;top:calc(50% + ${offY(s,'headline')}px);left:70px;right:70px;transform:translateY(-52%);text-align:center;${z}">
         <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:${hs+40}px;font-weight:300;line-height:0.9;color:${finalHeadline}">${brk(s.headline||'')}</div>
         <div style="width:1px;height:60px;background:${lineColor};margin:30px auto"></div>
         <p style="font-family:'DM Sans',sans-serif;font-size:${b1s}px;font-weight:300;line-height:1.6;color:${finalBody};max-width:700px;margin:0 auto">${b1Html}</p>
@@ -682,7 +684,7 @@ function renderSerif(s,c,fk){
   } else if(s.type==='sintese'){
     // Quote-style centered layout
     mainContent = `
-      <div style="position:absolute;top:50%;left:70px;right:70px;transform:translateY(-50%);text-align:center;${z}">
+      <div style="position:absolute;top:calc(50% + ${offY(s,'headline')}px);left:70px;right:70px;transform:translateY(-50%);text-align:center;${z}">
         <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:${hs}px;font-weight:400;line-height:1.1;color:${finalHeadline};margin-bottom:40px">${hHtml}</div>
         <div style="width:1px;height:50px;background:${lineColor};margin:0 auto 40px"></div>
         <p style="font-family:'DM Sans',sans-serif;font-size:${b2s}px;font-weight:400;line-height:1.7;color:${finalBody};max-width:780px;margin:0 auto">${b1Html}</p>
@@ -691,7 +693,7 @@ function renderSerif(s,c,fk){
   } else if(s.type==='cta'){
     // CTA centered with box
     mainContent = `
-      <div style="position:absolute;top:50%;left:70px;right:70px;transform:translateY(-50%);text-align:center;${z}">
+      <div style="position:absolute;top:calc(50% + ${offY(s,'headline')}px);left:70px;right:70px;transform:translateY(-50%);text-align:center;${z}">
         <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:${hs+10}px;font-weight:400;line-height:1.05;color:${finalHeadline};margin-bottom:40px">${hHtml}</h2>
         <div style="width:1px;height:50px;background:${lineColor};margin:0 auto 40px"></div>
         <div style="border:1px solid ${lineColor};padding:36px 40px;text-align:center">
@@ -702,11 +704,11 @@ function renderSerif(s,c,fk){
   } else {
     // Default: headline top, divider, body bottom
     mainContent = `
-      <div style="position:absolute;top:140px;left:70px;right:70px;${z}">
+      <div style="position:absolute;top:calc(140px + ${offY(s,'headline')}px);left:70px;right:70px;${z}">
         ${s.tag?`<div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;letter-spacing:3px;text-transform:uppercase;color:${s.image?accent:accent};margin-bottom:28px">${s.tag}</div>`:''}
         <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:${hs}px;font-weight:400;line-height:1.08;color:${finalHeadline}">${hHtml}</h2>
       </div>
-      <div style="position:absolute;top:520px;left:70px;right:70px;${z}">
+      <div style="position:absolute;top:calc(520px + ${offY(s,'bloco1')}px);left:70px;right:70px;${z}">
         <div style="width:40px;height:1px;background:${lineColor};margin-bottom:36px"></div>
         <p style="font-family:'DM Sans',sans-serif;font-size:${b1s}px;font-weight:300;line-height:1.7;color:${finalBody};margin-bottom:24px">${b1Html}</p>
         ${b2Html?`<p style="font-family:'DM Sans',sans-serif;font-size:${b2s}px;font-weight:500;line-height:1.6;color:${s.image?accent:accent};font-style:italic">${b2Html}</p>`:''}
@@ -943,6 +945,16 @@ function buildTexto(){
       szSec.appendChild(row);
     });
     body.appendChild(szSec);
+    // Posição vertical
+    const posSec=document.createElement('div');posSec.className='el-section';
+    posSec.innerHTML='<div class="el-section-title">Posição vertical</div>';
+    [['headline','Headline'],['bloco1','Bloco 1'],['bloco2','Bloco 2']].forEach(([elName,lbl])=>{
+      const dv=(slide.offsets&&slide.offsets[elName])||0;
+      const row=document.createElement('div');row.className='sz-row';
+      row.innerHTML=`<span class="sz-lbl">${lbl}</span><input type="range" class="sz-slider" min="-150" max="150" value="${dv}" data-num="${slide.num}" data-el="${elName}" id="pos-${slide.num}-${elName}" oninput="onOffsetChange(this)"><span class="sz-val" id="pv-${slide.num}-${elName}">${dv>0?'+':''}${dv}px</span>`;
+      posSec.appendChild(row);
+    });
+    body.appendChild(posSec);
     // Cores elementos
     const ecSec=document.createElement('div');ecSec.className='el-section';
     ecSec.innerHTML='<div class="el-section-title">Cor dos elementos</div>';
@@ -965,6 +977,15 @@ function applySlide(num){
   const body=document.getElementById(`body-${num}`);const sl=state.slides.find(s=>s.num===num);
   body.querySelectorAll('[data-key]').forEach(el=>sl[el.dataset.key]=el.value);
   saveState();reloadPreview(num);toast(`✓ Texto aplicado ao slide ${num}`,'ok');
+}
+function onOffsetChange(el){
+  const num=parseInt(el.dataset.num),elName=el.dataset.el,val=parseInt(el.value);
+  const sl=state.slides.find(s=>s.num===num);if(!sl)return;
+  if(!sl.offsets)sl.offsets={headline:0,bloco1:0,bloco2:0};
+  sl.offsets[elName]=val;
+  const lbl=document.getElementById(`pv-${num}-${elName}`);
+  if(lbl)lbl.textContent=(val>0?'+':'')+val+'px';
+  debounce(()=>{saveState();reloadPreview(num);},150,`pos-${num}-${elName}`);
 }
 function onSizeChange(el){
   const num=parseInt(el.dataset.num),elName=el.dataset.el,val=parseInt(el.value);
