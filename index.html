@@ -168,33 +168,36 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
   .panel{
     display:none;
     position:fixed;bottom:0;left:0;right:0;
-    height:72vh;z-index:200;
+    height:78vh;z-index:200;
     border-radius:16px 16px 0 0;
     border-right:none;
-    border-top:1px solid var(--border2);
-    box-shadow:0 -8px 40px rgba(0,0,0,0.5);
-    animation:slideUp .25s ease;
+    border-top:none;
+    box-shadow:0 -12px 48px rgba(0,0,0,0.6);
+    animation:slideUp .28s cubic-bezier(.32,.72,0,1);
+    overflow:hidden;
   }
   .panel.mobile-open{display:flex}
   @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 
-  /* Drag handle at top of panel */
-  .panel::before{
-    content:'';display:block;
-    width:36px;height:4px;
-    background:rgba(255,255,255,0.15);
-    border-radius:2px;
-    margin:10px auto 0;
-    flex-shrink:0;
+  /* Panel header with drag handle + close btn */
+  .mobile-panel-header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 16px;height:44px;flex-shrink:0;
+    background:var(--panel);border-bottom:1px solid var(--border2);
+  }
+  .mobile-drag-handle{
+    width:36px;height:4px;background:rgba(255,255,255,0.15);
+    border-radius:2px;position:absolute;left:50%;transform:translateX(-50%);top:10px;
   }
 
-  /* Close button inside panel */
+  /* Close button */
   .panel-close-btn{
-    display:flex;position:absolute;top:10px;right:14px;
-    background:transparent;border:none;color:var(--muted);
-    font-size:20px;cursor:pointer;z-index:10;
-    width:28px;height:28px;align-items:center;justify-content:center;
+    display:flex;background:rgba(255,255,255,0.06);border:1px solid var(--border2);
+    color:var(--muted);font-size:14px;cursor:pointer;z-index:10;
+    width:30px;height:30px;align-items:center;justify-content:center;
+    border-radius:50%;margin-left:auto;transition:all .15s;
   }
+  .panel-close-btn:active{background:rgba(255,255,255,0.12);color:var(--text)}
 
   /* Canvas: full width */
   .canvas{grid-column:1/-1;padding:12px 10px}
@@ -219,6 +222,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
   .mobile-fab{display:none!important}
   .mobile-overlay{display:none!important}
   .panel-close-btn{display:none!important}
+  .mobile-panel-header{display:none!important}
 }
 </style>
 </head>
@@ -251,7 +255,10 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 <div class="mobile-overlay" id="mobileOverlay" onclick="closeMobilePanel()"></div>
 <button class="mobile-fab" id="mobileFab" onclick="toggleMobilePanel()">✎</button>
 <div class="panel" id="sidePanel">
-  <button class="panel-close-btn" onclick="closeMobilePanel()">✕</button>
+  <div class="mobile-panel-header" id="mobilePanelHeader">
+    <div class="mobile-drag-handle"></div>
+    <button class="panel-close-btn" onclick="closeMobilePanel()">✕</button>
+  </div>
   <div class="tab-content active" id="tab-texto"></div>
   <div class="tab-content" id="tab-visual">
     <div style="padding:16px 12px 8px">
