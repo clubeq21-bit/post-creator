@@ -640,7 +640,7 @@ function renderSerif(s,c,fk){
     photoBg = `<div style="position:absolute;inset:0;background:url('${s.image}') center/cover no-repeat;filter:grayscale(30%);z-index:0"></div>`;
     overlay = `<div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.55) 55%,rgba(0,0,0,0.82) 100%);z-index:1"></div>`;
   }
-  const z = s.image ? 'position:relative;z-index:2' : '';
+  const z = s.image ? 'z-index:2' : '';
   const textOnPhoto = s.image ? '#F4EFE6' : null;
   const finalHeadline = textOnPhoto || headlineColor;
   const finalBody = textOnPhoto ? 'rgba(244,239,230,0.88)' : bodyColor;
@@ -662,9 +662,9 @@ function renderSerif(s,c,fk){
     // Large headline at bottom with accent bar
     const topText = s.tag ? `<div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;letter-spacing:3px;text-transform:uppercase;color:${s.image?'rgba(244,239,230,0.6)':handleColor};${z}">${s.tag}</div>` : '';
     mainContent = `
-      <div style="position:absolute;bottom:120px;left:70px;right:70px;${z}">
+      <div style="position:absolute;bottom:130px;left:70px;right:70px;text-align:center;z-index:3">
         ${topText}
-        <div style="width:50px;height:1px;background:${s.image?accent:accent};margin:18px 0"></div>
+        <div style="width:50px;height:1px;background:${s.image?accent:accent};margin:18px auto"></div>
         <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:${hs}px;font-weight:400;line-height:1.05;color:${finalHeadline};margin-bottom:24px">${hHtml}</h1>
         ${b1Html?`<p style="font-family:'DM Sans',sans-serif;font-size:${b1s}px;font-weight:300;line-height:1.6;color:${finalBody}">${b1Html}</p>`:''}
         ${b2Html?`<p style="font-family:'DM Sans',sans-serif;font-size:${b2s}px;font-weight:400;line-height:1.5;color:${s.image?accent:accent};margin-top:16px">${b2Html}</p>`:''}
@@ -936,7 +936,7 @@ function buildTexto(){
     // Tamanhos
     const szSec=document.createElement('div');szSec.className='el-section';
     szSec.innerHTML='<div class="el-section-title">Tamanho dos elementos</div>';
-    [['headline','Headline',24,160],['bloco1','Bloco 1',14,72],['bloco2','Bloco 2',14,180]].forEach(([elName,lbl,min,max])=>{
+    [['headline','Headline',14,160],['bloco1','Bloco 1',14,160],['bloco2','Bloco 2',14,160]].forEach(([elName,lbl,min,max])=>{
       const dv=(slide.sizes&&slide.sizes[elName])||40;
       const row=document.createElement('div');row.className='sz-row';
       row.innerHTML=`<span class="sz-lbl">${lbl}</span><input type="range" class="sz-slider" min="${min}" max="${max}" value="${dv}" data-num="${slide.num}" data-el="${elName}" id="sz-${slide.num}-${elName}" oninput="onSizeChange(this)"><span class="sz-val" id="sv-${slide.num}-${elName}">${dv}px</span>`;
