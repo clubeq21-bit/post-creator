@@ -73,7 +73,9 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .cor-sw input[type=color]{position:absolute;inset:-4px;opacity:0;cursor:pointer;width:120%;height:120%}
 .cor-nm{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}.cor-hx{font-size:13px;color:var(--text);font-family:monospace;margin-top:2px}
 .btn-ac{background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--gold);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 9px;cursor:pointer;white-space:nowrap;transition:all .15s}
-.btn-save-base{background:rgba(63,185,80,0.1);border:1px solid rgba(63,185,80,0.25);border-radius:4px;color:var(--green);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 10px;cursor:pointer;white-space:nowrap;transition:all .15s;display:none;margin-top:8px;width:100%}
+.btn-share{background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.3);border-radius:var(--radius);color:#60A5FA;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:6px 12px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:6px}
+.btn-share:hover{background:rgba(59,130,246,0.2)}
+.btn-share{background:rgba(63,185,80,0.1);border:1px solid rgba(63,185,80,0.25);border-radius:4px;color:var(--green);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 10px;cursor:pointer;white-space:nowrap;transition:all .15s;display:none;margin-top:8px;width:100%}
 .btn-save-base:hover{background:rgba(63,185,80,0.2)}
 .btn-save-base.visible{display:block}
 .base-saved-badge{font-size:9px;color:var(--green);letter-spacing:1px;opacity:0.7;margin-top:4px;display:none;text-align:center}
@@ -232,6 +234,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
     <button class="btn-colar" onclick="openPasteModal()">📋 Colar Carrossel</button>
     <button class="btn-template" onclick="openModal()">⊞ Template</button>
     <input class="nome-input" id="nomeInput" placeholder="nome-do-carrossel" value="meu-carrossel">
+    <button class="btn-share" onclick="compartilharURL()" title="Copiar link com configuração">🔗</button>
     <button class="btn-export" id="btnExport" onclick="exportar()">↓ Exportar!</button>
   </div>
 </div>
@@ -249,7 +252,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
   <div class="tab-content" id="tab-fontes">
     <div style="padding:16px 12px 8px">
       <div class="sec-title">Família Tipográfica</div>
-      <div style="font-size:11px;color:var(--muted);margin-bottom:8px;line-height:1.6">Aplica nos estilos Magazine Dark e Case Clean. Impact Bold usa Inter fixo.</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:8px;line-height:1.6">Aplica nos estilos Magazine Dark e Case Clean. Impact Bold e Sans Statement usam Inter fixo.</div>
       <div id="fontCards"></div>
     </div>
   </div>
@@ -267,6 +270,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
       <div class="pal-row" onclick="aplicarPaleta('#0A0A0A','#FFFFFF','#FFFFFF','#AAAAAA')"><div class="psw" style="background:#0A0A0A"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#FFFFFF"></div><div class="plbl">Impact Bold</div></div>
       <div class="pal-row" onclick="aplicarPaleta('#F5EFE6','#1A1510','#C1622A','#A07840')"><div class="psw" style="background:#F5EFE6"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#C1622A"></div><div class="plbl">Editorial Claro</div></div>
       <div class="pal-row" onclick="aplicarPaleta('#1B1A2E','#E8E6F0','#7C6FCD','#E85D75')"><div class="psw" style="background:#1B1A2E"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#7C6FCD"></div><div class="plbl">Roxo Premium</div></div>
+      <div class="pal-row" onclick="aplicarPaleta('#EAEAE4','#1A1A1A','#AAAAAA','#888888')"><div class="psw" style="background:#EAEAE4"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#1A1A1A"></div><div class="plbl">Sans Statement</div></div>
     </div>
   </div>
   <div class="tab-content" id="tab-ajustes">
@@ -385,6 +389,12 @@ const VISUAL_STYLES = {
     desc: 'Cormorant Garamond, fundo areia e marrom alternados. Tom editorial sofisticado.',
     bg: '#F4EFE6', text: '#1A1209', accent: '#C9A961', accent2: '#7A5230',
     preview: {bg:'#F4EFE6', accent:'#7A5230', label:'Aa'}
+  },
+  sans: {
+    label: 'Sans Statement',
+    desc: 'Inter Bold enorme, fundo cinza quente, texto em dois tons: preto + cinza.',
+    bg: '#EAEAE4', text: '#1A1A1A', accent: '#AAAAAA', accent2: '#888888',
+    preview: {bg:'#EAEAE4', accent:'#1A1A1A', label:'Aa'}
   }
 };
 
@@ -854,12 +864,45 @@ function renderSerif(s,c,fk){
   </div>`;
 }
 
+// ── SANS STATEMENT RENDERER ────────────────────────────────────────────────────
+function renderSans(s,c){
+  const total=state.slides.length,counter=`${s.num}/${total}`;
+  const hs=sz(s,'headline',96),b1s=sz(s,'bloco1',44),b2s=sz(s,'bloco2',96);
+  const bg=c.bg||'#EAEAE4';
+  const darkText=c.text||'#1A1A1A';
+  const grayText=c.accent||'#AAAAAA';
+
+  // HEADLINE in dark, BLOCO 2 in gray (same large size — the "two-tone" effect)
+  const hHtml=parseInline(brk(s.headline||''),grayText);
+  const b1Html=s.bloco1?parseInline(brk(s.bloco1),grayText):'';
+  const b2Html=s.bloco2?parseInline(brk(s.bloco2),grayText):'';
+
+  const topOff=offY(s,'headline');
+  const b1Off=offY(s,'bloco1');
+  const b2Off=offY(s,'bloco2');
+
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${bg};font-family:'Inter',sans-serif}</style>
+  </head><body>
+  <div style="width:1080px;height:1350px;background:${bg};position:relative;overflow:hidden">
+    <div style="position:absolute;top:48px;right:50px;background:rgba(50,50,50,0.75);border-radius:40px;padding:10px 22px;font-size:22px;color:rgba(255,255,255,0.85);font-weight:600;font-family:'Inter',sans-serif">${counter}</div>
+    <div style="position:absolute;top:calc(50% + ${topOff}px);left:70px;right:70px;transform:translateY(-50%)">
+      <h1 style="font-size:${hs}px;font-weight:700;line-height:1.05;color:${ec(s,'headline',darkText)};font-family:'Inter',sans-serif">${hHtml}</h1>
+      ${b1Html?`<p style="font-size:${b1s}px;font-weight:700;line-height:1.2;color:${ec(s,'bloco1',darkText)};font-family:'Inter',sans-serif;margin-top:28px;transform:translateY(${b1Off}px);display:block">${b1Html}</p>`:''}
+      ${b2Html?`<p style="font-size:${b2s}px;font-weight:700;line-height:1.05;color:${ec(s,'bloco2',grayText)};font-family:'Inter',sans-serif;margin-top:0;transform:translateY(${b2Off}px);display:block">${b2Html}</p>`:''}
+    </div>
+    <div style="position:absolute;bottom:52px;left:70px;font-size:18px;color:#555555;font-family:'Inter',sans-serif;font-weight:400;letter-spacing:0">${c.handle||'@glendonassis'}</div>
+  </div>`;
+}
+
 // ── MAIN RENDERER DISPATCHER ───────────────────────────────────────────────────
 function renderSlide(slide,colors,fontKey){
   const vs=state.visual||'magazine';
   if(vs==='clean') return renderClean(slide,colors,fontKey);
   if(vs==='impact') return renderImpact(slide,colors,fontKey);
   if(vs==='serif') return renderSerif(slide,colors,fontKey);
+  if(vs==='sans') return renderSans(slide,colors,fontKey);
   const fn=MAG_RENDERERS[slide.type]||rMagCapa;
   return fn(slide,colors,fontKey);
 }
@@ -937,13 +980,14 @@ function parseCarrossel(raw) {
   let detectedVisual = null, detectedTemplate = null;
 
   // Detectar visual
-  const vm = raw.match(/MODELO VISUAL[^:]*:\s*\*?\*?(MAGAZINE DARK|CASE CLEAN|IMPACT BOLD|EDITORIAL SERIF)\*?\*?/i);
+  const vm = raw.match(/MODELO VISUAL[^:]*:\s*\*?\*?(MAGAZINE DARK|CASE CLEAN|IMPACT BOLD|EDITORIAL SERIF|SANS STATEMENT)\*?\*?/i);
   if (vm) {
     const v = vm[1].toUpperCase();
     if (v.includes('MAGAZINE')) detectedVisual = 'magazine';
     else if (v.includes('CLEAN')) detectedVisual = 'clean';
     else if (v.includes('IMPACT')) detectedVisual = 'impact';
     else if (v.includes('EDITORIAL') || v.includes('SERIF')) detectedVisual = 'serif';
+    else if (v.includes('SANS')) detectedVisual = 'sans';
   }
 
   // Detectar formato narrativo
@@ -1331,11 +1375,55 @@ async function exportar(){
   btn.disabled=false;renderDiv.innerHTML='';
 }
 
+// ── COMPARTILHAR VIA URL ──────────────────────────────────────────────────────
+function compartilharURL(){
+  try{
+    // Clone state without images (too large for URL)
+    const shareState={
+      visual:state.visual,
+      template:state.template,
+      font:state.font,
+      nome:state.nome,
+      colors:state.colors,
+      slides:state.slides.map(s=>{
+        const c=Object.assign({},s);
+        delete c.image; // remove imagens para URL curta
+        return c;
+      })
+    };
+    const encoded=btoa(unescape(encodeURIComponent(JSON.stringify(shareState))));
+    const url=location.origin+location.pathname+'?c='+encoded;
+    navigator.clipboard.writeText(url).then(()=>{
+      toast('✓ Link copiado! Abra em qualquer dispositivo.','ok');
+    }).catch(()=>{
+      // Fallback: show URL in prompt
+      prompt('Copie este link:',url);
+    });
+  }catch(e){toast('Erro ao gerar link','err');}
+}
+function loadFromURL(){
+  try{
+    const params=new URLSearchParams(location.search);
+    const encoded=params.get('c');
+    if(!encoded)return;
+    const parsed=JSON.parse(decodeURIComponent(escape(atob(encoded))));
+    if(parsed.slides&&parsed.slides.length>0){
+      Object.assign(state,parsed);
+      state.slides=state.slides.map(makeSlide);
+      saveState();
+      // Clean URL without reloading
+      history.replaceState(null,'',location.pathname);
+      toast('✓ Configuração carregada do link!','ok');
+    }
+  }catch(e){} // silently ignore invalid URLs
+}
+
 // ── TOAST ──────────────────────────────────────────────────────────────────────
 function toast(msg,type){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+type;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),4000);}
 
 // ── INIT ───────────────────────────────────────────────────────────────────────
 function init(){
+  loadFromURL();
   document.getElementById('nomeInput').value=state.nome||'meu-carrossel';
   document.getElementById('handleInput').value=state.colors.handle||'@glendonassis';
   document.getElementById('copyrightInput').value=state.colors.copyright||'© COPYRIGHT 2025';
