@@ -75,7 +75,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .btn-ac{background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--gold);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 9px;cursor:pointer;white-space:nowrap;transition:all .15s}
 .btn-share{background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.3);border-radius:var(--radius);color:#60A5FA;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:6px 12px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:6px}
 .btn-share:hover{background:rgba(59,130,246,0.2)}
-.btn-share{background:rgba(63,185,80,0.1);border:1px solid rgba(63,185,80,0.25);border-radius:4px;color:var(--green);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 10px;cursor:pointer;white-space:nowrap;transition:all .15s;display:none;margin-top:8px;width:100%}
+.btn-save-base{background:rgba(63,185,80,0.1);border:1px solid rgba(63,185,80,0.25);border-radius:4px;color:var(--green);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 10px;cursor:pointer;white-space:nowrap;transition:all .15s;display:none;margin-top:8px;width:100%}
 .btn-save-base:hover{background:rgba(63,185,80,0.2)}
 .btn-save-base.visible{display:block}
 .base-saved-badge{font-size:9px;color:var(--green);letter-spacing:1px;opacity:0.7;margin-top:4px;display:none;text-align:center}
@@ -1403,7 +1403,7 @@ function compartilharURL(){
         return c;
       })
     };
-    const encoded=btoa(unescape(encodeURIComponent(JSON.stringify(shareState))));
+    const encoded=encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(shareState)))));
     const url=location.origin+location.pathname+'?c='+encoded;
     navigator.clipboard.writeText(url).then(()=>{
       toast('✓ Link copiado! Abra em qualquer dispositivo.','ok');
