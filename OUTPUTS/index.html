@@ -701,10 +701,10 @@ function renderClean(s,c,fk){
   <div style="width:1080px;height:1350px;background:${c.bg};position:relative;overflow:hidden">
     ${imgHtml}
     <div style="position:absolute;top:48px;right:50px;background:rgba(255,255,255,0.1);border-radius:40px;padding:8px 20px;font-size:22px;color:rgba(255,255,255,0.6);font-weight:600;font-family:'Inter',sans-serif;${s.image&&s.imagePos==='background'?'z-index:3':''}">${counter}</div>
-    <div style="position:absolute;top:50%;left:80px;right:${s.image&&s.imagePos==='float'?'460':'80'}px;transform:translateY(-52%);${s.image&&s.imagePos==='background'?'z-index:3':''}">
-      <h1 style="font-size:${hs}px;font-weight:800;line-height:1.1;color:${hc};margin-bottom:48px;font-family:'Inter',sans-serif">${hHtml}</h1>
+    <div style="position:absolute;top:calc(50% + ${offY(s,'headline')}px);left:80px;right:${s.image&&s.imagePos==='float'?'460':'80'}px;transform:translateY(-52%);${s.image&&s.imagePos==='background'?'z-index:3':''}">
+      <h1 style="font-size:${hs}px;font-weight:800;line-height:1.1;color:${hc};margin-bottom:${48+offY(s,'bloco1')}px;font-family:'Inter',sans-serif">${hHtml}</h1>
       ${b1Html?`<p style="font-size:${b1s}px;font-weight:400;line-height:1.55;color:${b1c};font-family:'Inter',sans-serif">${b1Html}</p>`:''}
-      ${b2Html?`<p style="font-size:${b2s}px;font-weight:600;line-height:1.5;color:${b2c};margin-top:32px;font-family:'Inter',sans-serif">${b2Html}</p>`:''}
+      ${b2Html?`<p style="font-size:${b2s}px;font-weight:600;line-height:1.5;color:${b2c};margin-top:${32+offY(s,'bloco2')}px;font-family:'Inter',sans-serif">${b2Html}</p>`:''}
     </div>
     <div style="position:absolute;bottom:50px;left:0;right:0;text-align:center;font-size:18px;color:rgba(255,255,255,0.35);font-family:'Inter',sans-serif;${s.image&&s.imagePos==='background'?'z-index:3':''}">${c.handle||'@glendonassis'}</div>
   </div>`;
@@ -732,10 +732,10 @@ function renderImpact(s,c,fk){
   <div style="width:1080px;height:1350px;background:${s.image?'transparent':bg};position:relative;overflow:hidden">
     ${imgHtml}
     <div style="position:absolute;top:48px;right:50px;background:rgba(255,255,255,0.12);border-radius:50px;padding:10px 22px;font-size:22px;color:rgba(255,255,255,0.7);font-weight:700;font-family:'Inter',sans-serif;z-index:2">${counter}</div>
-    <div style="position:absolute;top:50%;left:70px;right:70px;transform:translateY(-50%);z-index:2">
-      <h1 style="font-size:${hs}px;font-weight:900;line-height:1.05;color:${hc};font-family:'Inter',sans-serif;margin-bottom:${b1Html?'52px':'0'}">${hHtml}</h1>
+    <div style="position:absolute;top:calc(50% + ${offY(s,'headline')}px);left:70px;right:70px;transform:translateY(-50%);z-index:2">
+      <h1 style="font-size:${hs}px;font-weight:900;line-height:1.05;color:${hc};font-family:'Inter',sans-serif;margin-bottom:${b1Html?(52+offY(s,'bloco1'))+'px':'0'}">${hHtml}</h1>
       ${b1Html?`<p style="font-size:${b1s}px;font-weight:400;line-height:1.5;color:${b1c};font-family:'Inter',sans-serif">${b1Html}</p>`:''}
-      ${b2Html?`<p style="font-size:${b2s}px;font-weight:700;line-height:1.4;color:${b2c};margin-top:32px;font-family:'Inter',sans-serif">${b2Html}</p>`:''}
+      ${b2Html?`<p style="font-size:${b2s}px;font-weight:700;line-height:1.4;color:${b2c};margin-top:${32+offY(s,'bloco2')}px;font-family:'Inter',sans-serif">${b2Html}</p>`:''}
     </div>
     <div style="position:absolute;bottom:0;left:0;right:0;height:68px;border-top:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;padding:0 50px;z-index:2">
       <span style="font-size:14px;color:rgba(255,255,255,0.3);font-family:'Inter',sans-serif;letter-spacing:1px;text-transform:uppercase">${copyright}</span>
@@ -893,8 +893,8 @@ function renderSans(s,c){
     <div style="position:absolute;top:48px;right:50px;background:rgba(50,50,50,0.75);border-radius:40px;padding:10px 22px;font-size:22px;color:rgba(255,255,255,0.85);font-weight:600;font-family:'Inter',sans-serif">${counter}</div>
     <div style="position:absolute;top:calc(50% + ${topOff}px);left:70px;right:70px;transform:translateY(-50%)">
       <h1 style="font-size:${hs}px;font-weight:700;line-height:1.05;color:${ec(s,'headline',darkText)};font-family:'Inter',sans-serif">${hHtml}</h1>
-      ${b1Html?`<p style="font-size:${b1s}px;font-weight:700;line-height:1.2;color:${ec(s,'bloco1',darkText)};font-family:'Inter',sans-serif;margin-top:28px;transform:translateY(${b1Off}px);display:block">${b1Html}</p>`:''}
-      ${b2Html?`<p style="font-size:${b2s}px;font-weight:700;line-height:1.05;color:${ec(s,'bloco2',grayText)};font-family:'Inter',sans-serif;margin-top:0;transform:translateY(${b2Off}px);display:block">${b2Html}</p>`:''}
+      ${b1Html?`<p style="font-size:${b1s}px;font-weight:700;line-height:1.2;color:${ec(s,'bloco1',darkText)};font-family:'Inter',sans-serif;margin-top:${28+b1Off}px">${b1Html}</p>`:''}
+      ${b2Html?`<p style="font-size:${b2s}px;font-weight:700;line-height:1.05;color:${ec(s,'bloco2',grayText)};font-family:'Inter',sans-serif;margin-top:${b2Off}px">${b2Html}</p>`:''}
     </div>
     ${extraHtml}
     <div style="position:absolute;bottom:52px;left:70px;font-size:18px;color:#555555;font-family:'Inter',sans-serif;font-weight:400;letter-spacing:0">${c.handle||'@glendonassis'}</div>
