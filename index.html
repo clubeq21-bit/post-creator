@@ -881,17 +881,22 @@ function renderSans(s,c){
   const b1Off=offY(s,'bloco1');
   const b2Off=offY(s,'bloco2');
 
+  const tagHtml  = s.tag   ? `<div style="position:absolute;top:60px;left:70px;font-size:13px;font-weight:500;letter-spacing:5px;text-transform:uppercase;color:#999999;font-family:'Inter',sans-serif">${s.tag}</div>` : '';
+  const extraHtml = s.extra ? `<div style="position:absolute;bottom:90px;left:70px;right:70px;font-size:16px;font-weight:400;color:#999999;font-family:'Inter',sans-serif;letter-spacing:1px">${s.extra}</div>` : '';
+
   return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${bg};font-family:'Inter',sans-serif}</style>
   </head><body>
   <div style="width:1080px;height:1350px;background:${bg};position:relative;overflow:hidden">
+    ${tagHtml}
     <div style="position:absolute;top:48px;right:50px;background:rgba(50,50,50,0.75);border-radius:40px;padding:10px 22px;font-size:22px;color:rgba(255,255,255,0.85);font-weight:600;font-family:'Inter',sans-serif">${counter}</div>
     <div style="position:absolute;top:calc(50% + ${topOff}px);left:70px;right:70px;transform:translateY(-50%)">
       <h1 style="font-size:${hs}px;font-weight:700;line-height:1.05;color:${ec(s,'headline',darkText)};font-family:'Inter',sans-serif">${hHtml}</h1>
       ${b1Html?`<p style="font-size:${b1s}px;font-weight:700;line-height:1.2;color:${ec(s,'bloco1',darkText)};font-family:'Inter',sans-serif;margin-top:28px;transform:translateY(${b1Off}px);display:block">${b1Html}</p>`:''}
       ${b2Html?`<p style="font-size:${b2s}px;font-weight:700;line-height:1.05;color:${ec(s,'bloco2',grayText)};font-family:'Inter',sans-serif;margin-top:0;transform:translateY(${b2Off}px);display:block">${b2Html}</p>`:''}
     </div>
+    ${extraHtml}
     <div style="position:absolute;bottom:52px;left:70px;font-size:18px;color:#555555;font-family:'Inter',sans-serif;font-weight:400;letter-spacing:0">${c.handle||'@glendonassis'}</div>
   </div>`;
 }
