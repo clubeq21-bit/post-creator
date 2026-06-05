@@ -209,6 +209,50 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
   .panel-handle{display:none}
   .mobile-overlay{display:none!important}
 }
+
+
+/* ── MOBILE SLIDE EDITOR — CANVA STYLE ─────────────────────────────────────── */
+.mobile-slide-editor{display:none}
+.mobile-edit-pill{display:none}
+@media(max-width:768px){
+  body.mobile-editor-open .canvas{padding-bottom:46vh!important}
+  body.mobile-editor-open .slide-card.mobile-selected{border-color:var(--gold);box-shadow:0 0 0 2px rgba(201,169,110,0.22)}
+  .mobile-slide-editor{
+    display:none;position:fixed;left:0;right:0;bottom:0;height:44vh;z-index:260;
+    background:var(--panel);border-top:1px solid var(--border2);border-radius:16px 16px 0 0;
+    box-shadow:0 -12px 40px rgba(0,0,0,0.65);overflow:hidden;flex-direction:column;
+  }
+  .mobile-slide-editor.open{display:flex}
+  .mobile-editor-header{height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-bottom:1px solid var(--border2);flex-shrink:0}
+  .mobile-editor-title{font-size:12px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;color:var(--text)}
+  .mobile-editor-sub{font-size:10px;color:var(--muted);margin-top:2px;letter-spacing:.8px;text-transform:uppercase}
+  .mobile-editor-actions{display:flex;align-items:center;gap:8px}
+  .mobile-save-current{height:30px;border-radius:999px;border:1px solid rgba(201,169,110,.35);background:rgba(201,169,110,.10);color:var(--gold);font-size:10px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;padding:0 10px;cursor:pointer;white-space:nowrap}
+  .mobile-save-current:disabled{opacity:.55;cursor:not-allowed}
+  .mobile-editor-close{width:30px;height:30px;border-radius:50%;border:1px solid var(--border2);background:rgba(255,255,255,.04);color:var(--muted);font-size:16px;cursor:pointer}
+  .mobile-edit-tabs{display:flex;gap:6px;padding:8px 10px;border-bottom:1px solid var(--border2);overflow-x:auto;flex-shrink:0;scrollbar-width:none}
+  .mobile-edit-tabs::-webkit-scrollbar{display:none}
+  .mobile-edit-tab{border:1px solid var(--border2);background:rgba(255,255,255,.035);color:var(--muted);border-radius:999px;padding:7px 11px;font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;white-space:nowrap;cursor:pointer}
+  .mobile-edit-tab.active{color:var(--gold);border-color:rgba(201,169,110,.4);background:rgba(201,169,110,.08)}
+  .mobile-editor-body{flex:1;overflow-y:auto;padding:12px 14px 18px;-webkit-overflow-scrolling:touch}
+  .mobile-control{margin-bottom:14px}
+  .mobile-control-label{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;font-size:11px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted)}
+  .mobile-control-value{font-family:monospace;color:var(--gold);font-size:11px;letter-spacing:0}
+  .mobile-range-row{display:flex;align-items:center;gap:10px}
+  .mobile-range{flex:1;-webkit-appearance:none;height:4px;border-radius:2px;background:var(--border2);outline:none}
+  .mobile-range::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--gold);border:3px solid var(--panel);box-shadow:0 0 0 1px rgba(201,169,110,.35)}
+  .mobile-step{width:36px;height:34px;border-radius:10px;border:1px solid var(--border2);background:rgba(255,255,255,.04);color:var(--text);font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+  .mobile-field{width:100%;background:var(--panel3);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:'Inter',sans-serif;font-size:13px;padding:10px 12px;outline:none;resize:vertical;line-height:1.5}
+  .mobile-field:focus{border-color:var(--gold)}
+  .mobile-color-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .mobile-color-card{border:1px solid var(--border2);border-radius:12px;padding:10px;background:rgba(255,255,255,.025)}
+  .mobile-color-card label{display:block;font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .mobile-color-card input{width:100%;height:38px;border:0;background:transparent;padding:0}
+  .mobile-img-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+  .mobile-action-btn{border:1px solid var(--border2);background:rgba(255,255,255,.04);color:var(--text);border-radius:10px;padding:10px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;cursor:pointer}
+  .mobile-action-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(201,169,110,.08)}
+}
+
 </style>
 </head>
 <body>
@@ -319,6 +363,22 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
       </div>
     </div>
   </div>
+</div>
+
+
+<div class="mobile-slide-editor" id="mobileSlideEditor">
+  <div class="mobile-editor-header">
+    <div>
+      <div class="mobile-editor-title" id="mobileEditorTitle">Slide</div>
+      <div class="mobile-editor-sub" id="mobileEditorSub">Edição rápida</div>
+    </div>
+    <div class="mobile-editor-actions">
+      <button class="mobile-save-current" id="mobileSaveCurrentBtn" onclick="salvarSlideAtualMobile()">Salvar slide</button>
+      <button class="mobile-editor-close" onclick="closeMobileSlideEditor()">×</button>
+    </div>
+  </div>
+  <div class="mobile-edit-tabs" id="mobileEditTabs"></div>
+  <div class="mobile-editor-body" id="mobileEditorBody"></div>
 </div>
 
 <div class="loading-bg" id="loadingBg">
@@ -1304,7 +1364,7 @@ function buildGrid(){
     const card=document.createElement('div');card.className='slide-card';card.id=`card-${slide.num}`;
     card.innerHTML=`<div class="thumb-wrap"><iframe srcdoc="" id="ifr-${slide.num}" scrolling="no" onload="scaleIfr(${slide.num})"></iframe></div>
       <div class="card-foot"><span class="card-name">${SLIDE_LABELS[slide.type]||slide.type}</span><span class="card-num">${String(slide.num).padStart(2,'0')}</span></div>`;
-    card.onclick=()=>{switchTab(document.querySelector('[data-tab="texto"]'));const hd=document.getElementById(`hd-${slide.num}`);if(!hd.classList.contains('open'))toggleSec(slide.num);setTimeout(()=>document.getElementById(`sec-${slide.num}`).scrollIntoView({behavior:'smooth',block:'start'}),150);};
+    card.onclick=()=>{if(window.innerWidth<=768){openMobileSlideEditor(slide.num,'size');return;}switchTab(document.querySelector('[data-tab="texto"]'));const hd=document.getElementById(`hd-${slide.num}`);if(!hd.classList.contains('open'))toggleSec(slide.num);setTimeout(()=>document.getElementById(`sec-${slide.num}`).scrollIntoView({behavior:'smooth',block:'start'}),150);};
     grid.appendChild(card);reloadPreview(slide.num);
   });
   console.log('[PC] buildGrid done, cards in DOM:',grid.children.length);
@@ -1357,34 +1417,170 @@ function updateCanvasInfo(){
 }
 
 // ── EXPORT ─────────────────────────────────────────────────────────────────────
+function isMobileDevice(){
+  return window.innerWidth <= 768 || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+function canvasToBlob(canvas){
+  return new Promise((resolve,reject)=>{
+    canvas.toBlob(blob=>{
+      if(blob) resolve(blob);
+      else reject(new Error('Não foi possível gerar o PNG.'));
+    }, 'image/png');
+  });
+}
+async function gerarSlidePNG(slide){
+  const renderDiv=document.getElementById('slide-render');
+  renderDiv.innerHTML=renderSlide(slide,state.colors,state.font);
+  await new Promise(r=>setTimeout(r,700));
+  const canvas=await html2canvas(renderDiv,{width:1080,height:1350,scale:1,useCORS:true,allowTaint:true,logging:false,backgroundColor:state.colors.bg});
+  const blob=await canvasToBlob(canvas);
+  return blob;
+}
+function baixarBlob(blob,filename){
+  const url=URL.createObjectURL(blob);
+  const link=document.createElement('a');
+  link.download=filename;
+  link.href=url;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
 async function exportar(){
   const nome=document.getElementById('nomeInput').value.trim()||'carrossel';
   const btn=document.getElementById('btnExport');btn.disabled=true;
   document.getElementById('loadingBg').classList.add('show');
   const fill=document.getElementById('progFill'),sub=document.getElementById('loadingSub');
   const renderDiv=document.getElementById('slide-render');
+  const mobile=isMobileDevice();
+  const arquivos=[];
+
   try{
     await document.fonts.ready;
+
     for(let i=0;i<state.slides.length;i++){
       const slide=state.slides[i];
-      fill.style.width=Math.round(((i)/state.slides.length)*90+5)+'%';
-      sub.textContent=`Slide ${i+1} de ${state.slides.length}...`;
-      renderDiv.innerHTML=renderSlide(slide,state.colors,state.font);
-      await new Promise(r=>setTimeout(r,700));
-      const canvas=await html2canvas(renderDiv,{width:1080,height:1350,scale:1,useCORS:true,allowTaint:true,logging:false,backgroundColor:state.colors.bg});
-      const link=document.createElement('a');
-      link.download=`${nome}_slide_${String(i+1).padStart(2,'0')}.png`;
-      link.href=canvas.toDataURL('image/png');link.click();
-      await new Promise(r=>setTimeout(r,300));
+      const filename=`${nome}_slide_${String(i+1).padStart(2,'0')}.png`;
+      fill.style.width=Math.round(((i)/state.slides.length)*82+5)+'%';
+      sub.textContent= mobile ? `Preparando ${i+1} de ${state.slides.length}...` : `Slide ${i+1} de ${state.slides.length}...`;
+
+      const blob=await gerarSlidePNG(slide);
+
+      if(mobile && window.File){
+        arquivos.push(new File([blob],filename,{type:'image/png'}));
+      }else{
+        baixarBlob(blob,filename);
+        await new Promise(r=>setTimeout(r,300));
+      }
     }
-    fill.style.width='100%';await new Promise(r=>setTimeout(r,400));
+
+    if(mobile){
+      fill.style.width='92%';
+      sub.textContent='Preparando exportação no celular...';
+
+      let compartilhado=false;
+
+      // Mobile Share é limitado em alguns navegadores. Primeiro tenta compartilhar todos.
+      if(navigator.share && navigator.canShare && arquivos.length && navigator.canShare({files:arquivos})){
+        try{
+          sub.textContent='Abrindo compartilhamento do celular...';
+          await navigator.share({
+            files:arquivos,
+            title:'Post Creator',
+            text:'Slides exportados pelo Post Creator'
+          });
+          compartilhado=true;
+          toast('✅ Compartilhamento aberto. Escolha “Salvar imagem”, “Fotos” ou “Arquivos”.','ok');
+        }catch(shareErr){
+          if(shareErr && shareErr.name==='AbortError'){
+            toast('Exportação cancelada.','err');
+            compartilhado=true;
+          }
+        }
+      }
+
+      // Se o navegador não aceitar 9 arquivos, tenta pelo menos o primeiro arquivo.
+      if(!compartilhado && navigator.share && navigator.canShare && arquivos.length && navigator.canShare({files:[arquivos[0]]})){
+        try{
+          sub.textContent='Abrindo compartilhamento do primeiro slide...';
+          await navigator.share({
+            files:[arquivos[0]],
+            title:'Post Creator',
+            text:'Slide exportado pelo Post Creator'
+          });
+          compartilhado=true;
+          toast('✅ Compartilhei o primeiro slide. O navegador não aceitou os 9 de uma vez.','ok');
+        }catch(shareErr){
+          if(shareErr && shareErr.name==='AbortError'){
+            toast('Exportação cancelada.','err');
+            compartilhado=true;
+          }
+        }
+      }
+
+      // Fallback profissional: baixa os PNGs se o compartilhamento nativo falhar.
+      if(!compartilhado){
+        sub.textContent='Compartilhamento não suportado. Baixando PNGs...';
+        arquivos.forEach(file=>baixarBlob(file,file.name));
+        toast('⚠️ Seu navegador não aceitou compartilhar. Baixei os PNGs em Downloads.','err');
+      }
+    }else{
+      toast(`✅ ${state.slides.length} PNGs baixados!`,'ok');
+    }
+
+    fill.style.width='100%';
+    await new Promise(r=>setTimeout(r,350));
     document.getElementById('loadingBg').classList.remove('show');
-    toast(`✅ ${state.slides.length} PNGs baixados!`,'ok');
   }catch(e){
     document.getElementById('loadingBg').classList.remove('show');
-    toast('❌ Erro ao exportar.','err');console.error(e);
+    toast('❌ Erro ao exportar. Abre o console para ver o detalhe.','err');
+    console.error(e);
   }
   btn.disabled=false;renderDiv.innerHTML='';
+}
+
+async function salvarSlideAtualMobile(){
+  const slide=getMobileSlide(mobileSelectedSlide);
+  if(!slide)return toast('Toque em um slide primeiro.','err');
+  const nome=document.getElementById('nomeInput').value.trim()||'carrossel';
+  const btn=document.getElementById('mobileSaveCurrentBtn');
+  const filename=`${nome}_slide_${String(slide.num).padStart(2,'0')}.png`;
+  const renderDiv=document.getElementById('slide-render');
+
+  try{
+    if(btn)btn.disabled=true;
+    toast(`Gerando slide ${String(slide.num).padStart(2,'0')}...`,'ok');
+    await document.fonts.ready;
+    const blob=await gerarSlidePNG(slide);
+    const file=window.File ? new File([blob],filename,{type:'image/png'}) : null;
+
+    if(navigator.share && navigator.canShare && file && navigator.canShare({files:[file]})){
+      try{
+        await navigator.share({
+          files:[file],
+          title:'Post Creator',
+          text:`Slide ${String(slide.num).padStart(2,'0')} exportado pelo Post Creator`
+        });
+        toast('✅ Agora escolha “Salvar imagem”, “Fotos” ou o app desejado.','ok');
+      }catch(shareErr){
+        if(shareErr && shareErr.name==='AbortError'){
+          toast('Ação cancelada.','err');
+        }else{
+          baixarBlob(blob,filename);
+          toast('⚠️ Seu navegador não aceitou compartilhar. Baixei o slide em Downloads.','err');
+        }
+      }
+    }else{
+      baixarBlob(blob,filename);
+      toast('⚠️ Seu navegador não aceitou compartilhar. Baixei o slide em Downloads.','err');
+    }
+  }catch(e){
+    console.error(e);
+    toast('❌ Erro ao salvar este slide.','err');
+  }finally{
+    if(btn)btn.disabled=false;
+    renderDiv.innerHTML='';
+  }
 }
 
 // ── COMPARTILHAR VIA URL ──────────────────────────────────────────────────────
@@ -1403,8 +1599,8 @@ function compartilharURL(){
         return c;
       })
     };
-    const encoded=encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(shareState)))));
-    const url=location.origin+location.pathname+'?c='+encoded;
+    const encoded=btoa(unescape(encodeURIComponent(JSON.stringify(shareState))));
+    const url=location.origin+location.pathname+'?c='+encodeURIComponent(encoded);
     navigator.clipboard.writeText(url).then(()=>{
       toast('✓ Link copiado! Abra em qualquer dispositivo.','ok');
     }).catch(()=>{
@@ -1418,7 +1614,8 @@ function loadFromURL(){
     const params=new URLSearchParams(location.search);
     const encoded=params.get('c');
     if(!encoded)return;
-    const parsed=JSON.parse(decodeURIComponent(escape(atob(encoded))));
+    const decodedParam=decodeURIComponent(encoded);
+    const parsed=JSON.parse(decodeURIComponent(escape(atob(decodedParam))));
     if(parsed.slides&&parsed.slides.length>0){
       Object.assign(state,parsed);
       state.slides=state.slides.map(makeSlide);
@@ -1428,6 +1625,199 @@ function loadFromURL(){
       toast('✓ Configuração carregada do link!','ok');
     }
   }catch(e){} // silently ignore invalid URLs
+}
+
+
+
+// ── MOBILE SLIDE EDITOR — CANVA STYLE ────────────────────────────────────────
+let mobileSelectedSlide = null;
+let mobileEditorTab = 'size';
+
+const MOBILE_EDITOR_TABS = [
+  ['text','Texto'],
+  ['size','Tamanho'],
+  ['position','Posição'],
+  ['color','Cor'],
+  ['image','Imagem']
+];
+
+function getMobileSlide(num){
+  return state.slides.find(s=>s.num===num);
+}
+
+function closeMobileSlideEditor(){
+  const editor=document.getElementById('mobileSlideEditor');
+  if(editor)editor.classList.remove('open');
+  document.body.classList.remove('mobile-editor-open');
+  document.querySelectorAll('.slide-card').forEach(c=>c.classList.remove('mobile-selected'));
+  mobileSelectedSlide=null;
+}
+
+function openMobileSlideEditor(num,tab){
+  if(window.innerWidth>768)return;
+  const slide=getMobileSlide(num);
+  if(!slide)return;
+  _closePanel();
+  mobileSelectedSlide=num;
+  mobileEditorTab=tab||mobileEditorTab||'size';
+  document.body.classList.add('mobile-editor-open');
+  document.querySelectorAll('.slide-card').forEach(c=>c.classList.remove('mobile-selected'));
+  const card=document.getElementById(`card-${num}`);
+  if(card)card.classList.add('mobile-selected');
+  const editor=document.getElementById('mobileSlideEditor');
+  if(editor)editor.classList.add('open');
+  renderMobileSlideEditor();
+}
+
+function renderMobileSlideEditor(){
+  const slide=getMobileSlide(mobileSelectedSlide);
+  if(!slide)return;
+  const title=document.getElementById('mobileEditorTitle');
+  const sub=document.getElementById('mobileEditorSub');
+  if(title)title.textContent=`Slide ${String(slide.num).padStart(2,'0')} · ${SLIDE_LABELS[slide.type]||slide.type}`;
+  if(sub)sub.textContent=`${VISUAL_STYLES[state.visual]?.label||state.visual}`;
+
+  const tabs=document.getElementById('mobileEditTabs');
+  if(tabs){
+    tabs.innerHTML=MOBILE_EDITOR_TABS.map(([key,label])=>`<button class="mobile-edit-tab ${mobileEditorTab===key?'active':''}" onclick="setMobileEditorTab('${key}')">${label}</button>`).join('');
+  }
+  renderMobileEditorBody(slide);
+}
+
+function setMobileEditorTab(tab){
+  mobileEditorTab=tab;
+  renderMobileSlideEditor();
+}
+
+function mobileEditableKeys(slide){
+  const keys=['tag','headline','bloco1','bloco2'];
+  if(['dados','cenarios'].includes(slide.type))keys.push('extra');
+  return keys;
+}
+
+function mobileElementKeys(slide){
+  const keys=['headline','bloco1','bloco2'];
+  if(['dados','cenarios'].includes(slide.type))keys.push('extra');
+  return keys;
+}
+
+function mobileLabel(key){
+  return key==='headline'?'Headline':key==='bloco1'?'Bloco 1':key==='bloco2'?'Bloco 2':key==='tag'?'Tag':'Extra';
+}
+
+function renderMobileEditorBody(slide){
+  const body=document.getElementById('mobileEditorBody');
+  if(!body)return;
+  if(mobileEditorTab==='text'){
+    body.innerHTML=mobileEditableKeys(slide).map(key=>{
+      const val=(slide[key]||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      const isArea=key!=='tag';
+      return `<div class="mobile-control"><div class="mobile-control-label"><span>${mobileLabel(key)}</span></div>${isArea?`<textarea class="mobile-field" rows="${key==='headline'?3:4}" oninput="mobileTextChange('${key}',this.value)">${val}</textarea>`:`<input class="mobile-field" value="${val}" oninput="mobileTextChange('${key}',this.value)">`}</div>`;
+    }).join('');
+    return;
+  }
+  if(mobileEditorTab==='size'){
+    body.innerHTML=mobileElementKeys(slide).map(key=>mobileRangeControl(slide,key,'size')).join('');
+    return;
+  }
+  if(mobileEditorTab==='position'){
+    body.innerHTML=mobileElementKeys(slide).map(key=>mobileRangeControl(slide,key,'position')).join('');
+    return;
+  }
+  if(mobileEditorTab==='color'){
+    body.innerHTML=`<div class="mobile-color-grid">${['headline','bloco1','bloco2'].map(key=>{
+      const val=(slide.el_colors&&slide.el_colors[key])||state.colors.accent||'#C9A96E';
+      return `<div class="mobile-color-card"><label>${mobileLabel(key)}</label><input type="color" value="${val}" oninput="mobileColorChange('${key}',this.value)"></div>`;
+    }).join('')}</div><button class="mobile-action-btn" style="width:100%;margin-top:12px" onclick="mobileResetColors()">Resetar cores do slide</button>`;
+    return;
+  }
+  if(mobileEditorTab==='image'){
+    body.innerHTML=`<div class="mobile-control"><div class="mobile-control-label"><span>Imagem do slide</span></div><input class="mobile-field" type="file" accept="image/*" onchange="mobileImageUpload(this.files[0])"></div>
+    <div class="mobile-img-actions">
+      <button class="mobile-action-btn ${(slide.imagePos||'float')==='float'?'active':''}" onclick="mobileSetImagePos('float')">Flutuar</button>
+      <button class="mobile-action-btn ${slide.imagePos==='background'?'active':''}" onclick="mobileSetImagePos('background')">Fundo</button>
+    </div>
+    <button class="mobile-action-btn" style="width:100%;margin-top:10px;color:var(--red)" onclick="mobileRemoveImage()">Remover imagem</button>`;
+  }
+}
+
+function mobileRangeControl(slide,key,type){
+  const value=type==='size'?((slide.sizes&&slide.sizes[key])||40):((slide.offsets&&slide.offsets[key])||0);
+  const min=type==='size'?14:-180;
+  const max=type==='size'?180:180;
+  const step=type==='size'?2:5;
+  const suffix=type==='size'?'px':(value>0?'+':'')+value+'px';
+  const labelValue=type==='size'?`${value}px`:`${value>0?'+':''}${value}px`;
+  return `<div class="mobile-control">
+    <div class="mobile-control-label"><span>${mobileLabel(key)}</span><span class="mobile-control-value" id="mval-${type}-${key}">${labelValue}</span></div>
+    <div class="mobile-range-row">
+      <button class="mobile-step" onclick="mobileStep('${key}','${type}',-${step})">−</button>
+      <input class="mobile-range" type="range" min="${min}" max="${max}" value="${value}" data-key="${key}" data-type="${type}" oninput="mobileRangeChange(this)">
+      <button class="mobile-step" onclick="mobileStep('${key}','${type}',${step})">+</button>
+    </div>
+  </div>`;
+}
+
+function mobileTextChange(key,value){
+  const slide=getMobileSlide(mobileSelectedSlide);if(!slide)return;
+  slide[key]=value;saveState();reloadPreview(slide.num);
+}
+
+function mobileRangeChange(input){
+  const slide=getMobileSlide(mobileSelectedSlide);if(!slide)return;
+  const key=input.dataset.key,type=input.dataset.type,val=parseInt(input.value,10)||0;
+  if(type==='size'){
+    if(!slide.sizes)slide.sizes={};
+    slide.sizes[key]=val;
+  }else{
+    if(!slide.offsets)slide.offsets={headline:0,bloco1:0,bloco2:0,extra:0};
+    slide.offsets[key]=val;
+  }
+  const lbl=document.getElementById(`mval-${type}-${key}`);
+  if(lbl)lbl.textContent=type==='size'?`${val}px`:`${val>0?'+':''}${val}px`;
+  saveState();reloadPreview(slide.num);
+}
+
+function mobileStep(key,type,delta){
+  const slide=getMobileSlide(mobileSelectedSlide);if(!slide)return;
+  let val=type==='size'?((slide.sizes&&slide.sizes[key])||40):((slide.offsets&&slide.offsets[key])||0);
+  val+=delta;
+  if(type==='size')val=Math.max(14,Math.min(180,val));
+  else val=Math.max(-180,Math.min(180,val));
+  if(type==='size'){
+    if(!slide.sizes)slide.sizes={};slide.sizes[key]=val;
+  }else{
+    if(!slide.offsets)slide.offsets={headline:0,bloco1:0,bloco2:0,extra:0};slide.offsets[key]=val;
+  }
+  saveState();reloadPreview(slide.num);renderMobileEditorBody(slide);
+}
+
+function mobileColorChange(key,value){
+  const slide=getMobileSlide(mobileSelectedSlide);if(!slide)return;
+  if(!slide.el_colors)slide.el_colors={};
+  slide.el_colors[key]=value;
+  saveState();reloadPreview(slide.num);
+}
+
+function mobileResetColors(){
+  const slide=getMobileSlide(mobileSelectedSlide);if(!slide)return;
+  slide.el_colors={headline:'',bloco1:'',bloco2:''};
+  saveState();reloadPreview(slide.num);renderMobileEditorBody(slide);
+}
+
+function mobileImageUpload(file){
+  if(!file||!mobileSelectedSlide)return;
+  handleImageUpload(mobileSelectedSlide,file);
+}
+function mobileSetImagePos(pos){
+  if(!mobileSelectedSlide)return;
+  setImagePos(mobileSelectedSlide,pos);
+  renderMobileEditorBody(getMobileSlide(mobileSelectedSlide));
+}
+function mobileRemoveImage(){
+  if(!mobileSelectedSlide)return;
+  removeImage(mobileSelectedSlide);
+  renderMobileEditorBody(getMobileSlide(mobileSelectedSlide));
 }
 
 // ── TOAST ──────────────────────────────────────────────────────────────────────
