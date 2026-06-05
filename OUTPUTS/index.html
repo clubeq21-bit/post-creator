@@ -969,11 +969,14 @@ function getField(block, name) {
   const re = new RegExp(esc + ':\\s*\\n?([\\s\\S]*?)(?=\\n[ \\t]*(?:' + nextLabels + '):|\\n---\\s*\\n|$)', 'i');
   const m = block.match(re);
   if (!m || !m[1]) return '';
-  return m[1]
+  let result = m[1]
     .split('\n')
     .map(l => l.replace(/\s+$/, ''))
     .join('\n')
     .trim();
+  // Strip accidental label repetition (e.g. agente repete "BLOCO 2:" no início do conteúdo)
+  result = result.replace(new RegExp('^' + esc + ':\\s*', 'i'), '').trim();
+  return result;
 }
 
 function parseCarrossel(raw) {
