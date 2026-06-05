@@ -877,11 +877,16 @@ function renderSans(s,c){
   const b1Html=s.bloco1?parseInline(brk(s.bloco1),grayText):'';
   const b2Html=s.bloco2?parseInline(brk(s.bloco2),grayText):'';
 
-  const topOff=offY(s,'headline');
-  const b1Off=offY(s,'bloco1');
-  const b2Off=offY(s,'bloco2');
+  // Cada elemento posicionado independentemente
+  const hlLines   = Math.max(1,(s.headline||'').split('\n').filter(l=>l.trim()).length);
+  const estHlH    = Math.round(hlLines * hs * 1.08);
+  const hlBase    = 460;
 
-  const tagHtml  = s.tag   ? `<div style="position:absolute;top:60px;left:70px;font-size:13px;font-weight:500;letter-spacing:5px;text-transform:uppercase;color:#999999;font-family:'Inter',sans-serif">${s.tag}</div>` : '';
+  const headlineTop = hlBase + offY(s,'headline');
+  const bloco2Top   = headlineTop + estHlH + offY(s,'bloco2');
+  const bloco1Top   = headlineTop - 80 + offY(s,'bloco1');
+
+  const tagHtml   = s.tag   ? `<div style="position:absolute;top:60px;left:70px;font-size:13px;font-weight:500;letter-spacing:5px;text-transform:uppercase;color:#999999;font-family:'Inter',sans-serif">${s.tag}</div>` : '';
   const extraHtml = s.extra ? `<div style="position:absolute;bottom:90px;left:70px;right:70px;font-size:16px;font-weight:400;color:#999999;font-family:'Inter',sans-serif;letter-spacing:1px">${s.extra}</div>` : '';
 
   return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
@@ -891,11 +896,9 @@ function renderSans(s,c){
   <div style="width:1080px;height:1350px;background:${bg};position:relative;overflow:hidden">
     ${tagHtml}
     <div style="position:absolute;top:48px;right:50px;background:rgba(50,50,50,0.75);border-radius:40px;padding:10px 22px;font-size:22px;color:rgba(255,255,255,0.85);font-weight:600;font-family:'Inter',sans-serif">${counter}</div>
-    <div style="position:absolute;top:calc(50% + ${topOff}px);left:70px;right:70px;transform:translateY(-50%)">
-      <h1 style="font-size:${hs}px;font-weight:700;line-height:1.05;color:${ec(s,'headline',darkText)};font-family:'Inter',sans-serif">${hHtml}</h1>
-      ${b1Html?`<p style="font-size:${b1s}px;font-weight:700;line-height:1.2;color:${ec(s,'bloco1',darkText)};font-family:'Inter',sans-serif;margin-top:${28+b1Off}px">${b1Html}</p>`:''}
-      ${b2Html?`<p style="font-size:${b2s}px;font-weight:700;line-height:1.05;color:${ec(s,'bloco2',grayText)};font-family:'Inter',sans-serif;margin-top:${b2Off}px">${b2Html}</p>`:''}
-    </div>
+    <h1 style="position:absolute;top:${headlineTop}px;left:70px;right:70px;font-size:${hs}px;font-weight:700;line-height:1.05;color:${ec(s,'headline',darkText)};font-family:'Inter',sans-serif">${hHtml}</h1>
+    ${b1Html?`<p style="position:absolute;top:${bloco1Top}px;left:70px;right:70px;font-size:${b1s}px;font-weight:700;line-height:1.2;color:${ec(s,'bloco1',darkText)};font-family:'Inter',sans-serif">${b1Html}</p>`:''}
+    ${b2Html?`<p style="position:absolute;top:${bloco2Top}px;left:70px;right:70px;font-size:${b2s}px;font-weight:700;line-height:1.05;color:${ec(s,'bloco2',grayText)};font-family:'Inter',sans-serif">${b2Html}</p>`:''}
     ${extraHtml}
     <div style="position:absolute;bottom:52px;left:70px;font-size:18px;color:#555555;font-family:'Inter',sans-serif;font-weight:400;letter-spacing:0">${c.handle||'@glendonassis'}</div>
   </div>`;
