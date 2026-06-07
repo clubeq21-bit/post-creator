@@ -2882,13 +2882,26 @@ function buildTexto(){
       posSec.appendChild(row);
     });
     body.appendChild(posSec);
-    // Cores elementos
+    // Cores elementos — swatches das cores do ID Visual
     const ecSec=document.createElement('div');ecSec.className='el-section';
     ecSec.innerHTML='<div class="el-section-title">Cor dos elementos</div>';
     [['slide_bg','Fundo do slide'],['headline','Headline'],['bloco1','Bloco 1'],['bloco2','Bloco 2'],['extra','Extra']].forEach(([elName,lbl])=>{
-      const curV=(slide.el_colors&&slide.el_colors[elName])||'#C9A96E';
-      const row=document.createElement('div');row.className='ec-row';
-      row.innerHTML=`<div class="ec-sw" id="ecsw-${slide.num}-${elName}" style="background:${curV}"><input type="color" value="${curV}" data-num="${slide.num}" data-el="${elName}" oninput="onElColorChange(this)"></div><span class="ec-lbl">${lbl}</span><button class="btn-ec-reset" onclick="resetElColor(${slide.num},'${elName}')">Reset</button>`;
+      const curV=(slide.el_colors&&slide.el_colors[elName])||'';
+      const palette=[
+        {c:state.colors.bg,    t:'BG'},
+        {c:state.colors.text,  t:'TX'},
+        {c:state.colors.accent,t:'D1'},
+        {c:state.colors.accent2,t:'D2'},
+        {c:'#FFFFFF',          t:'⬜'},
+        {c:'#000000',          t:'⬛'},
+      ];
+      const swatchHtml=palette.map(({c:cor})=>{
+        const sel=curV===cor;
+        return `<div class="ec-swatch" data-color="${cor}" onclick="setElColorDirect(${slide.num},'${elName}','${cor}')" style="width:24px;height:24px;border-radius:50%;background:${cor};cursor:pointer;border:${sel?'2px solid var(--gold)':'1px solid rgba(255,255,255,0.18)'};box-shadow:${sel?'0 0 0 1px var(--gold)':'none'};flex-shrink:0"></div>`;
+      }).join('');
+      const row=document.createElement('div');
+      row.style.cssText='margin-bottom:10px';
+      row.innerHTML=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px"><span style="font-size:10px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase">${lbl}</span><button class="btn-ec-reset" onclick="resetElColor(${slide.num},'${elName}')">Reset</button></div><div id="ec-swatches-${slide.num}-${elName}" style="display:flex;gap:8px;flex-wrap:wrap">${swatchHtml}</div>`;
       ecSec.appendChild(row);
     });
     body.appendChild(ecSec);
@@ -2931,7 +2944,23 @@ function onElColorChange(el){
 function resetElColor(num,elName){
   const sl=state.slides.find(s=>s.num===num);if(!sl)return;
   if(!sl.el_colors)sl.el_colors={};sl.el_colors[elName]='';
-  saveState();reloadPreview(num);toast('✓ Cor resetada','ok');
+  saveState();reloadPreview(num);
+  // Limpa seleção visual
+  const cont=document.getElementById(`ec-swatches-${num}-${elName}`);
+  if(cont)cont.querySelectorAll('.ec-swatch').forEach(sw=>{sw.style.border='1px solid rgba(255,255,255,0.18)';sw.style.boxShadow='none';});
+  toast('✓ Cor resetada','ok');
+}
+function setElColorDirect(num,elName,cor){
+  const sl=state.slides.find(s=>s.num===num);if(!sl)return;
+  if(!sl.el_colors)sl.el_colors={};sl.el_colors[elName]=cor;
+  saveState();reloadPreview(num);
+  // Atualiza seleção visual sem rebuildar tudo
+  const cont=document.getElementById(`ec-swatches-${num}-${elName}`);
+  if(cont)cont.querySelectorAll('.ec-swatch').forEach(sw=>{
+    const sel=sw.dataset.color===cor;
+    sw.style.border=sel?'2px solid var(--gold)':'1px solid rgba(255,255,255,0.18)';
+    sw.style.boxShadow=sel?'0 0 0 1px var(--gold)':'none';
+  });
 }
 
 // ── MODELOS TAB ────────────────────────────────────────────────────────────────
