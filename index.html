@@ -311,6 +311,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
       <div class="pal-row" onclick="aplicarPaleta('#F8FAFC','#0F172A','#2563EB','#94A3B8')"><div class="psw" style="background:#F8FAFC"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#2563EB"></div><div class="plbl">Antes e Depois</div></div>
       <div class="pal-row" onclick="aplicarPaleta('#F4EFE6','#1A1209','#C9A961','#7A5230')"><div class="psw" style="background:#F4EFE6"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#7A5230"></div><div class="plbl">Editorial Q21</div></div>
       <div class="pal-row" onclick="aplicarPaleta('#0F1115','#FFFFFF','#F5C542','#9CA3AF')"><div class="psw" style="background:#0F1115"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#F5C542"></div><div class="plbl">Revista Q21</div></div>
+      <div class="pal-row" onclick="aplicarPaleta('#2A1608','#F0E9DF','#C8A97E','#8B6B4E')"><div class="psw" style="background:#2A1608"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#C8A97E"></div><div class="plbl">Editorial Premium</div></div>
       <div class="sec-title" style="margin-top:22px">Ajustes</div>
       <div class="sec-title" style="margin-top:10px">Handle</div>
       <input class="fi" id="handleInput" value="@seuperfil" oninput="debounce(()=>updateHandle(this.value),400)">
@@ -424,7 +425,8 @@ const VISUAL_STYLES = {
   metodo: {label:'Método',desc:'Passos, mapas, frameworks e processos simples para ensinar com clareza.',bg:'#F8F6F0',text:'#181818',accent:'#C9A96E',accent2:'#6B7280',preview:{bg:'#F8F6F0',accent:'#C9A96E',label:'01'}},
   contraste: {label:'Contraste',desc:'Erro vs acerto, mito vs verdade, antes vs depois, aparência vs realidade.',bg:'#101114',text:'#F9FAFB',accent:'#E7B456',accent2:'#EF6A4D',preview:{bg:'#101114',accent:'#E7B456',label:'VS'}},
   serif: {label:'Editorial',desc:'Modelo elegante para posicionamento, autoridade, reflexão e marca pessoal.',bg:'#F4EFE6',text:'#1A1209',accent:'#C9A961',accent2:'#7A5230',preview:{bg:'#F4EFE6',accent:'#7A5230',label:'Ed'}},
-  magazine: {label:'Revista',desc:'Modelo visual e dinâmico com aparência de matéria, destaque ou capa digital.',bg:'#0F1115',text:'#FFFFFF',accent:'#F5C542',accent2:'#9CA3AF',preview:{bg:'#0F1115',accent:'#F5C542',label:'Mg'}}
+  magazine: {label:'Revista',desc:'Modelo visual e dinâmico com aparência de matéria, destaque ou capa digital.',bg:'#0F1115',text:'#FFFFFF',accent:'#F5C542',accent2:'#9CA3AF',preview:{bg:'#0F1115',accent:'#F5C542',label:'Mg'}},
+  editorial_premium: {label:'Editorial Premium',desc:'Fotos full bleed, Cormorant Garamond italic, caixas dark. Tom sofisticado e clínico.',bg:'#2A1608',text:'#F0E9DF',accent:'#C8A97E',accent2:'#8B6B4E',preview:{bg:'#2A1608',accent:'#C8A97E',label:'Ep'}}
 };
 
 // ── FONTS ──────────────────────────────────────────────────────────────────────
@@ -1516,6 +1518,26 @@ const VISUAL_PRESETS = {
       }
     ]
   },
+  "editorial_premium": {
+    "font": "cormorant",
+    "colors": {
+      "bg": "#2A1608",
+      "text": "#F0E9DF",
+      "accent": "#C8A97E",
+      "accent2": "#8B6B4E"
+    },
+    "slides": [
+      {"num":1,"type":"capa","tag":"","headline":"O título\ndo seu carrossel\nem serif italic.","bloco1":"Uma frase de apoio que ancora o leitor neste slide.","bloco2":"","extra":"","sizes":{"headline":68,"bloco1":30,"bloco2":26,"extra":16},"offsets":{"headline":0,"bloco1":0,"bloco2":0,"extra":0}},
+      {"num":2,"type":"contexto","tag":"O Cenário","headline":"O que todo\nmundo ignora\nsobre isso.","bloco1":"Contexto que prova que o problema existe e importa agora.","bloco2":"A frase que sintetiza por que vale continuar lendo.","extra":"","sizes":{"headline":68,"bloco1":30,"bloco2":26,"extra":16},"offsets":{"headline":0,"bloco1":0,"bloco2":0,"extra":0}},
+      {"num":3,"type":"dados","tag":"Os Dados","headline":"Um dado\nforte aqui.","bloco1":"Contexto do dado principal — o que ele revela na prática.","bloco2":"Segundo dado ou consequência que aprofunda.","extra":"Fonte: Nome da Fonte · Ano","sizes":{"headline":68,"bloco1":30,"bloco2":26,"extra":16},"offsets":{"headline":0,"bloco1":0,"bloco2":0,"extra":0}},
+      {"num":4,"type":"virada","tag":"A Virada","headline":"O que ninguém\nexplica sobre\nesse tema.","bloco1":"A crença comum que precisa ser questionada aqui.","bloco2":"O mecanismo real que muda como o leitor enxerga o problema.","extra":"","sizes":{"headline":68,"bloco1":30,"bloco2":26,"extra":16},"offsets":{"headline":0,"bloco1":0,"bloco2":0,"extra":0}},
+      {"num":5,"type":"dois_col","tag":"Na Prática","headline":"Dois caminhos.\nSó um\nfunciona.","bloco1":"Caminho A\nO que a maioria faz\nResultado frustrante\nCusto elevado","bloco2":"Caminho B\nO que realmente funciona\nResultado concreto\nCusto reduzido","extra":"","sizes":{"headline":68,"bloco1":30,"bloco2":26,"extra":16},"offsets":{"headline":0,"bloco1":0,"bloco2":0,"extra":0}},
+      {"num":6,"type":"cenarios","tag":"Comparação","headline":"A mesma situação.\nDuas respostas\ncompletamente diferentes.","bloco1":"CENÁRIO A\nComo a pessoa reage sem informação.\nResultado medíocre.","bloco2":"CENÁRIO B\nComo age com o conhecimento certo.\nResultado concreto e sustentável.","extra":"A diferença não é talento. É método.","sizes":{"headline":68,"bloco1":30,"bloco2":26,"extra":16},"offsets":{"headline":0,"bloco1":0,"bloco2":0,"extra":0}},
+      {"num":7,"type":"sintese","tag":"O Padrão","headline":"O padrão que\nexplica todos\nos casos de sucesso.","bloco1":"Passo 1 → Passo 2 → Passo 3 → Resultado","bloco2":"Você estava fazendo na ordem errada. O sistema não perdoa.","extra":"","sizes":{"headline":68,"bloco1":30,"bloco2":26,"extra":16},"offsets":{"headline":0,"bloco1":0,"bloco2":0,"extra":0}},
+      {"num":8,"type":"aplicacao","tag":"Como Aplicar","headline":"Mude uma\ncoisa agora.","bloco1":"PARE DE FAZER: A abordagem que não funciona\nCOMECE A FAZER: A abordagem certa","bloco2":"Ação 1 concreta\nAção 2 concreta\nAção 3 — o resultado começa a aparecer.","extra":"","sizes":{"headline":68,"bloco1":30,"bloco2":26,"extra":16},"offsets":{"headline":0,"bloco1":0,"bloco2":0,"extra":0}},
+      {"num":9,"type":"cta","tag":"Ação","headline":"Salva\nesse\ncarrossel.","bloco1":"Você vai precisar dele quando errar de novo.","bloco2":"Quer aplicar isso? Manda uma mensagem.","extra":"","sizes":{"headline":68,"bloco1":30,"bloco2":26,"extra":16},"offsets":{"headline":0,"bloco1":0,"bloco2":0,"extra":0}}
+    ]
+  },
   "magazine": {
     "font": "bebas",
     "colors": {
@@ -1772,6 +1794,7 @@ try {
 
 // Migração de versões antigas.
 if(['clean','impact','statement','sans','passo','checklist','mito','dados','antesdepois'].includes(state.visual)) state.visual = 'jornada';
+if(state.visual==='editorial') state.visual = 'serif';
 if(!VISUAL_STYLES[state.visual]) state.visual = 'jornada';
 
 function saveState(){try{state.appVersion=APP_VERSION;localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch(e){}}
@@ -2432,6 +2455,103 @@ function renderContraste(s,c,fk){
   return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${c.bg};font-family:${f.family}}</style></head><body><div style="width:1080px;height:1350px;background:${c.bg};position:relative;overflow:hidden;color:${c.text}">${bgLayers||`<div style="position:absolute;inset:0;background:linear-gradient(135deg,#101114,#1b1d23)"></div>`}${floatImg}<div style="position:absolute;inset:0;z-index:2"><div style="position:absolute;top:58px;left:70px;font-size:13px;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:${c.accent};font-family:${f.family}">${s.tag||'Contraste'}</div><h1 style="position:absolute;top:${128+offY(s,'headline')}px;left:70px;right:${s.image&&s.imagePos==='float'?'520px':'70px'};font-size:${hs}px;line-height:1.04;font-weight:800;letter-spacing:-2px;color:${ec(s,'headline',c.text)};font-family:${f.family}">${parseInline(brk(s.headline),c.accent)}</h1><div style="position:absolute;top:${470+offY(s,'bloco1')}px;left:58px;width:464px;min-height:430px;border-radius:34px;background:${hasBg?'rgba(0,0,0,.46)':'rgba(255,255,255,.06)'};border:1px solid rgba(255,255,255,.14);padding:36px;backdrop-filter:blur(8px)"><div style="font-size:14px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:${c.accent2};margin-bottom:28px">Lado A</div><p style="font-size:${b1s}px;line-height:1.32;font-weight:700;color:${ec(s,'bloco1','#fff')};font-family:'Inter',sans-serif">${parseInline(brk(s.bloco1||''),c.accent2)}</p></div><div style="position:absolute;top:${470+offY(s,'bloco2')}px;right:58px;width:464px;min-height:430px;border-radius:34px;background:${c.accent};padding:36px;box-shadow:0 24px 80px rgba(0,0,0,.22)"><div style="font-size:14px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:rgba(0,0,0,.45);margin-bottom:28px">Lado B</div><p style="font-size:${b2s}px;line-height:1.32;font-weight:800;color:#111;font-family:'Inter',sans-serif">${parseInline(brk(s.bloco2||''),'#111')}</p></div><div style="position:absolute;top:626px;left:495px;width:90px;height:90px;border-radius:50%;background:#fff;color:#111;display:flex;align-items:center;justify-content:center;font-size:27px;font-weight:900;font-family:${f.family};box-shadow:0 20px 50px rgba(0,0,0,.28)">VS</div>${s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;text-align:center;font-size:${exs}px;font-weight:700;color:${ec(s,'extra',c.accent)};font-family:'Inter',sans-serif">${parseInline(brk(s.extra),c.accent)}</div>`:''}<div style="position:absolute;bottom:38px;right:70px;font-size:15px;font-weight:700;color:rgba(249,250,251,.54);font-family:'Inter',sans-serif">${c.handle||'@seuperfil'}</div></div></div>`;
 }
 
+// ── EDITORIAL PREMIUM RENDERER ────────────────────────────────────────────────
+function renderEditorialPremium(s,c,fk){
+  const total=state.slides.length;
+  const serif="'Cormorant Garamond','Playfair Display',Georgia,serif";
+  const sans="'DM Sans','Inter',Arial,sans-serif";
+  const gold=c.accent||'#C8A97E';
+
+  const hasPhoto=!!s.image;
+  const lightTypes=['sintese','dois_col'];
+  const isLight=!hasPhoto&&lightTypes.includes(s.type);
+  const bgColor=hasPhoto?'#0A0805':(isLight?'#F0E9DF':(c.bg||'#2A1608'));
+  const textPrimary=isLight?'#2A1608':'#F0E9DF';
+  const textMuted=isLight?'rgba(42,22,8,0.6)':'rgba(240,233,223,0.55)';
+
+  let photoBg='',photoOverlay='';
+  if(hasPhoto){
+    photoBg=`<div style="position:absolute;inset:0;background:url('${s.image}') center/cover no-repeat;z-index:0"></div>`;
+    photoOverlay=`<div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.08) 0%,rgba(0,0,0,0.38) 42%,rgba(0,0,0,0.80) 100%);z-index:1"></div>`;
+  }
+  const zi=hasPhoto?'z-index:2':'';
+
+  function parseEP(t){
+    return String(t||'')
+      .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g,`<strong style="color:${gold}">$1</strong>`)
+      .replace(/_(.*?)_/g,'<em>$1</em>');
+  }
+
+  const hs=sz(s,'headline',68),b1s=sz(s,'bloco1',30),b2s=sz(s,'bloco2',26);
+  const hColor=ec(s,'headline','')||(hasPhoto?'#FFFFFF':textPrimary);
+  const b1Color=ec(s,'bloco1','')||(hasPhoto?'rgba(255,255,255,0.9)':textPrimary);
+  const b2Color=ec(s,'bloco2','')||(hasPhoto?'rgba(255,255,255,0.78)':textMuted);
+
+  // Headline: linhas alternando italic/bold
+  const hLines=(s.headline||'').split('\n');
+  const hHtml=hLines.map((line,i)=>{
+    const p=parseEP(line);
+    return i%2===0
+      ?`<span style="display:block;font-style:italic">${p}</span>`
+      :`<span style="display:block;font-style:normal;font-weight:700">${p}</span>`;
+  }).join('');
+
+  // Bloco1: 3+ linhas → caixas dark; 1-2 → body/frosted
+  const b1Lines=(s.bloco1||'').split('\n').filter(l=>l.trim());
+  let b1Html='';
+  if(b1Lines.length>2){
+    const boxBg=isLight?'#2A1608':'rgba(18,8,2,0.88)';
+    b1Html=`<div style="margin-top:${36+offY(s,'bloco1')}px">`+
+      b1Lines.map(line=>`<div style="background:${boxBg};border-radius:6px;padding:17px 26px;margin-bottom:9px;font-family:${sans};font-size:${b1s}px;font-weight:400;line-height:1.42;color:#F0E9DF;text-align:center">${parseEP(line)}</div>`).join('')
+    +'</div>';
+  } else if(s.bloco1){
+    if(hasPhoto){
+      b1Html=`<div style="background:rgba(240,233,223,0.10);border-radius:10px;padding:22px 28px;margin-top:${28+offY(s,'bloco1')}px"><p style="font-family:${sans};font-size:${b1s}px;font-weight:400;line-height:1.62;color:${b1Color}">${parseEP(brk(s.bloco1))}</p></div>`;
+    }else{
+      b1Html=`<p style="font-family:${sans};font-size:${b1s}px;font-weight:400;line-height:1.62;color:${b1Color};margin-top:${28+offY(s,'bloco1')}px">${parseEP(brk(s.bloco1))}</p>`;
+    }
+  }
+
+  // Bloco2
+  let b2Html='';
+  if(s.bloco2){
+    if(hasPhoto){
+      b2Html=`<div style="background:rgba(12,5,1,0.72);border-radius:8px;padding:18px 26px;margin-top:${14+offY(s,'bloco2')}px"><p style="font-family:${sans};font-size:${b2s}px;font-weight:400;line-height:1.55;color:#F0E9DF">${parseEP(brk(s.bloco2))}</p></div>`;
+    }else{
+      b2Html=`<p style="font-family:${sans};font-size:${b2s}px;line-height:1.55;color:${b2Color};margin-top:${18+offY(s,'bloco2')}px">${parseEP(brk(s.bloco2))}</p>`;
+    }
+  }
+
+  const tagColor=hasPhoto?'rgba(255,255,255,0.5)':(isLight?'#8B6B4E':'rgba(240,233,223,0.42)');
+  const tagHtml=s.tag?`<p style="font-family:${sans};font-size:13px;font-weight:500;letter-spacing:3.5px;text-transform:uppercase;color:${tagColor};margin-bottom:18px">${s.tag}</p>`:'';
+
+  const extraColor=hasPhoto?'rgba(255,255,255,0.42)':(isLight?'rgba(42,22,8,0.38)':'rgba(240,233,223,0.35)');
+  const extraHtml=s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;font-family:${sans};font-size:${sz(s,'extra',16)}px;color:${extraColor};text-align:center;${zi}">${s.extra}</div>`:'';
+
+  const hndColor=hasPhoto?'rgba(255,255,255,0.38)':(isLight?'rgba(42,22,8,0.32)':'rgba(240,233,223,0.32)');
+  const handleHtml=`<div style="position:absolute;bottom:52px;right:60px;font-family:${sans};font-size:16px;color:${hndColor};letter-spacing:0.5px;${zi}">${c.handle||'@seuperfil'}</div>`;
+
+  const contentTop=(hasPhoto?520:140)+offY(s,'headline');
+  const textAlign=isLight?'center':'left';
+
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${bgColor}}</style>
+  </head><body>
+  <div style="width:1080px;height:1350px;background:${bgColor};position:relative;overflow:hidden">
+    ${photoBg}${photoOverlay}
+    <div style="position:absolute;top:${contentTop}px;left:70px;right:70px;text-align:${textAlign};${zi}">
+      ${tagHtml}
+      <h1 style="font-family:${serif};font-size:${hs}px;font-weight:600;line-height:1.06;color:${hColor}">${hHtml}</h1>
+      ${b1Html}
+      ${b2Html}
+    </div>
+    ${extraHtml}
+    ${handleHtml}
+  </div>`;
+}
+
 // ── MAIN RENDERER DISPATCHER ───────────────────────────────────────────────────
 function renderSlide(slide,colors,fontKey){
   const vs=state.visual||'jornada';
@@ -2440,6 +2560,7 @@ function renderSlide(slide,colors,fontKey){
   if(vs==='metodo') return renderMetodo(slide,colors,fontKey);
   if(vs==='contraste') return renderContraste(slide,colors,fontKey);
   if(vs==='serif') return renderSerif(slide,colors,fontKey);
+  if(vs==='editorial_premium') return renderEditorialPremium(slide,colors,fontKey);
   const fn=MAG_RENDERERS[slide.type]||rMagCapa;
   return fn(slide,colors,fontKey);
 }
@@ -2533,6 +2654,7 @@ function parseCarrossel(raw) {
     else if (v.includes('BOLD SIGNAL') || v.includes('IMPACT')) detectedVisual = 'impact';
     else if (v.includes('DUO') || v.includes('BILINGUE') || v.includes('BILINGUAL')) detectedVisual = 'statement';
     else if (v.includes('SIMPLE STATEMENT') || v.includes('STATEMENT') || v.includes('SANS')) detectedVisual = 'statement';
+    else if (v.includes('EDITORIAL PREMIUM') || v.includes('PREMIUM')) detectedVisual = 'editorial_premium';
     else if (v.includes('EDITORIAL')) detectedVisual = 'serif';
     else if (v.includes('MAGAZINE')) detectedVisual = 'magazine';
   }
