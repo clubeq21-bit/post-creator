@@ -312,7 +312,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
       <div class="sec-title" style="margin-top:20px">Copyright (Q21 Impact)</div>
       <input class="fi" id="copyrightInput" value="© COPYRIGHT 2025" oninput="debounce(()=>updateCopyright(this.value),400)">
       <div class="sec-title" style="margin-top:20px">Status</div>
-      <div style="margin-top:4px"><div style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(63,185,80,0.1);border:1px solid rgba(63,185,80,0.25);border-radius:12px;font-size:11px;color:var(--green);font-weight:600"><span>●</span> Post Creator Q21 Pro v3.6 · Private</div></div>
+      <div style="margin-top:4px"><div style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(63,185,80,0.1);border:1px solid rgba(63,185,80,0.25);border-radius:12px;font-size:11px;color:var(--green);font-weight:600"><span>●</span> Post Creator Q21 Pro v3.6.1 · Private</div></div>
       <div style="font-size:11px;color:var(--muted);line-height:1.8;margin-top:10px">Export: PNG 1080×1350px via browser<br>Storage: localStorage</div>
     </div>
   </div>
@@ -736,6 +736,7 @@ function renderClean(s,c,fk){
   const hHtml=parseInline(brk(s.headline),c.accent);
   const b1Html=parseInline(brk(s.bloco1||''),c.accent);
   const b2Html=s.bloco2?parseInline(brk(s.bloco2),c.accent):'';
+  const extraHtml=s.extra?`<div style="position:absolute;bottom:${94-offY(s,'extra')}px;left:80px;right:80px;font-size:${sz(s,'extra',18)}px;font-weight:500;line-height:1.4;color:${ec(s,'extra',c.accent)};font-family:'Inter',sans-serif;letter-spacing:.5px;${s.image&&s.imagePos==='background'?'z-index:3':''}">${parseInline(brk(s.extra),c.accent)}</div>`:'';
   let imgHtml='';
   if(s.image&&s.imagePos==='float'){imgHtml=`<img src="${s.image}" style="position:absolute;bottom:130px;right:50px;width:380px;max-height:420px;object-fit:cover;border-radius:14px;box-shadow:0 24px 80px rgba(0,0,0,0.7)">`;}
   if(s.image&&s.imagePos==='background'){imgHtml=`<div style="position:absolute;inset:0;background:url('${s.image}') center/cover no-repeat;z-index:0"></div><div style="position:absolute;inset:0;background:rgba(0,0,0,0.55);z-index:1"></div>`;}
@@ -753,6 +754,7 @@ function renderClean(s,c,fk){
       ${b1Html?`<p style="font-size:${b1s}px;font-weight:400;line-height:1.55;color:${b1c};font-family:'Inter',sans-serif">${b1Html}</p>`:''}
       ${b2Html?`<p style="font-size:${b2s}px;font-weight:600;line-height:1.5;color:${b2c};margin-top:${32+offY(s,'bloco2')}px;font-family:'Inter',sans-serif">${b2Html}</p>`:''}
     </div>
+    ${extraHtml}
     <div style="position:absolute;bottom:50px;left:0;right:0;text-align:center;font-size:18px;color:rgba(255,255,255,0.35);font-family:'Inter',sans-serif;${s.image&&s.imagePos==='background'?'z-index:3':''}">${c.handle||'@glendonassis'}</div>
   </div>`;
 }
@@ -767,6 +769,7 @@ function renderImpact(s,c,fk){
   const hHtml=parseInline(brk(s.headline),c.accent);
   const b1Html=parseInline(brk(s.bloco1||''),c.accent);
   const b2Html=s.bloco2?parseInline(brk(s.bloco2),c.accent):'';
+  const extraHtml=s.extra?`<div style="position:absolute;bottom:${104-offY(s,'extra')}px;left:70px;right:140px;font-size:${sz(s,'extra',18)}px;font-weight:700;line-height:1.35;color:${ec(s,'extra',c.accent)};font-family:'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;z-index:2">${parseInline(brk(s.extra),c.accent)}</div>`:'';
   let imgHtml='';
   if(s.image){
     imgHtml=`<div style="position:absolute;inset:0;background:url('${s.image}') center/cover no-repeat;z-index:0"></div><div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.75) 60%);z-index:1"></div>`;
@@ -784,6 +787,7 @@ function renderImpact(s,c,fk){
       ${b1Html?`<p style="font-size:${b1s}px;font-weight:400;line-height:1.5;color:${b1c};font-family:'Inter',sans-serif">${b1Html}</p>`:''}
       ${b2Html?`<p style="font-size:${b2s}px;font-weight:700;line-height:1.4;color:${b2c};margin-top:${32+offY(s,'bloco2')}px;font-family:'Inter',sans-serif">${b2Html}</p>`:''}
     </div>
+    ${extraHtml}
     <div style="position:absolute;bottom:0;left:0;right:0;height:68px;border-top:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;padding:0 50px;z-index:2">
       <span style="font-size:14px;color:rgba(255,255,255,0.3);font-family:'Inter',sans-serif;letter-spacing:1px;text-transform:uppercase">${copyright}</span>
       <span style="font-size:14px;color:rgba(255,255,255,0.5);font-family:'Inter',sans-serif;letter-spacing:1px">${c.handle||'@glendonassis'}</span>
@@ -927,7 +931,7 @@ function renderStatement(s,c){
   const b1Top = 760 + offY(s,'bloco1');
   const b2Top = 930 + offY(s,'bloco2');
   const tagHtml = s.tag ? `<div style="position:absolute;top:60px;left:70px;font-size:13px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:#999999;font-family:'Inter',sans-serif">${s.tag}</div>` : '';
-  const extraHtml = s.extra ? `<div style="position:absolute;bottom:${90-offY(s,'extra')}px;left:70px;right:70px;font-size:${sz(s,'extra',16)}px;font-weight:500;color:#777777;font-family:'Inter',sans-serif;letter-spacing:.5px">${parseInline(s.extra,muted)}</div>` : '';
+  const extraHtml = s.extra ? `<div style="position:absolute;bottom:${90-offY(s,'extra')}px;left:70px;right:70px;font-size:${sz(s,'extra',16)}px;font-weight:500;color:${ec(s,'extra','#777777')};font-family:'Inter',sans-serif;letter-spacing:.5px">${parseInline(s.extra,muted)}</div>` : '';
 
   return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -967,7 +971,7 @@ function renderSans(s,c){
   const bloco1Top   = headlineTop - 80 + offY(s,'bloco1');
 
   const tagHtml   = s.tag   ? `<div style="position:absolute;top:60px;left:70px;font-size:13px;font-weight:500;letter-spacing:5px;text-transform:uppercase;color:#999999;font-family:'Inter',sans-serif">${s.tag}</div>` : '';
-  const extraHtml = s.extra ? `<div style="position:absolute;bottom:90px;left:70px;right:70px;font-size:16px;font-weight:400;color:#999999;font-family:'Inter',sans-serif;letter-spacing:1px">${s.extra}</div>` : '';
+  const extraHtml = s.extra ? `<div style="position:absolute;bottom:${90-offY(s,'extra')}px;left:70px;right:70px;font-size:${sz(s,'extra',16)}px;font-weight:400;color:${ec(s,'extra','#999999')};font-family:'Inter',sans-serif;letter-spacing:1px">${parseInline(brk(s.extra),grayText)}</div>` : '';
 
   return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -1184,8 +1188,7 @@ function buildTexto(){
     hd.innerHTML=`<div class="slide-badge">${String(slide.num).padStart(2,'0')}</div><div class="slide-sec-label">${SLIDE_LABELS[slide.type]||slide.type}</div><span class="chev">›</span>`;
     hd.onclick=()=>toggleSec(slide.num);sec.appendChild(hd);
     const body=document.createElement('div');body.className='slide-sec-body';body.id=`body-${slide.num}`;
-    const keys=['tag','headline','bloco1','bloco2'];
-    if(['dados','cenarios'].includes(slide.type))keys.push('extra');
+    const keys=['tag','headline','bloco1','bloco2','extra'];
     keys.forEach(key=>{
       const f=FIELDS[key];const wdiv=document.createElement('div');
       wdiv.innerHTML=`<div class="fl">${f.label}</div>`;
@@ -1215,8 +1218,7 @@ function buildTexto(){
     // Tamanhos
     const szSec=document.createElement('div');szSec.className='el-section';
     szSec.innerHTML='<div class="el-section-title">Tamanho dos elementos</div>';
-    const szFields=[['headline','Headline',14,160],['bloco1','Bloco 1',14,160],['bloco2','Bloco 2',14,160]];
-    if(['dados','cenarios'].includes(slide.type))szFields.push(['extra','Extra',14,100]);
+    const szFields=[['headline','Headline',14,160],['bloco1','Bloco 1',14,160],['bloco2','Bloco 2',14,160],['extra','Extra',10,100]];
     szFields.forEach(([elName,lbl,min,max])=>{
       const dv=(slide.sizes&&slide.sizes[elName])||40;
       const row=document.createElement('div');row.className='sz-row';
@@ -1227,8 +1229,7 @@ function buildTexto(){
     // Posição vertical
     const posSec=document.createElement('div');posSec.className='el-section';
     posSec.innerHTML='<div class="el-section-title">Posição vertical</div>';
-    const posFields=[['headline','Headline'],['bloco1','Bloco 1'],['bloco2','Bloco 2']];
-    if(['dados','cenarios'].includes(slide.type))posFields.push(['extra','Extra']);
+    const posFields=[['headline','Headline'],['bloco1','Bloco 1'],['bloco2','Bloco 2'],['extra','Extra']];
     posFields.forEach(([elName,lbl])=>{
       const dv=(slide.offsets&&slide.offsets[elName])||0;
       const row=document.createElement('div');row.className='sz-row';
@@ -1239,7 +1240,7 @@ function buildTexto(){
     // Cores elementos
     const ecSec=document.createElement('div');ecSec.className='el-section';
     ecSec.innerHTML='<div class="el-section-title">Cor dos elementos</div>';
-    [['headline','Headline'],['bloco1','Bloco 1'],['bloco2','Bloco 2']].forEach(([elName,lbl])=>{
+    [['headline','Headline'],['bloco1','Bloco 1'],['bloco2','Bloco 2'],['extra','Extra']].forEach(([elName,lbl])=>{
       const curV=(slide.el_colors&&slide.el_colors[elName])||'#C9A96E';
       const row=document.createElement('div');row.className='ec-row';
       row.innerHTML=`<div class="ec-sw" id="ecsw-${slide.num}-${elName}" style="background:${curV}"><input type="color" value="${curV}" data-num="${slide.num}" data-el="${elName}" oninput="onElColorChange(this)"></div><span class="ec-lbl">${lbl}</span><button class="btn-ec-reset" onclick="resetElColor(${slide.num},'${elName}')">Reset</button>`;
@@ -1262,7 +1263,7 @@ function applySlide(num){
 function onOffsetChange(el){
   const num=parseInt(el.dataset.num),elName=el.dataset.el,val=parseInt(el.value);
   const sl=state.slides.find(s=>s.num===num);if(!sl)return;
-  if(!sl.offsets)sl.offsets={headline:0,bloco1:0,bloco2:0};
+  if(!sl.offsets)sl.offsets={headline:0,bloco1:0,bloco2:0,extra:0};
   sl.offsets[elName]=val;
   const lbl=document.getElementById(`pv-${num}-${elName}`);
   if(lbl)lbl.textContent=(val>0?'+':'')+val+'px';
@@ -1710,15 +1711,11 @@ function setMobileEditorTab(tab){
 }
 
 function mobileEditableKeys(slide){
-  const keys=['tag','headline','bloco1','bloco2'];
-  if(['dados','cenarios'].includes(slide.type))keys.push('extra');
-  return keys;
+  return ['tag','headline','bloco1','bloco2','extra'];
 }
 
 function mobileElementKeys(slide){
-  const keys=['headline','bloco1','bloco2'];
-  if(['dados','cenarios'].includes(slide.type))keys.push('extra');
-  return keys;
+  return ['headline','bloco1','bloco2','extra'];
 }
 
 function mobileLabel(key){
@@ -1745,7 +1742,7 @@ function renderMobileEditorBody(slide){
     return;
   }
   if(mobileEditorTab==='color'){
-    body.innerHTML=`<div class="mobile-color-grid">${['headline','bloco1','bloco2'].map(key=>{
+    body.innerHTML=`<div class="mobile-color-grid">${['headline','bloco1','bloco2','extra'].map(key=>{
       const val=(slide.el_colors&&slide.el_colors[key])||state.colors.accent||'#C9A96E';
       return `<div class="mobile-color-card"><label>${mobileLabel(key)}</label><input type="color" value="${val}" oninput="mobileColorChange('${key}',this.value)"></div>`;
     }).join('')}</div><button class="mobile-action-btn" style="width:100%;margin-top:12px" onclick="mobileResetColors()">Resetar cores do slide</button>`;
@@ -1821,7 +1818,7 @@ function mobileColorChange(key,value){
 
 function mobileResetColors(){
   const slide=getMobileSlide(mobileSelectedSlide);if(!slide)return;
-  slide.el_colors={headline:'',bloco1:'',bloco2:''};
+  slide.el_colors={headline:'',bloco1:'',bloco2:'',extra:''};
   saveState();reloadPreview(slide.num);renderMobileEditorBody(slide);
 }
 
