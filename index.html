@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Post Creator · @glendonassis</title>
+<title>Post Creator · Q21 Hub</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%23C9A96E'/><stop offset='100%25' stop-color='%23C1622A'/></linearGradient></defs><rect width='32' height='32' rx='7' fill='%230D1117'/><rect width='32' height='32' rx='7' fill='url(%23g)' opacity='0.9'/><text x='16' y='22' text-anchor='middle' font-family='sans-serif' font-weight='900' font-size='14' fill='%230D1117'>PC</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&family=DM+Sans:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Oswald:wght@400;500;600;700&family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#0D1117;--panel:#161B22;--panel2:#1C2230;--panel3:#21283A;--gold:#C9A96E;--gold2:#E8C98A;--red:#C1622A;--green:#3FB950;--text:#E6EDF3;--muted:#7D8590;--border:rgba(201,169,110,0.12);--border2:rgba(230,237,243,0.08);--radius:6px}
@@ -99,6 +99,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .font-sample{font-size:22px;color:var(--text);opacity:0.7;line-height:1.2}
 .font-check{width:16px;height:16px;border:1.5px solid var(--border2);border-radius:50%;float:right;margin-top:-30px;transition:all .15s}
 .font-card.sel .font-check{background:var(--gold);border-color:var(--gold)}
+.font-select-wrap{padding:0 12px 10px}.font-select{width:100%;background:var(--panel3);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:'Inter',sans-serif;font-size:13px;padding:10px 12px;outline:none;cursor:pointer}.font-select:focus{border-color:var(--gold)}.font-preview-box{margin:10px 12px 8px;padding:16px;border:1px solid var(--border2);border-radius:8px;background:rgba(255,255,255,0.03)}.font-preview-label{font-size:10px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}.font-preview-text{font-size:26px;line-height:1.15;color:var(--text)}
 .canvas{background:var(--bg);overflow-y:auto;padding:24px;scrollbar-width:thin;scrollbar-color:var(--border2) transparent}
 .canvas::-webkit-scrollbar{width:6px}.canvas::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
 .canvas-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border2)}
@@ -261,18 +262,14 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 <div class="topbar">
   <div class="top-brand">
     <div class="top-logo">PC</div>
-    <div><div class="top-title">Post Creator</div><div class="top-sub">@glendonassis</div></div>
+    <div><div class="top-title">Post Creator</div><div class="top-sub">Q21 Hub · Apps e Automações</div></div>
   </div>
   <div class="top-tabs">
     <div class="top-tab active" data-tab="texto" onclick="switchTab(this)">≡ TEXTO</div>
     <div class="top-sep"></div>
-    <div class="top-tab" data-tab="visual" onclick="switchTab(this)">◈ VISUAL</div>
+    <div class="top-tab" data-tab="visual" onclick="switchTab(this)">◈ MODELOS</div>
     <div class="top-sep"></div>
-    <div class="top-tab" data-tab="fontes" onclick="switchTab(this)">T FONTES</div>
-    <div class="top-sep"></div>
-    <div class="top-tab" data-tab="cores" onclick="switchTab(this)">◑ CORES</div>
-    <div class="top-sep"></div>
-    <div class="top-tab" data-tab="ajustes" onclick="switchTab(this)">⚙ AJUSTES</div>
+    <div class="top-tab" data-tab="idvisual" onclick="switchTab(this)">◇ ID VISUAL</div>
   </div>
   <div class="top-right">
     <button class="btn-colar" onclick="openPasteModal()">📋 Colar Carrossel</button>
@@ -293,38 +290,34 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
       <div id="styleCards"></div>
     </div>
   </div>
-  <div class="tab-content" id="tab-fontes">
+  <div class="tab-content" id="tab-idvisual">
     <div style="padding:16px 12px 8px">
-      <div class="sec-title">Família Tipográfica</div>
-      <div style="font-size:11px;color:var(--muted);margin-bottom:8px;line-height:1.6">Aplica nos estilos Magazine Dark e Case Clean. Impact Bold e Sans Statement usam Inter fixo.</div>
+      <div class="sec-title">ID Visual</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:16px;line-height:1.6">Configure aqui a base visual do carrossel: fontes, cores, handle, copyright e ajustes gerais.</div>
+      <div class="sec-title">Fontes</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:8px;line-height:1.6">Escolha uma fonte base para a identidade visual. Alguns modelos podem preservar fontes específicas para manter o layout.</div>
       <div id="fontCards"></div>
-    </div>
-  </div>
-  <div class="tab-content" id="tab-cores">
-    <div class="sec-block">
-      <div class="sec-title">Editar Cores</div>
+      <div class="sec-title" style="margin-top:22px">Cores</div>
       <div class="cor-row"><div class="cor-sw" id="sw-bg" style="background:#1A1510"><input type="color" value="#1A1510" id="pk-bg" oninput="previewCor('bg',this.value)"></div><div style="flex:1"><div class="cor-nm">Background</div><div class="cor-hx" id="hx-bg">#1A1510</div></div><button class="btn-ac" onclick="aplicarCor('bg')">+ Aplicar</button></div>
       <div class="cor-row"><div class="cor-sw" id="sw-text" style="background:#F5EFE6"><input type="color" value="#F5EFE6" id="pk-text" oninput="previewCor('text',this.value)"></div><div style="flex:1"><div class="cor-nm">Texto</div><div class="cor-hx" id="hx-text">#F5EFE6</div></div><button class="btn-ac" onclick="aplicarCor('text')">+ Aplicar</button></div>
       <div class="cor-row"><div class="cor-sw" id="sw-accent" style="background:#C9A96E"><input type="color" value="#C9A96E" id="pk-accent" oninput="previewCor('accent',this.value)"></div><div style="flex:1"><div class="cor-nm">Destaque</div><div class="cor-hx" id="hx-accent">#C9A96E</div></div><button class="btn-ac" onclick="aplicarCor('accent')">+ Aplicar</button></div>
       <div class="cor-row"><div class="cor-sw" id="sw-accent2" style="background:#C1622A"><input type="color" value="#C1622A" id="pk-accent2" oninput="previewCor('accent2',this.value)"></div><div style="flex:1"><div class="cor-nm">Destaque 2</div><div class="cor-hx" id="hx-accent2">#C1622A</div></div><button class="btn-ac" onclick="aplicarCor('accent2')">+ Aplicar</button></div>
       <button class="btn-todas" onclick="aplicarTodas()">Aplicar Todas as Cores</button>
       <div class="sec-title" style="margin-top:20px">Paletas Sugeridas</div>
-      <div class="pal-row" onclick="aplicarPaleta('#1A1510','#F5EFE6','#C9A96E','#C1622A')"><div class="psw" style="background:#1A1510"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#C9A96E"></div><div class="plbl">Magazine Dark</div></div>
-      <div class="pal-row" onclick="aplicarPaleta('#2B2B2B','#FFFFFF','#C9A96E','#C9A96E')"><div class="psw" style="background:#2B2B2B"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#C9A96E"></div><div class="plbl">Case Clean</div></div>
-      <div class="pal-row" onclick="aplicarPaleta('#0A0A0A','#FFFFFF','#FFFFFF','#AAAAAA')"><div class="psw" style="background:#0A0A0A"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#FFFFFF"></div><div class="plbl">Impact Bold</div></div>
-      <div class="pal-row" onclick="aplicarPaleta('#F5EFE6','#1A1510','#C1622A','#A07840')"><div class="psw" style="background:#F5EFE6"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#C1622A"></div><div class="plbl">Editorial Claro</div></div>
-      <div class="pal-row" onclick="aplicarPaleta('#1B1A2E','#E8E6F0','#7C6FCD','#E85D75')"><div class="psw" style="background:#1B1A2E"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#7C6FCD"></div><div class="plbl">Roxo Premium</div></div>
-      <div class="pal-row" onclick="aplicarPaleta('#EAEAE4','#1A1A1A','#AAAAAA','#888888')"><div class="psw" style="background:#EAEAE4"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#1A1A1A"></div><div class="plbl">Sans Statement</div></div>
-    </div>
-  </div>
-  <div class="tab-content" id="tab-ajustes">
-    <div class="sec-block">
-      <div class="sec-title">Handle</div>
-      <input class="fi" id="handleInput" value="@glendonassis" oninput="debounce(()=>updateHandle(this.value),400)">
-      <div class="sec-title" style="margin-top:20px">Copyright (Impact Bold)</div>
+      <div class="pal-row" onclick="aplicarPaleta('#F7F4ED','#181818','#C9A96E','#6B7280')"><div class="psw" style="background:#F7F4ED"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#C9A96E"></div><div class="plbl">Passo a Passo</div></div>
+      <div class="pal-row" onclick="aplicarPaleta('#FFFDF7','#1F2937','#16A34A','#64748B')"><div class="psw" style="background:#FFFDF7"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#16A34A"></div><div class="plbl">Checklist</div></div>
+      <div class="pal-row" onclick="aplicarPaleta('#111827','#F9FAFB','#F59E0B','#EF4444')"><div class="psw" style="background:#111827"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#F59E0B"></div><div class="plbl">Mito ou Fato</div></div>
+      <div class="pal-row" onclick="aplicarPaleta('#0B1220','#E5E7EB','#38BDF8','#94A3B8')"><div class="psw" style="background:#0B1220"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#38BDF8"></div><div class="plbl">Dados</div></div>
+      <div class="pal-row" onclick="aplicarPaleta('#F8FAFC','#0F172A','#2563EB','#94A3B8')"><div class="psw" style="background:#F8FAFC"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#2563EB"></div><div class="plbl">Antes e Depois</div></div>
+      <div class="pal-row" onclick="aplicarPaleta('#F4EFE6','#1A1209','#C9A961','#7A5230')"><div class="psw" style="background:#F4EFE6"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#7A5230"></div><div class="plbl">Editorial Q21</div></div>
+      <div class="pal-row" onclick="aplicarPaleta('#0F1115','#FFFFFF','#F5C542','#9CA3AF')"><div class="psw" style="background:#0F1115"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#F5C542"></div><div class="plbl">Revista Q21</div></div>
+      <div class="sec-title" style="margin-top:22px">Ajustes</div>
+      <div class="sec-title" style="margin-top:10px">Handle</div>
+      <input class="fi" id="handleInput" value="@seuperfil" oninput="debounce(()=>updateHandle(this.value),400)">
+      <div class="sec-title" style="margin-top:20px">Copyright / Rodapé</div>
       <input class="fi" id="copyrightInput" value="© COPYRIGHT 2025" oninput="debounce(()=>updateCopyright(this.value),400)">
       <div class="sec-title" style="margin-top:20px">Status</div>
-      <div style="margin-top:4px"><div style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(63,185,80,0.1);border:1px solid rgba(63,185,80,0.25);border-radius:12px;font-size:11px;color:var(--green);font-weight:600"><span>●</span> Post Creator v3 · GitHub Pages</div></div>
+      <div style="margin-top:4px"><div style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(63,185,80,0.1);border:1px solid rgba(63,185,80,0.25);border-radius:12px;font-size:11px;color:var(--green);font-weight:600"><span>●</span> Post Creator Student v4.4</div></div>
       <div style="font-size:11px;color:var(--muted);line-height:1.8;margin-top:10px">Export: PNG 1080×1350px via browser<br>Storage: localStorage</div>
     </div>
   </div>
@@ -332,7 +325,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 <div class="canvas">
   <div class="canvas-header">
     <div class="canvas-title" id="canvasTitle">9 slides</div>
-    <div class="canvas-info"><div class="dot"></div><span id="canvasInfo">Magazine Dark</span></div>
+    <div class="canvas-info"><div class="dot"></div><span id="canvasInfo">Passo a Passo</span></div>
   </div>
   <div class="slides-grid" id="slidesGrid"></div>
 </div>
@@ -353,7 +346,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 <div class="paste-modal-bg" id="pasteBg">
   <div class="paste-modal">
     <div class="paste-modal-title">📋 Colar Carrossel</div>
-    <div class="paste-modal-sub">Cole o output do seu agente GPT abaixo. O app detecta automaticamente o visual escolhido (Magazine Dark, Case Clean ou Impact Bold), o formato narrativo e preenche todos os 9 slides.</div>
+    <div class="paste-modal-sub">Cole o output do seu agente GPT abaixo. O app detecta automaticamente o modelo visual escolhido, o formato narrativo e preenche todos os 9 slides.</div>
     <textarea class="paste-ta" id="pasteTa" placeholder="Cole aqui o output completo do agente GPT..."></textarea>
     <div class="paste-footer">
       <div class="paste-info" id="pasteInfo">Aguardando conteúdo...</div>
@@ -426,44 +419,69 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ── VISUAL STYLES ──────────────────────────────────────────────────────────────
 const VISUAL_STYLES = {
-  magazine: {
-    label: 'Magazine Dark',
-    desc: 'Linhas editoriais, serif, dourado. Tom de revista premium.',
-    bg: '#1A1510', text: '#F5EFE6', accent: '#C9A96E', accent2: '#C1622A',
-    preview: {bg:'#1A1510', accent:'#C9A96E', label:'Aa'}
+  passo: {
+    label: 'Passo a Passo',
+    desc: 'Modelo didático com numeração grande, ritmo de tutorial e muito espaço em branco.',
+    bg: '#F7F4ED', text: '#181818', accent: '#C9A96E', accent2: '#6B7280',
+    preview: {bg:'#F7F4ED', accent:'#C9A96E', label:'01'}
   },
-  clean: {
-    label: 'Case Clean',
-    desc: 'Fundo cinza, Inter Bold, texto centrado. Palavras-chave coloridas inline.',
-    bg: '#2B2B2B', text: '#FFFFFF', accent: '#C9A96E', accent2: '#C9A96E',
-    preview: {bg:'#2B2B2B', accent:'#C9A96E', label:'Aa'}
+  checklist: {
+    label: 'Checklist',
+    desc: 'Modelo simples, autêntico e fácil de salvar, inspirado em notas e listas práticas.',
+    bg: '#FFFDF7', text: '#1F2937', accent: '#16A34A', accent2: '#64748B',
+    preview: {bg:'#FFFDF7', accent:'#16A34A', label:'✓'}
   },
-  impact: {
-    label: 'Impact Bold',
-    desc: 'Fundo preto, Inter Black extragrande, imagem de fundo na capa. Rodapé com copyright.',
-    bg: '#0A0A0A', text: '#FFFFFF', accent: '#FFFFFF', accent2: '#AAAAAA',
-    preview: {bg:'#0A0A0A', accent:'#FFFFFF', label:'Aa'}
+  mito: {
+    label: 'Mito ou Fato',
+    desc: 'Modelo comparativo para quebrar crenças, gerar comentários e construir autoridade.',
+    bg: '#111827', text: '#F9FAFB', accent: '#F59E0B', accent2: '#EF4444',
+    preview: {bg:'#111827', accent:'#F59E0B', label:'M/F'}
+  },
+  dados: {
+    label: 'Dados',
+    desc: 'Modelo com estética analítica para números, insights, gráficos simples e provas.',
+    bg: '#0B1220', text: '#E5E7EB', accent: '#38BDF8', accent2: '#94A3B8',
+    preview: {bg:'#0B1220', accent:'#38BDF8', label:'%'}
+  },
+  antesdepois: {
+    label: 'Antes e Depois',
+    desc: 'Modelo de transformação visual para mostrar mudança, contraste e prova social.',
+    bg: '#F8FAFC', text: '#0F172A', accent: '#2563EB', accent2: '#94A3B8',
+    preview: {bg:'#F8FAFC', accent:'#2563EB', label:'A/D'}
   },
   serif: {
-    label: 'Editorial Serif',
-    desc: 'Cormorant Garamond, fundo areia e marrom alternados. Tom editorial sofisticado.',
+    label: 'Editorial Q21',
+    desc: 'Modelo com estética editorial para conteúdos mais sofisticados.',
     bg: '#F4EFE6', text: '#1A1209', accent: '#C9A961', accent2: '#7A5230',
-    preview: {bg:'#F4EFE6', accent:'#7A5230', label:'Aa'}
+    preview: {bg:'#F4EFE6', accent:'#7A5230', label:'Ed'}
   },
-  sans: {
-    label: 'Sans Statement',
-    desc: 'Inter Bold enorme, fundo cinza quente, texto em dois tons: preto + cinza.',
-    bg: '#EAEAE4', text: '#1A1A1A', accent: '#AAAAAA', accent2: '#888888',
-    preview: {bg:'#EAEAE4', accent:'#1A1A1A', label:'Aa'}
+  magazine: {
+    label: 'Revista Q21',
+    desc: 'Modelo moderno e escuro com contraste forte e aparência de revista digital.',
+    bg: '#0F1115', text: '#FFFFFF', accent: '#F5C542', accent2: '#9CA3AF',
+    preview: {bg:'#0F1115', accent:'#F5C542', label:'Mg'}
   }
 };
 
 // ── FONTS ──────────────────────────────────────────────────────────────────────
 const FONTS = {
-  playfair:  {label:'Playfair Display',  desc:'Autoridade clássica. Tom editorial premium.', family:"'Playfair Display', Georgia, serif", url:'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap'},
-  cormorant: {label:'Cormorant Garamond',desc:'Elegante e sofisticada. Tom literário.',       family:"'Cormorant Garamond', Georgia, serif", url:'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&display=swap'},
-  dm_serif:  {label:'DM Serif Display',  desc:'Moderna e impactante. Tom de revista.',         family:"'DM Serif Display', Georgia, serif", url:'https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap'},
-  libre:     {label:'Libre Baskerville', desc:'Sólida e séria. Tom acadêmico.',                family:"'Libre Baskerville', Georgia, serif", url:'https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap'},
+  inter:     {label:'Inter',              desc:'Limpa, moderna e segura para qualquer conteúdo.',        family:"'Inter', Arial, sans-serif"},
+  montserrat:{label:'Montserrat',         desc:'Forte, popular e ótima para títulos.',                  family:"'Montserrat', Arial, sans-serif"},
+  poppins:   {label:'Poppins',            desc:'Amigável, digital e fácil de ler.',                     family:"'Poppins', Arial, sans-serif"},
+  dm_sans:   {label:'DM Sans',            desc:'Minimalista, elegante e muito versátil.',               family:"'DM Sans', Arial, sans-serif"},
+  manrope:   {label:'Manrope',            desc:'Premium, limpa e contemporânea.',                       family:"'Manrope', Arial, sans-serif"},
+  sora:      {label:'Sora',               desc:'Tecnológica, precisa e moderna.',                       family:"'Sora', Arial, sans-serif"},
+  space:     {label:'Space Grotesk',      desc:'Criativa, atual e com presença.',                       family:"'Space Grotesk', Arial, sans-serif"},
+  outfit:    {label:'Outfit',             desc:'Leve, moderna e boa para carrosséis.',                  family:"'Outfit', Arial, sans-serif"},
+  jakarta:   {label:'Plus Jakarta Sans',  desc:'Profissional, limpa e sofisticada.',                    family:"'Plus Jakarta Sans', Arial, sans-serif"},
+  oswald:    {label:'Oswald',             desc:'Condensada, forte e boa para impacto.',                 family:"'Oswald', Arial, sans-serif"},
+  bebas:     {label:'Bebas Neue',         desc:'Alta, impactante e excelente para headlines curtas.',   family:"'Bebas Neue', Arial, sans-serif"},
+  playfair:  {label:'Playfair Display',   desc:'Autoridade clássica. Tom editorial premium.',           family:"'Playfair Display', Georgia, serif"},
+  cormorant: {label:'Cormorant Garamond', desc:'Elegante e sofisticada. Tom literário.',                family:"'Cormorant Garamond', Georgia, serif"},
+  dm_serif:  {label:'DM Serif Display',   desc:'Moderna e impactante. Tom de revista.',                 family:"'DM Serif Display', Georgia, serif"},
+  libre:     {label:'Libre Baskerville',  desc:'Sólida e séria. Tom acadêmico.',                        family:"'Libre Baskerville', Georgia, serif"},
+  lora:      {label:'Lora',               desc:'Editorial suave e muito legível.',                      family:"'Lora', Georgia, serif"},
+  merri:     {label:'Merriweather',       desc:'Serifada, confiável e boa para leitura.',               family:"'Merriweather', Georgia, serif"},
 };
 
 const TEMPLATES_META = {
@@ -528,6 +546,1414 @@ const TEMPLATES = {
   ]},
 };
 
+
+// ── STUDENT MODEL PRESETS ─────────────────────────────────────────────────────
+const APP_VERSION = 'student-v4.4-presets';
+const STORAGE_KEY = 'pc_state_student_v4_4';
+const BASE_KEY_PREFIX = 'pc_base_student_v4_4_';
+const VISUAL_PRESETS = {
+  "passo": {
+    "font": "montserrat",
+    "colors": {
+      "bg": "#F7F4ED",
+      "text": "#181818",
+      "accent": "#C9A96E",
+      "accent2": "#6B7280"
+    },
+    "slides": [
+      {
+        "num": 1,
+        "type": "capa",
+        "tag": "Guia rápido",
+        "headline": "7 PASSOS\nPARA SAIR\nDO ZERO",
+        "bloco1": "Um roteiro simples para transformar uma ideia solta em ação concreta.",
+        "bloco2": "Use cada slide como uma etapa prática do processo.",
+        "extra": "Salve para revisar depois.",
+        "sizes": {
+          "headline": 72,
+          "bloco1": 30,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 2,
+        "type": "contexto",
+        "tag": "Passo 01",
+        "headline": "DEFINA\nO RESULTADO\nFINAL",
+        "bloco1": "Antes de começar, escreva exatamente o que você quer construir.",
+        "bloco2": "Sem destino claro, qualquer tarefa parece prioridade.",
+        "extra": "Clareza vem antes de velocidade.",
+        "sizes": {
+          "headline": 68,
+          "bloco1": 30,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 3,
+        "type": "contexto",
+        "tag": "Passo 02",
+        "headline": "ENTENDA\nQUEM VOCÊ\nQUER AJUDAR",
+        "bloco1": "Liste as dores, desejos e dúvidas reais da pessoa que vai consumir seu conteúdo.",
+        "bloco2": "Quanto mais específico o público, mais forte a mensagem.",
+        "extra": "Fale com uma pessoa, não com uma multidão.",
+        "sizes": {
+          "headline": 64,
+          "bloco1": 29,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 4,
+        "type": "virada",
+        "tag": "Passo 03",
+        "headline": "ESCOLHA\nUMA ÚNICA\nIDEIA CENTRAL",
+        "bloco1": "Um carrossel forte não tenta explicar tudo. Ele conduz uma ideia com profundidade.",
+        "bloco2": "Uma ideia clara gera mais salvamentos do que dez ideias soltas.",
+        "extra": "Menos informação. Mais direção.",
+        "sizes": {
+          "headline": 66,
+          "bloco1": 29,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 5,
+        "type": "dois_col",
+        "tag": "Passo 04",
+        "headline": "TRANSFORME\nEM ETAPAS",
+        "bloco1": "Comece com:\nContexto\nProblema\nVirada",
+        "bloco2": "Finalize com:\nExemplo\nAplicação\nCTA",
+        "extra": "Estrutura cria retenção.",
+        "sizes": {
+          "headline": 66,
+          "bloco1": 29,
+          "bloco2": 29,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 6,
+        "type": "cenarios",
+        "tag": "Passo 05",
+        "headline": "DEIXE\nO TEXTO\nRESPIRAR",
+        "bloco1": "Evite blocos longos. Quebre o conteúdo em frases curtas e fáceis de ler.",
+        "bloco2": "O leitor precisa entender antes de decidir continuar.",
+        "extra": "Design também é clareza.",
+        "sizes": {
+          "headline": 68,
+          "bloco1": 30,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 7,
+        "type": "sintese",
+        "tag": "Passo 06",
+        "headline": "CRIE\nUMA VIRADA\nNO MEIO",
+        "bloco1": "Mostre uma crença comum e depois revele uma visão mais madura.",
+        "bloco2": "É nessa virada que o conteúdo deixa de ser óbvio.",
+        "extra": "A surpresa sustenta o swipe.",
+        "sizes": {
+          "headline": 68,
+          "bloco1": 30,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 8,
+        "type": "aplicacao",
+        "tag": "Passo 07",
+        "headline": "TERMINE\nCOM UMA\nAÇÃO",
+        "bloco1": "Não encerre apenas com informação. Mostre o próximo passo.",
+        "bloco2": "Salvar, comentar, aplicar ou enviar para alguém.",
+        "extra": "Conteúdo bom move comportamento.",
+        "sizes": {
+          "headline": 70,
+          "bloco1": 30,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 9,
+        "type": "cta",
+        "tag": "Agora é sua vez",
+        "headline": "SALVE\nESSE\nGUIA",
+        "bloco1": "Use este modelo sempre que precisar transformar uma ideia em carrossel.",
+        "bloco2": "Depois adapte para sua voz, sua oferta e sua identidade visual.",
+        "extra": "Post Creator · Q21 Hub",
+        "sizes": {
+          "headline": 82,
+          "bloco1": 29,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      }
+    ]
+  },
+  "checklist": {
+    "font": "dm_sans",
+    "colors": {
+      "bg": "#FFFDF7",
+      "text": "#1F2937",
+      "accent": "#16A34A",
+      "accent2": "#64748B"
+    },
+    "slides": [
+      {
+        "num": 1,
+        "type": "capa",
+        "tag": "Checklist",
+        "headline": "ANTES DE\nPUBLICAR\nCONFIRA ISSO",
+        "bloco1": "Gancho claro\nTexto fácil de ler\nUma ideia por slide",
+        "bloco2": "CTA simples\nVisual limpo\nPromessa honesta",
+        "extra": "Checklist rápido para posts melhores.",
+        "sizes": {
+          "headline": 62,
+          "bloco1": 30,
+          "bloco2": 27,
+          "extra": 17
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 2,
+        "type": "contexto",
+        "tag": "Clareza",
+        "headline": "A IDEIA\nESTÁ FÁCIL\nDE ENTENDER?",
+        "bloco1": "O leitor precisa saber em poucos segundos o que vai ganhar ao continuar.",
+        "bloco2": "Se ele precisa pensar demais, ele sai.",
+        "extra": "Clareza segura atenção.",
+        "sizes": {
+          "headline": 58,
+          "bloco1": 29,
+          "bloco2": 27,
+          "extra": 17
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 3,
+        "type": "dados",
+        "tag": "Hook",
+        "headline": "O PRIMEIRO\nSLIDE GERA\nCURIOSIDADE?",
+        "bloco1": "Promessa específica\nTensão leve\nBenefício claro",
+        "bloco2": "Evite títulos genéricos\nEvite explicar tudo\nAbra uma lacuna",
+        "extra": "O hook vende o próximo slide.",
+        "sizes": {
+          "headline": 56,
+          "bloco1": 29,
+          "bloco2": 26,
+          "extra": 17
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 4,
+        "type": "virada",
+        "tag": "Leitura",
+        "headline": "O TEXTO\nESTÁ CURTO\nO SUFICIENTE?",
+        "bloco1": "Frases curtas\nPoucas linhas\nRitmo visual",
+        "bloco2": "Nada de parágrafos grandes\nNada de excesso técnico\nNada de poluição",
+        "extra": "Menos peso. Mais leitura.",
+        "sizes": {
+          "headline": 56,
+          "bloco1": 29,
+          "bloco2": 26,
+          "extra": 17
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 5,
+        "type": "dois_col",
+        "tag": "Design",
+        "headline": "O VISUAL\nAJUDA OU\nATRAPALHA?",
+        "bloco1": "Confirme:\nContraste bom\nEspaço em branco\nHierarquia clara",
+        "bloco2": "Evite:\nTexto colado\nCores demais\nFontes confusas",
+        "extra": "Design deve servir a mensagem.",
+        "sizes": {
+          "headline": 58,
+          "bloco1": 28,
+          "bloco2": 26,
+          "extra": 17
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 6,
+        "type": "cenarios",
+        "tag": "Valor",
+        "headline": "CADA SLIDE\nENTREGA\nALGO?",
+        "bloco1": "O leitor precisa sentir avanço a cada swipe.",
+        "bloco2": "Se um slide não acrescenta, corte ou reescreva.",
+        "extra": "Retenção nasce da progressão.",
+        "sizes": {
+          "headline": 58,
+          "bloco1": 29,
+          "bloco2": 27,
+          "extra": 17
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 7,
+        "type": "sintese",
+        "tag": "CTA",
+        "headline": "O FINAL\nDIZ O QUE\nFAZER?",
+        "bloco1": "Salvar\nComentar\nCompartilhar",
+        "bloco2": "Escolha uma ação principal. Muitas CTAs confundem.",
+        "extra": "Uma chamada clara funciona melhor.",
+        "sizes": {
+          "headline": 60,
+          "bloco1": 30,
+          "bloco2": 27,
+          "extra": 17
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 8,
+        "type": "aplicacao",
+        "tag": "Revisão",
+        "headline": "ANTES DE\nPOSTAR",
+        "bloco1": "Leia em voz alta\nVeja no celular\nCorte o excesso",
+        "bloco2": "Se ficar claro em 10 segundos, está no caminho certo.",
+        "extra": "O simples bem feito performa.",
+        "sizes": {
+          "headline": 64,
+          "bloco1": 30,
+          "bloco2": 27,
+          "extra": 17
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 9,
+        "type": "cta",
+        "tag": "Salve",
+        "headline": "USE ESSE\nCHECKLIST\nHOJE",
+        "bloco1": "Antes do próximo post\nAntes de publicar\nAntes de enviar para aprovação",
+        "bloco2": "Esse ritual evita conteúdo bonito que não comunica.",
+        "extra": "Post Creator · Q21 Hub",
+        "sizes": {
+          "headline": 60,
+          "bloco1": 29,
+          "bloco2": 26,
+          "extra": 17
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      }
+    ]
+  },
+  "mito": {
+    "font": "montserrat",
+    "colors": {
+      "bg": "#111827",
+      "text": "#F9FAFB",
+      "accent": "#F59E0B",
+      "accent2": "#EF4444"
+    },
+    "slides": [
+      {
+        "num": 1,
+        "type": "capa",
+        "tag": "Mito ou fato",
+        "headline": "O QUE VOCÊ\nACREDITA\nPODE ESTAR\nTE TRAVANDO",
+        "bloco1": "Mito: postar mais sempre resolve.",
+        "bloco2": "Fato: clareza faz a pessoa certa entender mais rápido.",
+        "extra": "Quantidade sem clareza vira ruído.",
+        "sizes": {
+          "headline": 54,
+          "bloco1": 34,
+          "bloco2": 34,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 2,
+        "type": "contexto",
+        "tag": "Crença 01",
+        "headline": "POSTAR TODO\nDIA É O MAIS\nIMPORTANTE?",
+        "bloco1": "Mito: frequência sozinha resolve crescimento.",
+        "bloco2": "Fato: consistência precisa de mensagem, oferta e direção.",
+        "extra": "Ritmo sem estratégia cansa.",
+        "sizes": {
+          "headline": 54,
+          "bloco1": 34,
+          "bloco2": 34,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 3,
+        "type": "dados",
+        "tag": "Crença 02",
+        "headline": "CONTEÚDO\nBONITO\nVENDE?",
+        "bloco1": "Mito: design premium compensa uma mensagem fraca.",
+        "bloco2": "Fato: design chama atenção, mas clareza gera confiança.",
+        "extra": "Beleza abre a porta. Clareza mantém a pessoa dentro.",
+        "sizes": {
+          "headline": 56,
+          "bloco1": 34,
+          "bloco2": 34,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 4,
+        "type": "virada",
+        "tag": "Crença 03",
+        "headline": "VOCÊ PRECISA\nAGRADAR TODO\nMUNDO?",
+        "bloco1": "Mito: quanto mais amplo, mais chance de vender.",
+        "bloco2": "Fato: uma mensagem específica atrai quem realmente compra.",
+        "extra": "Posicionamento também é renúncia.",
+        "sizes": {
+          "headline": 54,
+          "bloco1": 34,
+          "bloco2": 34,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 5,
+        "type": "dois_col",
+        "tag": "Crença 04",
+        "headline": "VENDER\nÉ FORÇAR?",
+        "bloco1": "Mito: vender é pressionar alguém a comprar.",
+        "bloco2": "Fato: vender bem é mostrar uma solução com clareza e respeito.",
+        "extra": "A ética está na intenção e na entrega.",
+        "sizes": {
+          "headline": 58,
+          "bloco1": 34,
+          "bloco2": 34,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 6,
+        "type": "cenarios",
+        "tag": "Crença 05",
+        "headline": "SÓ FUNCIONA\nPARA QUEM JÁ\nTEM AUDIÊNCIA?",
+        "bloco1": "Mito: audiência grande é requisito para começar.",
+        "bloco2": "Fato: autoridade começa quando poucas pessoas certas confiam em você.",
+        "extra": "Comece pequeno, mas comece certo.",
+        "sizes": {
+          "headline": 52,
+          "bloco1": 33,
+          "bloco2": 33,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 7,
+        "type": "sintese",
+        "tag": "Crença 06",
+        "headline": "VOCÊ PRECISA\nSER PERFEITO?",
+        "bloco1": "Mito: só posso aparecer quando estiver tudo pronto.",
+        "bloco2": "Fato: presença consistente constrói confiança no processo.",
+        "extra": "O público acompanha evolução, não perfeição.",
+        "sizes": {
+          "headline": 54,
+          "bloco1": 34,
+          "bloco2": 34,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 8,
+        "type": "aplicacao",
+        "tag": "Aplicação",
+        "headline": "TROQUE\nA CRENÇA\nPELA PRÁTICA",
+        "bloco1": "Mito: preciso de mais tempo para começar.",
+        "bloco2": "Fato: preciso de um próximo passo claro para executar hoje.",
+        "extra": "Ação pequena vence teoria parada.",
+        "sizes": {
+          "headline": 58,
+          "bloco1": 34,
+          "bloco2": 34,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 9,
+        "type": "cta",
+        "tag": "Ação",
+        "headline": "QUAL MITO\nVOCÊ VAI\nABANDONAR?",
+        "bloco1": "Mito: vou esperar o momento perfeito.",
+        "bloco2": "Fato: o próximo post pode ser o começo da sua nova fase.",
+        "extra": "Salve e revise antes de travar de novo.",
+        "sizes": {
+          "headline": 54,
+          "bloco1": 34,
+          "bloco2": 34,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      }
+    ]
+  },
+  "dados": {
+    "font": "space",
+    "colors": {
+      "bg": "#0B1220",
+      "text": "#E5E7EB",
+      "accent": "#38BDF8",
+      "accent2": "#94A3B8"
+    },
+    "slides": [
+      {
+        "num": 1,
+        "type": "capa",
+        "tag": "Insight",
+        "headline": "3X",
+        "bloco1": "Conteúdos com estrutura clara são mais fáceis de salvar, revisar e compartilhar.",
+        "bloco2": "Clareza\nConsistência\nContexto",
+        "extra": "Use números para sustentar a ideia, não para enfeitar.",
+        "sizes": {
+          "headline": 170,
+          "bloco1": 30,
+          "bloco2": 24,
+          "extra": 16
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 2,
+        "type": "contexto",
+        "tag": "Dado 01",
+        "headline": "72%",
+        "bloco1": "A maioria das pessoas decide continuar lendo nos primeiros segundos do conteúdo.",
+        "bloco2": "Hook\nContraste\nPromessa",
+        "extra": "O primeiro slide precisa criar motivo para o segundo.",
+        "sizes": {
+          "headline": 170,
+          "bloco1": 30,
+          "bloco2": 24,
+          "extra": 16
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 3,
+        "type": "dados",
+        "tag": "Dado 02",
+        "headline": "4:5",
+        "bloco1": "O formato vertical ocupa mais espaço na tela e favorece leitura no mobile.",
+        "bloco2": "Tela\nLeitura\nRetenção",
+        "extra": "1080×1350 px mantém boa proporção para carrosséis.",
+        "sizes": {
+          "headline": 170,
+          "bloco1": 30,
+          "bloco2": 24,
+          "extra": 16
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 4,
+        "type": "virada",
+        "tag": "Dado 03",
+        "headline": "1 IDEIA",
+        "bloco1": "Slides com uma ideia central são mais fáceis de consumir e lembrar.",
+        "bloco2": "Foco\nRitmo\nMemória",
+        "extra": "Se precisa explicar demais, divida em outro slide.",
+        "sizes": {
+          "headline": 145,
+          "bloco1": 30,
+          "bloco2": 24,
+          "extra": 16
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 5,
+        "type": "dois_col",
+        "tag": "Dado 04",
+        "headline": "3 CORES",
+        "bloco1": "Uma paleta limitada reduz ruído visual e melhora consistência.",
+        "bloco2": "Fundo\nTexto\nDestaque",
+        "extra": "Menos variação. Mais identidade.",
+        "sizes": {
+          "headline": 145,
+          "bloco1": 30,
+          "bloco2": 24,
+          "extra": 16
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 6,
+        "type": "cenarios",
+        "tag": "Dado 05",
+        "headline": "5 SEG",
+        "bloco1": "Se o leitor não entende rapidamente, o conteúdo perde força.",
+        "bloco2": "Título\nSubtítulo\nHierarquia",
+        "extra": "A primeira leitura precisa ser óbvia.",
+        "sizes": {
+          "headline": 160,
+          "bloco1": 30,
+          "bloco2": 24,
+          "extra": 16
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 7,
+        "type": "sintese",
+        "tag": "Resumo",
+        "headline": "80/20",
+        "bloco1": "A maior parte do resultado vem de poucos elementos bem ajustados.",
+        "bloco2": "Hook\nClareza\nCTA",
+        "extra": "Não complique o que precisa ser entendido.",
+        "sizes": {
+          "headline": 160,
+          "bloco1": 30,
+          "bloco2": 24,
+          "extra": 16
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 8,
+        "type": "aplicacao",
+        "tag": "Aplicação",
+        "headline": "1 AJUSTE",
+        "bloco1": "Antes de publicar, escolha apenas um ponto para melhorar.",
+        "bloco2": "Título\nContraste\nTexto",
+        "extra": "A evolução vem por ajustes repetidos.",
+        "sizes": {
+          "headline": 150,
+          "bloco1": 30,
+          "bloco2": 24,
+          "extra": 16
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 9,
+        "type": "cta",
+        "tag": "Salve",
+        "headline": "CHECK",
+        "bloco1": "Use esses indicadores para revisar seu próximo carrossel antes de postar.",
+        "bloco2": "Formato\nClareza\nRetenção",
+        "extra": "Post Creator · Q21 Hub",
+        "sizes": {
+          "headline": 160,
+          "bloco1": 30,
+          "bloco2": 24,
+          "extra": 16
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      }
+    ]
+  },
+  "antesdepois": {
+    "font": "manrope",
+    "colors": {
+      "bg": "#F8FAFC",
+      "text": "#0F172A",
+      "accent": "#2563EB",
+      "accent2": "#94A3B8"
+    },
+    "slides": [
+      {
+        "num": 1,
+        "type": "capa",
+        "tag": "Transformação",
+        "headline": "ANTES\nE DEPOIS\nDA CLAREZA",
+        "bloco1": "Antes: muitas ideias, pouca direção e conteúdo confuso.",
+        "bloco2": "Depois: uma mensagem clara, visual organizado e ação definida.",
+        "extra": "Mostre mudança de forma simples.",
+        "sizes": {
+          "headline": 56,
+          "bloco1": 32,
+          "bloco2": 32,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 2,
+        "type": "contexto",
+        "tag": "Ponto 01",
+        "headline": "ANTES DE\nTER MÉTODO",
+        "bloco1": "Você dependia de inspiração e começava cada post do zero.",
+        "bloco2": "Você segue uma estrutura e adapta a ideia com mais velocidade.",
+        "extra": "Estrutura economiza energia.",
+        "sizes": {
+          "headline": 58,
+          "bloco1": 32,
+          "bloco2": 32,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 3,
+        "type": "dados",
+        "tag": "Ponto 02",
+        "headline": "ANTES DO\nPOSICIONAMENTO",
+        "bloco1": "O conteúdo falava com todo mundo e não conectava com ninguém.",
+        "bloco2": "A mensagem conversa com a pessoa certa e gera identificação.",
+        "extra": "Especificidade aumenta conexão.",
+        "sizes": {
+          "headline": 56,
+          "bloco1": 31,
+          "bloco2": 31,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 4,
+        "type": "virada",
+        "tag": "Ponto 03",
+        "headline": "ANTES DA\nIDENTIDADE\nVISUAL",
+        "bloco1": "Cada post parecia de uma marca diferente.",
+        "bloco2": "O visual começa a criar reconhecimento e confiança.",
+        "extra": "Consistência vira memória.",
+        "sizes": {
+          "headline": 56,
+          "bloco1": 32,
+          "bloco2": 32,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 5,
+        "type": "dois_col",
+        "tag": "Ponto 04",
+        "headline": "ANTES DA\nOFERTA",
+        "bloco1": "Você entregava valor, mas não conduzia para o próximo passo.",
+        "bloco2": "O conteúdo educa, conecta e prepara a decisão.",
+        "extra": "Conteúdo também precisa conduzir.",
+        "sizes": {
+          "headline": 58,
+          "bloco1": 31,
+          "bloco2": 31,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 6,
+        "type": "cenarios",
+        "tag": "Ponto 05",
+        "headline": "ANTES DA\nROTINA",
+        "bloco1": "Você criava só quando sobrava tempo ou energia.",
+        "bloco2": "Você tem um fluxo simples para produzir com constância.",
+        "extra": "Rotina vence ansiedade.",
+        "sizes": {
+          "headline": 58,
+          "bloco1": 32,
+          "bloco2": 32,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 7,
+        "type": "sintese",
+        "tag": "Resumo",
+        "headline": "ANTES ERA\nESFORÇO.\nDEPOIS É\nSISTEMA.",
+        "bloco1": "Mais tentativa\nMenos clareza\nMais retrabalho",
+        "bloco2": "Mais direção\nMais velocidade\nMais consistência",
+        "extra": "O sistema simplifica a execução.",
+        "sizes": {
+          "headline": 52,
+          "bloco1": 30,
+          "bloco2": 30,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 8,
+        "type": "aplicacao",
+        "tag": "Aplicação",
+        "headline": "QUAL É O\nSEU ANTES?",
+        "bloco1": "Escolha um ponto que hoje trava sua produção de conteúdo.",
+        "bloco2": "Defina uma mudança concreta para aplicar ainda esta semana.",
+        "extra": "Transformação começa com diagnóstico.",
+        "sizes": {
+          "headline": 58,
+          "bloco1": 32,
+          "bloco2": 32,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 9,
+        "type": "cta",
+        "tag": "Ação",
+        "headline": "MOSTRE O\nSEU DEPOIS",
+        "bloco1": "Antes: conteúdo sem método, sem ritmo e sem direção.",
+        "bloco2": "Depois: mensagem clara, identidade forte e execução simples.",
+        "extra": "Salve este modelo para contar sua transformação.",
+        "sizes": {
+          "headline": 56,
+          "bloco1": 31,
+          "bloco2": 31,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      }
+    ]
+  },
+  "serif": {
+    "font": "playfair",
+    "colors": {
+      "bg": "#F4EFE6",
+      "text": "#1A1209",
+      "accent": "#C9A961",
+      "accent2": "#7A5230"
+    },
+    "slides": [
+      {
+        "num": 1,
+        "type": "capa",
+        "tag": "Editorial",
+        "headline": "UM GUIA\nEDITORIAL\nPARA SUA IDEIA",
+        "bloco1": "Uma estrutura elegante para transformar pensamento em conteúdo com mais profundidade.",
+        "bloco2": "Use quando quiser um tom mais sofisticado, reflexivo e premium.",
+        "extra": "Salve para revisar depois.",
+        "sizes": {
+          "headline": 64,
+          "bloco1": 28,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 2,
+        "type": "contexto",
+        "tag": "Passo 01",
+        "headline": "DEFINA\nO RESULTADO\nFINAL",
+        "bloco1": "Antes de começar, escreva exatamente o que você quer construir.",
+        "bloco2": "Sem destino claro, qualquer tarefa parece prioridade.",
+        "extra": "Clareza vem antes de velocidade.",
+        "sizes": {
+          "headline": 64,
+          "bloco1": 28,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 3,
+        "type": "contexto",
+        "tag": "Passo 02",
+        "headline": "ENTENDA\nQUEM VOCÊ\nQUER AJUDAR",
+        "bloco1": "Liste as dores, desejos e dúvidas reais da pessoa que vai consumir seu conteúdo.",
+        "bloco2": "Quanto mais específico o público, mais forte a mensagem.",
+        "extra": "Fale com uma pessoa, não com uma multidão.",
+        "sizes": {
+          "headline": 64,
+          "bloco1": 28,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 4,
+        "type": "virada",
+        "tag": "Passo 03",
+        "headline": "ESCOLHA\nUMA ÚNICA\nIDEIA CENTRAL",
+        "bloco1": "Um carrossel forte não tenta explicar tudo. Ele conduz uma ideia com profundidade.",
+        "bloco2": "Uma ideia clara gera mais salvamentos do que dez ideias soltas.",
+        "extra": "Menos informação. Mais direção.",
+        "sizes": {
+          "headline": 64,
+          "bloco1": 28,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 5,
+        "type": "dois_col",
+        "tag": "Passo 04",
+        "headline": "TRANSFORME\nEM ETAPAS",
+        "bloco1": "Comece com:\nContexto\nProblema\nVirada",
+        "bloco2": "Finalize com:\nExemplo\nAplicação\nCTA",
+        "extra": "Estrutura cria retenção.",
+        "sizes": {
+          "headline": 64,
+          "bloco1": 28,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 6,
+        "type": "cenarios",
+        "tag": "Passo 05",
+        "headline": "DEIXE\nO TEXTO\nRESPIRAR",
+        "bloco1": "Evite blocos longos. Quebre o conteúdo em frases curtas e fáceis de ler.",
+        "bloco2": "O leitor precisa entender antes de decidir continuar.",
+        "extra": "Design também é clareza.",
+        "sizes": {
+          "headline": 64,
+          "bloco1": 28,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 7,
+        "type": "sintese",
+        "tag": "Passo 06",
+        "headline": "CRIE\nUMA VIRADA\nNO MEIO",
+        "bloco1": "Mostre uma crença comum e depois revele uma visão mais madura.",
+        "bloco2": "É nessa virada que o conteúdo deixa de ser óbvio.",
+        "extra": "A surpresa sustenta o swipe.",
+        "sizes": {
+          "headline": 64,
+          "bloco1": 28,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 8,
+        "type": "aplicacao",
+        "tag": "Passo 07",
+        "headline": "TERMINE\nCOM UMA\nAÇÃO",
+        "bloco1": "Não encerre apenas com informação. Mostre o próximo passo.",
+        "bloco2": "Salvar, comentar, aplicar ou enviar para alguém.",
+        "extra": "Conteúdo bom move comportamento.",
+        "sizes": {
+          "headline": 64,
+          "bloco1": 28,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 9,
+        "type": "cta",
+        "tag": "Agora é sua vez",
+        "headline": "SALVE\nESSE\nGUIA",
+        "bloco1": "Use este modelo sempre que precisar transformar uma ideia em carrossel.",
+        "bloco2": "Depois adapte para sua voz, sua oferta e sua identidade visual.",
+        "extra": "Post Creator · Q21 Hub",
+        "sizes": {
+          "headline": 64,
+          "bloco1": 28,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      }
+    ]
+  },
+  "magazine": {
+    "font": "dm_serif",
+    "colors": {
+      "bg": "#0F1115",
+      "text": "#FFFFFF",
+      "accent": "#F5C542",
+      "accent2": "#9CA3AF"
+    },
+    "slides": [
+      {
+        "num": 1,
+        "type": "capa",
+        "tag": "Revista",
+        "headline": "A IDEIA\nQUE MERECE\nVIRAR CAPA",
+        "bloco1": "Um modelo com mais contraste, presença e leitura de revista digital.",
+        "bloco2": "Use para conteúdos fortes, editoriais, anúncios e posições claras.",
+        "extra": "Quantidade sem clareza vira ruído.",
+        "sizes": {
+          "headline": 62,
+          "bloco1": 28,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 2,
+        "type": "contexto",
+        "tag": "Crença 01",
+        "headline": "POSTAR TODO\nDIA É O MAIS\nIMPORTANTE?",
+        "bloco1": "Mito: frequência sozinha resolve crescimento.",
+        "bloco2": "Fato: consistência precisa de mensagem, oferta e direção.",
+        "extra": "Ritmo sem estratégia cansa.",
+        "sizes": {
+          "headline": 62,
+          "bloco1": 28,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 3,
+        "type": "dados",
+        "tag": "Crença 02",
+        "headline": "CONTEÚDO\nBONITO\nVENDE?",
+        "bloco1": "Mito: design premium compensa uma mensagem fraca.",
+        "bloco2": "Fato: design chama atenção, mas clareza gera confiança.",
+        "extra": "Beleza abre a porta. Clareza mantém a pessoa dentro.",
+        "sizes": {
+          "headline": 62,
+          "bloco1": 28,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 4,
+        "type": "virada",
+        "tag": "Crença 03",
+        "headline": "VOCÊ PRECISA\nAGRADAR TODO\nMUNDO?",
+        "bloco1": "Mito: quanto mais amplo, mais chance de vender.",
+        "bloco2": "Fato: uma mensagem específica atrai quem realmente compra.",
+        "extra": "Posicionamento também é renúncia.",
+        "sizes": {
+          "headline": 62,
+          "bloco1": 28,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 5,
+        "type": "dois_col",
+        "tag": "Crença 04",
+        "headline": "VENDER\nÉ FORÇAR?",
+        "bloco1": "Mito: vender é pressionar alguém a comprar.",
+        "bloco2": "Fato: vender bem é mostrar uma solução com clareza e respeito.",
+        "extra": "A ética está na intenção e na entrega.",
+        "sizes": {
+          "headline": 62,
+          "bloco1": 28,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 6,
+        "type": "cenarios",
+        "tag": "Crença 05",
+        "headline": "SÓ FUNCIONA\nPARA QUEM JÁ\nTEM AUDIÊNCIA?",
+        "bloco1": "Mito: audiência grande é requisito para começar.",
+        "bloco2": "Fato: autoridade começa quando poucas pessoas certas confiam em você.",
+        "extra": "Comece pequeno, mas comece certo.",
+        "sizes": {
+          "headline": 62,
+          "bloco1": 28,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 7,
+        "type": "sintese",
+        "tag": "Crença 06",
+        "headline": "VOCÊ PRECISA\nSER PERFEITO?",
+        "bloco1": "Mito: só posso aparecer quando estiver tudo pronto.",
+        "bloco2": "Fato: presença consistente constrói confiança no processo.",
+        "extra": "O público acompanha evolução, não perfeição.",
+        "sizes": {
+          "headline": 62,
+          "bloco1": 28,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 8,
+        "type": "aplicacao",
+        "tag": "Aplicação",
+        "headline": "TROQUE\nA CRENÇA\nPELA PRÁTICA",
+        "bloco1": "Mito: preciso de mais tempo para começar.",
+        "bloco2": "Fato: preciso de um próximo passo claro para executar hoje.",
+        "extra": "Ação pequena vence teoria parada.",
+        "sizes": {
+          "headline": 62,
+          "bloco1": 28,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 9,
+        "type": "cta",
+        "tag": "Ação",
+        "headline": "QUAL MITO\nVOCÊ VAI\nABANDONAR?",
+        "bloco1": "Mito: vou esperar o momento perfeito.",
+        "bloco2": "Fato: o próximo post pode ser o começo da sua nova fase.",
+        "extra": "Salve e revise antes de travar de novo.",
+        "sizes": {
+          "headline": 62,
+          "bloco1": 28,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      }
+    ]
+  }
+};
+
 // ── STATE ──────────────────────────────────────────────────────────────────────
 function makeSlide(s) {
   const sl = Object.assign({}, s);
@@ -539,28 +1965,52 @@ function makeSlide(s) {
   if (!sl.sizes.extra) sl.sizes.extra = 22;
   return sl;
 }
+function buildPresetSlides(key){
+  const preset = VISUAL_PRESETS[key];
+  const source = preset && preset.slides && preset.slides.length ? preset.slides : TEMPLATES.explicativo.slides;
+  return source.map(makeSlide);
+}
+function applyPresetToState(key){
+  const preset = VISUAL_PRESETS[key];
+  if(!preset) return;
+  state.visual = key;
+  state.template = 'preset_' + key;
+  if(preset.font) state.font = preset.font;
+  if(preset.colors) state.colors = Object.assign({}, state.colors, preset.colors);
+  state.slides = buildPresetSlides(key);
+}
 let state = {
-  visual:'magazine', template:'explicativo', font:'playfair', nome:'meu-carrossel',
-  colors:{bg:'#1A1510',text:'#F5EFE6',accent:'#C9A96E',accent2:'#C1622A',handle:'@glendonassis',copyright:'© COPYRIGHT 2025'},
-  slides: TEMPLATES.explicativo.slides.map(makeSlide)
+  appVersion: APP_VERSION,
+  visual:'passo', template:'preset_passo', font:'montserrat', nome:'meu-carrossel',
+  colors:{bg:'#F7F4ED',text:'#181818',accent:'#C9A96E',accent2:'#6B7280',handle:'@seuperfil',copyright:'© COPYRIGHT 2025'},
+  slides: []
 };
+applyPresetToState('passo');
 // Reset localStorage via URL param
 if(new URLSearchParams(location.search).get('reset')==='1'){
+  localStorage.removeItem(STORAGE_KEY);
   localStorage.removeItem('pc_state');
   history.replaceState(null,'',location.pathname);
 }
 try {
-  const saved=localStorage.getItem('pc_state');
+  const saved=localStorage.getItem(STORAGE_KEY);
   if(saved){
     const p=JSON.parse(saved);
     // Version check — if slides have no offsets, they're from old version; normalize
     if(p.slides&&p.slides.length>0){
       state=Object.assign(state,p);
+      state.appVersion=APP_VERSION;
       state.slides=state.slides.map(makeSlide);
     }
   }
-} catch(e){ localStorage.removeItem('pc_state'); }
-function saveState(){try{localStorage.setItem('pc_state',JSON.stringify(state));}catch(e){}}
+} catch(e){ localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem('pc_state'); }
+
+// Migração de versões antigas.
+if(['clean','impact','statement','sans'].includes(state.visual)) state.visual = 'passo';
+if(!VISUAL_STYLES[state.visual]) state.visual = 'passo';
+
+function saveState(){try{state.appVersion=APP_VERSION;localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch(e){}}
 function offY(s,key){return(s.offsets&&s.offsets[key])||0;}
 
 // ── HELPERS ────────────────────────────────────────────────────────────────────
@@ -601,7 +2051,7 @@ function wrapMag(content,c,s,fk){
   const n=s.num,total=state.slides.length;
   return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><style>${slideCSS(c,fk)}</style></head><body>
   <div class="slide"><div class="lt"></div><div class="tag">${s.tag||''}</div>${content}
-  <div class="lb"></div><div class="handle">${c.handle||'@glendonassis'}</div>
+  <div class="lb"></div><div class="handle">${c.handle||'@seuperfil'}</div>
   <div class="snum">${String(n).padStart(2,'0')} / ${String(total).padStart(2,'0')}</div></div>`;
 }
 
@@ -749,6 +2199,7 @@ function renderClean(s,c,fk){
   const hHtml=parseInline(brk(s.headline),c.accent);
   const b1Html=parseInline(brk(s.bloco1||''),c.accent);
   const b2Html=s.bloco2?parseInline(brk(s.bloco2),c.accent):'';
+  const extraHtml=s.extra?`<div style="position:absolute;bottom:${94-offY(s,'extra')}px;left:80px;right:80px;font-size:${sz(s,'extra',18)}px;font-weight:500;line-height:1.4;color:${ec(s,'extra',c.accent)};font-family:'Inter',sans-serif;letter-spacing:.5px;${s.image&&s.imagePos==='background'?'z-index:3':''}">${parseInline(brk(s.extra),c.accent)}</div>`:'';
   let imgHtml='';
   if(s.image&&s.imagePos==='float'){imgHtml=`<img src="${s.image}" style="position:absolute;bottom:130px;right:50px;width:380px;max-height:420px;object-fit:cover;border-radius:14px;box-shadow:0 24px 80px rgba(0,0,0,0.7)">`;}
   if(s.image&&s.imagePos==='background'){imgHtml=`<div style="position:absolute;inset:0;background:url('${s.image}') center/cover no-repeat;z-index:0"></div><div style="position:absolute;inset:0;background:rgba(0,0,0,0.55);z-index:1"></div>`;}
@@ -766,7 +2217,8 @@ function renderClean(s,c,fk){
       ${b1Html?`<p style="font-size:${b1s}px;font-weight:400;line-height:1.55;color:${b1c};font-family:'Inter',sans-serif">${b1Html}</p>`:''}
       ${b2Html?`<p style="font-size:${b2s}px;font-weight:600;line-height:1.5;color:${b2c};margin-top:${32+offY(s,'bloco2')}px;font-family:'Inter',sans-serif">${b2Html}</p>`:''}
     </div>
-    <div style="position:absolute;bottom:50px;left:0;right:0;text-align:center;font-size:18px;color:rgba(255,255,255,0.35);font-family:'Inter',sans-serif;${s.image&&s.imagePos==='background'?'z-index:3':''}">${c.handle||'@glendonassis'}</div>
+    ${extraHtml}
+    <div style="position:absolute;bottom:50px;left:0;right:0;text-align:center;font-size:18px;color:rgba(255,255,255,0.35);font-family:'Inter',sans-serif;${s.image&&s.imagePos==='background'?'z-index:3':''}">${c.handle||'@seuperfil'}</div>
   </div>`;
 }
 
@@ -780,6 +2232,7 @@ function renderImpact(s,c,fk){
   const hHtml=parseInline(brk(s.headline),c.accent);
   const b1Html=parseInline(brk(s.bloco1||''),c.accent);
   const b2Html=s.bloco2?parseInline(brk(s.bloco2),c.accent):'';
+  const extraHtml=s.extra?`<div style="position:absolute;bottom:${104-offY(s,'extra')}px;left:70px;right:140px;font-size:${sz(s,'extra',18)}px;font-weight:700;line-height:1.35;color:${ec(s,'extra',c.accent)};font-family:'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;z-index:2">${parseInline(brk(s.extra),c.accent)}</div>`:'';
   let imgHtml='';
   if(s.image){
     imgHtml=`<div style="position:absolute;inset:0;background:url('${s.image}') center/cover no-repeat;z-index:0"></div><div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.75) 60%);z-index:1"></div>`;
@@ -797,9 +2250,10 @@ function renderImpact(s,c,fk){
       ${b1Html?`<p style="font-size:${b1s}px;font-weight:400;line-height:1.5;color:${b1c};font-family:'Inter',sans-serif">${b1Html}</p>`:''}
       ${b2Html?`<p style="font-size:${b2s}px;font-weight:700;line-height:1.4;color:${b2c};margin-top:${32+offY(s,'bloco2')}px;font-family:'Inter',sans-serif">${b2Html}</p>`:''}
     </div>
+    ${extraHtml}
     <div style="position:absolute;bottom:0;left:0;right:0;height:68px;border-top:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;padding:0 50px;z-index:2">
       <span style="font-size:14px;color:rgba(255,255,255,0.3);font-family:'Inter',sans-serif;letter-spacing:1px;text-transform:uppercase">${copyright}</span>
-      <span style="font-size:14px;color:rgba(255,255,255,0.5);font-family:'Inter',sans-serif;letter-spacing:1px">${c.handle||'@glendonassis'}</span>
+      <span style="font-size:14px;color:rgba(255,255,255,0.5);font-family:'Inter',sans-serif;letter-spacing:1px">${c.handle||'@seuperfil'}</span>
       <span style="font-size:13px;color:rgba(255,255,255,0.25);font-family:'Inter',sans-serif;letter-spacing:1px;text-transform:uppercase">ARRASTA PARA O LADO!</span>
     </div>
     <div style="position:absolute;bottom:84px;right:50px;width:52px;height:52px;border:2px solid rgba(255,255,255,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:2">
@@ -919,12 +2373,45 @@ function renderSerif(s,c,fk){
   <div style="width:1080px;height:1350px;background:${finalBg};position:relative;overflow:hidden">
     ${photoBg}${overlay}
     ${mainContent}
-    <div style="position:absolute;bottom:55px;left:0;right:0;text-align:center;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;letter-spacing:3px;text-transform:uppercase;color:${s.image?'rgba(244,239,230,0.45)':handleColor};${z}">${c.handle||'@glendonassis'}</div>
+    <div style="position:absolute;bottom:55px;left:0;right:0;text-align:center;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;letter-spacing:3px;text-transform:uppercase;color:${s.image?'rgba(244,239,230,0.45)':handleColor};${z}">${c.handle||'@seuperfil'}</div>
     <div style="position:absolute;bottom:88px;right:60px;font-family:'DM Sans',sans-serif;font-size:12px;color:${s.image?'rgba(244,239,230,0.3)':handleColor};letter-spacing:1px;${z}">${String(s.num).padStart(2,'0')}/${String(total).padStart(2,'0')}</div>
   </div>`;
 }
 
-// ── SANS STATEMENT RENDERER ────────────────────────────────────────────────────
+// ── Q21 STATEMENT RENDERER ─────────────────────────────────────────────────────
+function renderStatement(s,c){
+  const total=state.slides.length,counter=`${s.num}/${total}`;
+  const hs=sz(s,'headline',92),b1s=sz(s,'bloco1',32),b2s=sz(s,'bloco2',28);
+  const bg=c.bg||'#EAEAE4';
+  const darkText=c.text||'#1A1A1A';
+  const muted=c.accent||'#888888';
+
+  const hHtml=parseInline(brk(s.headline||''),muted);
+  const b1Html=s.bloco1?parseInline(brk(s.bloco1),muted):'';
+  const b2Html=s.bloco2?parseInline(brk(s.bloco2),muted):'';
+
+  const headlineTop = 430 + offY(s,'headline');
+  const b1Top = 760 + offY(s,'bloco1');
+  const b2Top = 930 + offY(s,'bloco2');
+  const tagHtml = s.tag ? `<div style="position:absolute;top:60px;left:70px;font-size:13px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:#999999;font-family:'Inter',sans-serif">${s.tag}</div>` : '';
+  const extraHtml = s.extra ? `<div style="position:absolute;bottom:${90-offY(s,'extra')}px;left:70px;right:70px;font-size:${sz(s,'extra',16)}px;font-weight:500;color:${ec(s,'extra','#777777')};font-family:'Inter',sans-serif;letter-spacing:.5px">${parseInline(s.extra,muted)}</div>` : '';
+
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${bg};font-family:'Inter',sans-serif}</style>
+  </head><body>
+  <div style="width:1080px;height:1350px;background:${bg};position:relative;overflow:hidden">
+    ${tagHtml}
+    <div style="position:absolute;top:48px;right:50px;background:rgba(50,50,50,0.75);border-radius:40px;padding:10px 22px;font-size:22px;color:rgba(255,255,255,0.85);font-weight:600;font-family:'Inter',sans-serif">${counter}</div>
+    <h1 style="position:absolute;top:${headlineTop}px;left:70px;right:70px;font-size:${hs}px;font-weight:800;line-height:1.04;color:${ec(s,'headline',darkText)};font-family:'Inter',sans-serif;letter-spacing:-2px">${hHtml}</h1>
+    ${b1Html?`<p style="position:absolute;top:${b1Top}px;left:70px;right:70px;font-size:${b1s}px;font-weight:500;line-height:1.35;color:${ec(s,'bloco1',darkText)};font-family:'Inter',sans-serif">${b1Html}</p>`:''}
+    ${b2Html?`<p style="position:absolute;top:${b2Top}px;left:70px;right:70px;font-size:${b2s}px;font-weight:500;line-height:1.35;color:${ec(s,'bloco2',muted)};font-family:'Inter',sans-serif">${b2Html}</p>`:''}
+    ${extraHtml}
+    <div style="position:absolute;bottom:52px;left:70px;font-size:18px;color:#555555;font-family:'Inter',sans-serif;font-weight:400;letter-spacing:0">${c.handle||'@seuperfil'}</div>
+  </div>`;
+}
+
+// ── Q21 STATEMENT DUO RENDERER ────────────────────────────────────────────────
 function renderSans(s,c){
   const total=state.slides.length,counter=`${s.num}/${total}`;
   const hs=sz(s,'headline',96),b1s=sz(s,'bloco1',44),b2s=sz(s,'bloco2',96);
@@ -947,7 +2434,7 @@ function renderSans(s,c){
   const bloco1Top   = headlineTop - 80 + offY(s,'bloco1');
 
   const tagHtml   = s.tag   ? `<div style="position:absolute;top:60px;left:70px;font-size:13px;font-weight:500;letter-spacing:5px;text-transform:uppercase;color:#999999;font-family:'Inter',sans-serif">${s.tag}</div>` : '';
-  const extraHtml = s.extra ? `<div style="position:absolute;bottom:90px;left:70px;right:70px;font-size:16px;font-weight:400;color:#999999;font-family:'Inter',sans-serif;letter-spacing:1px">${s.extra}</div>` : '';
+  const extraHtml = s.extra ? `<div style="position:absolute;bottom:${90-offY(s,'extra')}px;left:70px;right:70px;font-size:${sz(s,'extra',16)}px;font-weight:400;color:${ec(s,'extra','#999999')};font-family:'Inter',sans-serif;letter-spacing:1px">${parseInline(brk(s.extra),grayText)}</div>` : '';
 
   return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -960,17 +2447,136 @@ function renderSans(s,c){
     ${b1Html?`<p style="position:absolute;top:${bloco1Top}px;left:70px;right:70px;font-size:${b1s}px;font-weight:700;line-height:1.2;color:${ec(s,'bloco1',darkText)};font-family:'Inter',sans-serif">${b1Html}</p>`:''}
     ${b2Html?`<p style="position:absolute;top:${bloco2Top}px;left:70px;right:70px;font-size:${b2s}px;font-weight:700;line-height:1.05;color:${ec(s,'bloco2',grayText)};font-family:'Inter',sans-serif">${b2Html}</p>`:''}
     ${extraHtml}
-    <div style="position:absolute;bottom:52px;left:70px;font-size:18px;color:#555555;font-family:'Inter',sans-serif;font-weight:400;letter-spacing:0">${c.handle||'@glendonassis'}</div>
+    <div style="position:absolute;bottom:52px;left:70px;font-size:18px;color:#555555;font-family:'Inter',sans-serif;font-weight:400;letter-spacing:0">${c.handle||'@seuperfil'}</div>
+  </div>`;
+}
+
+
+// ── STUDENT MODEL: PASSO A PASSO ──────────────────────────────────────────────
+function renderPasso(s,c,fk){
+  const total=state.slides.length,counter=`${String(s.num).padStart(2,'0')}/${String(total).padStart(2,'0')}`;
+  const hs=sz(s,'headline',72),b1s=sz(s,'bloco1',32),b2s=sz(s,'bloco2',27),exs=sz(s,'extra',18);
+  const f=FONTS[fk]||FONTS.inter;
+  const headline=parseInline(brk(s.headline),c.accent);
+  const b1=parseInline(brk(s.bloco1||''),c.accent);
+  const b2=parseInline(brk(s.bloco2||''),c.accent);
+  const extra=s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;font-size:${exs}px;font-weight:600;color:${ec(s,'extra',c.accent2)};font-family:${f.family};letter-spacing:.5px">${parseInline(brk(s.extra),c.accent)}</div>`:'';
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@400;600;700;800;900&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${c.bg};font-family:${f.family}}</style></head><body>
+  <div style="width:1080px;height:1350px;background:${c.bg};position:relative;overflow:hidden;color:${c.text}">
+    <div style="position:absolute;top:54px;left:70px;font-size:13px;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:${c.accent2};font-family:${f.family}">${s.tag||'Passo a passo'}</div>
+    <div style="position:absolute;top:48px;right:70px;font-size:16px;font-weight:800;letter-spacing:2px;color:${c.accent2};font-family:${f.family}">${counter}</div>
+    <div style="position:absolute;top:${155+offY(s,'headline')}px;left:70px;right:70px;display:grid;grid-template-columns:260px 1fr;gap:46px;align-items:start">
+      <div style="font-size:210px;line-height:.85;font-weight:900;letter-spacing:-10px;color:${c.accent};font-family:${f.family}">${String(s.num).padStart(2,'0')}</div>
+      <h1 style="font-size:${hs}px;line-height:1.02;font-weight:900;letter-spacing:-2.5px;color:${ec(s,'headline',c.text)};font-family:${f.family}">${headline}</h1>
+    </div>
+    <div style="position:absolute;top:${625+offY(s,'bloco1')}px;left:70px;right:70px;border-top:2px solid ${c.accent};padding-top:42px;display:grid;grid-template-columns:1fr 1fr;gap:34px">
+      ${b1?`<p style="font-size:${b1s}px;line-height:1.45;font-weight:600;color:${ec(s,'bloco1',c.text)};font-family:${f.family}">${b1}</p>`:''}
+      ${b2?`<p style="font-size:${b2s}px;line-height:1.55;font-weight:500;color:${ec(s,'bloco2',c.accent2)};font-family:${f.family}">${b2}</p>`:''}
+    </div>
+    ${extra}
+    <div style="position:absolute;bottom:40px;left:70px;right:70px;height:1px;background:${c.accent};opacity:.35"></div>
+    <div style="position:absolute;bottom:28px;right:70px;font-size:15px;font-weight:700;color:${c.accent2};font-family:${f.family}">${c.handle||'@seuperfil'}</div>
+  </div>`;
+}
+
+// ── STUDENT MODEL: CHECKLIST ──────────────────────────────────────────────────
+function renderChecklist(s,c,fk){
+  const f=FONTS[fk]||FONTS.inter;
+  const hs=sz(s,'headline',60),b1s=sz(s,'bloco1',30),b2s=sz(s,'bloco2',27),exs=sz(s,'extra',17);
+  const lines=[...(s.bloco1||'').split('\n'),...(s.bloco2||'').split('\n')].map(x=>x.replace(/^[✓✔☐\-•]\s*/,'').trim()).filter(Boolean).slice(0,7);
+  const items=lines.map((l,i)=>`<div style="display:flex;gap:18px;align-items:flex-start;margin-bottom:22px"><span style="width:34px;height:34px;border-radius:10px;background:${c.accent};color:#fff;display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:900;flex:0 0 auto">✓</span><span style="font-size:${i<3?b1s:b2s}px;line-height:1.35;font-weight:${i<3?'700':'500'};color:${i<3?ec(s,'bloco1',c.text):ec(s,'bloco2',c.text)};font-family:${f.family}">${parseInline(l,c.accent)}</span></div>`).join('');
+  const extra=s.extra?`<div style="position:absolute;bottom:${90-offY(s,'extra')}px;left:82px;right:82px;padding-top:22px;border-top:1px solid rgba(100,116,139,.25);font-size:${exs}px;font-weight:600;color:${ec(s,'extra',c.accent2)};font-family:${f.family}">${parseInline(brk(s.extra),c.accent)}</div>`:'';
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${c.bg};font-family:${f.family}}</style></head><body>
+  <div style="width:1080px;height:1350px;background:${c.bg};position:relative;overflow:hidden;color:${c.text}">
+    <div style="position:absolute;top:52px;left:58px;right:58px;height:82px;border-radius:24px;background:rgba(15,23,42,.06);display:flex;align-items:center;padding:0 28px;gap:14px">
+      <span style="width:16px;height:16px;border-radius:50%;background:#FF5F57"></span><span style="width:16px;height:16px;border-radius:50%;background:#FFBD2E"></span><span style="width:16px;height:16px;border-radius:50%;background:#28C840"></span>
+      <span style="margin-left:auto;font-size:16px;font-weight:800;color:${c.accent2};letter-spacing:2px;text-transform:uppercase">Checklist</span>
+    </div>
+    <div style="position:absolute;top:${190+offY(s,'headline')}px;left:82px;right:82px">
+      ${s.tag?`<div style="font-size:13px;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:${c.accent};margin-bottom:22px">${s.tag}</div>`:''}
+      <h1 style="font-size:${hs}px;line-height:1.08;font-weight:900;letter-spacing:-1.5px;color:${ec(s,'headline',c.text)};font-family:${f.family}">${parseInline(brk(s.headline),c.accent)}</h1>
+    </div>
+    <div style="position:absolute;top:${465+offY(s,'bloco1')}px;left:82px;right:82px">${items}</div>
+    ${extra}
+    <div style="position:absolute;bottom:42px;right:82px;font-size:16px;font-weight:700;color:${c.accent2};font-family:${f.family}">${c.handle||'@seuperfil'}</div>
+  </div>`;
+}
+
+// ── STUDENT MODEL: MITO OU FATO ───────────────────────────────────────────────
+function renderMito(s,c,fk){
+  const f=FONTS[fk]||FONTS.inter;
+  const hs=sz(s,'headline',58),b1s=sz(s,'bloco1',36),b2s=sz(s,'bloco2',36),exs=sz(s,'extra',18);
+  const mitoColor=c.accent2||'#EF4444', fatoColor=c.accent||'#F59E0B';
+  const extra=s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;text-align:center;font-size:${exs}px;font-weight:700;color:${ec(s,'extra',c.accent)};font-family:${f.family};letter-spacing:.5px">${parseInline(brk(s.extra),c.accent)}</div>`:'';
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Montserrat:wght@500;700;800;900&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${c.bg};font-family:${f.family}}</style></head><body>
+  <div style="width:1080px;height:1350px;background:${c.bg};position:relative;overflow:hidden;color:${c.text}">
+    <div style="position:absolute;top:52px;left:70px;font-size:13px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:${c.accent};font-family:${f.family}">${s.tag||'Quebra de crença'}</div>
+    <h1 style="position:absolute;top:${130+offY(s,'headline')}px;left:70px;right:70px;text-align:center;font-size:${hs}px;line-height:1.05;font-weight:900;letter-spacing:-1.7px;color:${ec(s,'headline',c.text)};font-family:${f.family}">${parseInline(brk(s.headline),c.accent)}</h1>
+    <div style="position:absolute;top:${420+offY(s,'bloco1')}px;left:58px;width:464px;height:610px;border-radius:36px;background:rgba(239,68,68,.12);border:2px solid rgba(239,68,68,.45);padding:42px 38px">
+      <div style="font-size:18px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:${mitoColor};margin-bottom:46px">Mito</div>
+      <p style="font-size:${b1s}px;line-height:1.22;font-weight:800;color:${ec(s,'bloco1',c.text)};font-family:${f.family}">${parseInline(brk(s.bloco1||''),mitoColor)}</p>
+    </div>
+    <div style="position:absolute;top:${420+offY(s,'bloco2')}px;right:58px;width:464px;height:610px;border-radius:36px;background:rgba(245,158,11,.13);border:2px solid rgba(245,158,11,.5);padding:42px 38px">
+      <div style="font-size:18px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:${fatoColor};margin-bottom:46px">Fato</div>
+      <p style="font-size:${b2s}px;line-height:1.22;font-weight:800;color:${ec(s,'bloco2',c.text)};font-family:${f.family}">${parseInline(brk(s.bloco2||''),fatoColor)}</p>
+    </div>
+    ${extra}
+    <div style="position:absolute;bottom:38px;right:70px;font-size:15px;font-weight:700;color:rgba(249,250,251,.5);font-family:${f.family}">${c.handle||'@seuperfil'}</div>
+  </div>`;
+}
+
+// ── STUDENT MODEL: DADOS ──────────────────────────────────────────────────────
+function renderDados(s,c,fk){
+  const f=FONTS[fk]||FONTS.inter;
+  const hs=sz(s,'headline',150),b1s=sz(s,'bloco1',30),b2s=sz(s,'bloco2',26),exs=sz(s,'extra',16);
+  const lines=(s.bloco2||'').split('\n').map(x=>x.trim()).filter(Boolean).slice(0,4);
+  const bars=(lines.length?lines:['Clareza','Consistência','Execução']).map((l,i)=>{const w=[86,68,54,42][i]||50;return `<div style="margin-bottom:22px"><div style="display:flex;justify-content:space-between;font-size:17px;font-weight:700;color:${c.accent2};margin-bottom:9px"><span>${parseInline(l,c.accent)}</span><span>${w}%</span></div><div style="height:18px;border-radius:20px;background:rgba(148,163,184,.18);overflow:hidden"><div style="height:100%;width:${w}%;border-radius:20px;background:${c.accent}"></div></div></div>`}).join('');
+  const extra=s.extra?`<div style="position:absolute;bottom:${80-offY(s,'extra')}px;left:70px;right:70px;font-size:${exs}px;font-weight:600;color:${ec(s,'extra',c.accent2)};font-family:${f.family};letter-spacing:.4px">${parseInline(brk(s.extra),c.accent)}</div>`:'';
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${c.bg};font-family:${f.family}}</style></head><body>
+  <div style="width:1080px;height:1350px;background:${c.bg};position:relative;overflow:hidden;color:${c.text}">
+    <div style="position:absolute;inset:0;background:radial-gradient(circle at 80% 10%,rgba(56,189,248,.18),transparent 35%),radial-gradient(circle at 15% 85%,rgba(56,189,248,.10),transparent 40%)"></div>
+    <div style="position:absolute;top:56px;left:70px;right:70px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:${c.accent}">${s.tag||'Insight'}</span><span style="font-size:15px;font-weight:800;color:${c.accent2}">${String(s.num).padStart(2,'0')}</span></div>
+    <h1 style="position:absolute;top:${180+offY(s,'headline')}px;left:70px;right:70px;font-size:${hs}px;line-height:.88;font-weight:900;letter-spacing:-5px;color:${ec(s,'headline',c.text)};font-family:${f.family}">${parseInline(brk(s.headline),c.accent)}</h1>
+    <p style="position:absolute;top:${535+offY(s,'bloco1')}px;left:74px;right:74px;font-size:${b1s}px;line-height:1.45;font-weight:600;color:${ec(s,'bloco1',c.text)};font-family:${f.family};opacity:.92">${parseInline(brk(s.bloco1||''),c.accent)}</p>
+    <div style="position:absolute;top:${775+offY(s,'bloco2')}px;left:70px;right:70px;padding:34px;border-radius:30px;background:rgba(15,23,42,.42);border:1px solid rgba(148,163,184,.22);backdrop-filter:blur(10px)">
+      <div style="font-size:${b2s}px;font-weight:900;color:${c.accent};margin-bottom:22px;letter-spacing:-.5px">Indicadores</div>${bars}</div>
+    ${extra}
+    <div style="position:absolute;bottom:38px;right:70px;font-size:15px;font-weight:700;color:${c.accent2};font-family:${f.family}">${c.handle||'@seuperfil'}</div>
+  </div>`;
+}
+
+// ── STUDENT MODEL: ANTES E DEPOIS ─────────────────────────────────────────────
+function renderAntesDepois(s,c,fk){
+  const f=FONTS[fk]||FONTS.inter;
+  const hs=sz(s,'headline',58),b1s=sz(s,'bloco1',34),b2s=sz(s,'bloco2',34),exs=sz(s,'extra',18);
+  const extra=s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;text-align:center;font-size:${exs}px;font-weight:700;color:${ec(s,'extra',c.accent)};font-family:${f.family}">${parseInline(brk(s.extra),c.accent)}</div>`:'';
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${c.bg};font-family:${f.family}}</style></head><body>
+  <div style="width:1080px;height:1350px;background:${c.bg};position:relative;overflow:hidden;color:${c.text}">
+    <div style="position:absolute;top:58px;left:70px;font-size:13px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:${c.accent2};font-family:${f.family}">${s.tag||'Transformação'}</div>
+    <h1 style="position:absolute;top:${130+offY(s,'headline')}px;left:70px;right:70px;text-align:center;font-size:${hs}px;line-height:1.05;font-weight:900;letter-spacing:-1.8px;color:${ec(s,'headline',c.text)};font-family:${f.family}">${parseInline(brk(s.headline),c.accent)}</h1>
+    <div style="position:absolute;top:${410+offY(s,'bloco1')}px;left:58px;width:464px;height:585px;border-radius:34px;background:rgba(15,23,42,.06);border:1px solid rgba(15,23,42,.12);padding:38px">
+      <div style="font-size:16px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:${c.accent2};margin-bottom:36px">Antes</div>
+      <p style="font-size:${b1s}px;line-height:1.28;font-weight:800;color:${ec(s,'bloco1',c.text)};font-family:${f.family}">${parseInline(brk(s.bloco1||''),c.accent)}</p>
+    </div>
+    <div style="position:absolute;top:${410+offY(s,'bloco2')}px;right:58px;width:464px;height:585px;border-radius:34px;background:${c.accent};border:1px solid ${c.accent};padding:38px;box-shadow:0 28px 80px rgba(37,99,235,.22)">
+      <div style="font-size:16px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.72);margin-bottom:36px">Depois</div>
+      <p style="font-size:${b2s}px;line-height:1.28;font-weight:900;color:#fff;font-family:${f.family}">${parseInline(brk(s.bloco2||''),'#fff')}</p>
+    </div>
+    <div style="position:absolute;top:656px;left:512px;width:56px;height:56px;border-radius:50%;background:#fff;border:1px solid rgba(15,23,42,.12);display:flex;align-items:center;justify-content:center;font-size:28px;color:${c.accent};font-weight:900;box-shadow:0 14px 40px rgba(15,23,42,.15)">→</div>
+    ${extra}
+    <div style="position:absolute;bottom:38px;right:70px;font-size:15px;font-weight:700;color:${c.accent2};font-family:${f.family}">${c.handle||'@seuperfil'}</div>
   </div>`;
 }
 
 // ── MAIN RENDERER DISPATCHER ───────────────────────────────────────────────────
 function renderSlide(slide,colors,fontKey){
-  const vs=state.visual||'magazine';
-  if(vs==='clean') return renderClean(slide,colors,fontKey);
-  if(vs==='impact') return renderImpact(slide,colors,fontKey);
+  const vs=state.visual||'passo';
+  if(vs==='passo') return renderPasso(slide,colors,fontKey);
+  if(vs==='checklist') return renderChecklist(slide,colors,fontKey);
+  if(vs==='mito') return renderMito(slide,colors,fontKey);
+  if(vs==='dados') return renderDados(slide,colors,fontKey);
+  if(vs==='antesdepois') return renderAntesDepois(slide,colors,fontKey);
   if(vs==='serif') return renderSerif(slide,colors,fontKey);
-  if(vs==='sans') return renderSans(slide,colors,fontKey);
   const fn=MAG_RENDERERS[slide.type]||rMagCapa;
   return fn(slide,colors,fontKey);
 }
@@ -1052,14 +2658,15 @@ function parseCarrossel(raw) {
   let detectedVisual = null, detectedTemplate = null;
 
   // Detectar visual
-  const vm = raw.match(/MODELO VISUAL[^:]*:\s*\*?\*?(MAGAZINE DARK|CASE CLEAN|IMPACT BOLD|EDITORIAL SERIF|SANS STATEMENT)\*?\*?/i);
+  const vm = raw.match(/MODELO VISUAL[^:]*:\s*\*?\*?(CLEAN FLOW|BOLD SIGNAL|SIMPLE STATEMENT|DUO STATEMENT|EDITORIAL SERIF|MAGAZINE DARK|Q21 CASE|Q21 IMPACT|Q21 STATEMENT DUO|Q21 STATEMENT|CASE CLEAN|IMPACT BOLD|SANS STATEMENT BILINGUE|SANS STATEMENT DUO|SANS STATEMENT)\*?\*?/i);
   if (vm) {
     const v = vm[1].toUpperCase();
-    if (v.includes('MAGAZINE')) detectedVisual = 'magazine';
-    else if (v.includes('CLEAN')) detectedVisual = 'clean';
-    else if (v.includes('IMPACT')) detectedVisual = 'impact';
-    else if (v.includes('EDITORIAL') || v.includes('SERIF')) detectedVisual = 'serif';
-    else if (v.includes('SANS')) detectedVisual = 'sans';
+    if (v.includes('CLEAN FLOW') || v.includes('CASE') || v.includes('CLEAN')) detectedVisual = 'clean';
+    else if (v.includes('BOLD SIGNAL') || v.includes('IMPACT')) detectedVisual = 'impact';
+    else if (v.includes('DUO') || v.includes('BILINGUE') || v.includes('BILINGUAL')) detectedVisual = 'statement';
+    else if (v.includes('SIMPLE STATEMENT') || v.includes('STATEMENT') || v.includes('SANS')) detectedVisual = 'statement';
+    else if (v.includes('EDITORIAL')) detectedVisual = 'serif';
+    else if (v.includes('MAGAZINE')) detectedVisual = 'magazine';
   }
 
   // Detectar formato narrativo
@@ -1105,7 +2712,7 @@ function applyPaste() {
 
   // Aplicar visual detectado
   if (result.visual) {
-    state.visual = result.visual;
+    state.visual = VISUAL_STYLES[result.visual] ? result.visual : 'passo';
     const vs = VISUAL_STYLES[result.visual];
     state.colors.bg = vs.bg; state.colors.text = vs.text;
     state.colors.accent = vs.accent; state.colors.accent2 = vs.accent2;
@@ -1164,8 +2771,7 @@ function buildTexto(){
     hd.innerHTML=`<div class="slide-badge">${String(slide.num).padStart(2,'0')}</div><div class="slide-sec-label">${SLIDE_LABELS[slide.type]||slide.type}</div><span class="chev">›</span>`;
     hd.onclick=()=>toggleSec(slide.num);sec.appendChild(hd);
     const body=document.createElement('div');body.className='slide-sec-body';body.id=`body-${slide.num}`;
-    const keys=['tag','headline','bloco1','bloco2'];
-    if(['dados','cenarios'].includes(slide.type))keys.push('extra');
+    const keys=['tag','headline','bloco1','bloco2','extra'];
     keys.forEach(key=>{
       const f=FIELDS[key];const wdiv=document.createElement('div');
       wdiv.innerHTML=`<div class="fl">${f.label}</div>`;
@@ -1195,8 +2801,7 @@ function buildTexto(){
     // Tamanhos
     const szSec=document.createElement('div');szSec.className='el-section';
     szSec.innerHTML='<div class="el-section-title">Tamanho dos elementos</div>';
-    const szFields=[['headline','Headline',14,160],['bloco1','Bloco 1',14,160],['bloco2','Bloco 2',14,160]];
-    if(['dados','cenarios'].includes(slide.type))szFields.push(['extra','Extra',14,100]);
+    const szFields=[['headline','Headline',14,160],['bloco1','Bloco 1',14,160],['bloco2','Bloco 2',14,160],['extra','Extra',10,100]];
     szFields.forEach(([elName,lbl,min,max])=>{
       const dv=(slide.sizes&&slide.sizes[elName])||40;
       const row=document.createElement('div');row.className='sz-row';
@@ -1207,8 +2812,7 @@ function buildTexto(){
     // Posição vertical
     const posSec=document.createElement('div');posSec.className='el-section';
     posSec.innerHTML='<div class="el-section-title">Posição vertical</div>';
-    const posFields=[['headline','Headline'],['bloco1','Bloco 1'],['bloco2','Bloco 2']];
-    if(['dados','cenarios'].includes(slide.type))posFields.push(['extra','Extra']);
+    const posFields=[['headline','Headline'],['bloco1','Bloco 1'],['bloco2','Bloco 2'],['extra','Extra']];
     posFields.forEach(([elName,lbl])=>{
       const dv=(slide.offsets&&slide.offsets[elName])||0;
       const row=document.createElement('div');row.className='sz-row';
@@ -1219,7 +2823,7 @@ function buildTexto(){
     // Cores elementos
     const ecSec=document.createElement('div');ecSec.className='el-section';
     ecSec.innerHTML='<div class="el-section-title">Cor dos elementos</div>';
-    [['headline','Headline'],['bloco1','Bloco 1'],['bloco2','Bloco 2']].forEach(([elName,lbl])=>{
+    [['headline','Headline'],['bloco1','Bloco 1'],['bloco2','Bloco 2'],['extra','Extra']].forEach(([elName,lbl])=>{
       const curV=(slide.el_colors&&slide.el_colors[elName])||'#C9A96E';
       const row=document.createElement('div');row.className='ec-row';
       row.innerHTML=`<div class="ec-sw" id="ecsw-${slide.num}-${elName}" style="background:${curV}"><input type="color" value="${curV}" data-num="${slide.num}" data-el="${elName}" oninput="onElColorChange(this)"></div><span class="ec-lbl">${lbl}</span><button class="btn-ec-reset" onclick="resetElColor(${slide.num},'${elName}')">Reset</button>`;
@@ -1242,7 +2846,7 @@ function applySlide(num){
 function onOffsetChange(el){
   const num=parseInt(el.dataset.num),elName=el.dataset.el,val=parseInt(el.value);
   const sl=state.slides.find(s=>s.num===num);if(!sl)return;
-  if(!sl.offsets)sl.offsets={headline:0,bloco1:0,bloco2:0};
+  if(!sl.offsets)sl.offsets={headline:0,bloco1:0,bloco2:0,extra:0};
   sl.offsets[elName]=val;
   const lbl=document.getElementById(`pv-${num}-${elName}`);
   if(lbl)lbl.textContent=(val>0?'+':'')+val+'px';
@@ -1268,11 +2872,11 @@ function resetElColor(num,elName){
   saveState();reloadPreview(num);toast('✓ Cor resetada','ok');
 }
 
-// ── VISUAL TAB ─────────────────────────────────────────────────────────────────
+// ── MODELOS TAB ────────────────────────────────────────────────────────────────
 function buildVisual(){
   const c=document.getElementById('styleCards');c.innerHTML='';
   Object.entries(VISUAL_STYLES).forEach(([key,vs])=>{
-    const hasSaved=!!localStorage.getItem('pc_base_'+key);
+    const hasSaved=!!localStorage.getItem(BASE_KEY_PREFIX+key);
     const isSel=state.visual===key;
     const wrap=document.createElement('div');wrap.style.cssText='margin-bottom:4px';
     const card=document.createElement('div');card.className='style-card'+(isSel?' sel':'');card.id=`vc-${key}`;
@@ -1295,7 +2899,7 @@ function buildVisual(){
 }
 function selectVisual(key){
   // Load saved base if exists, otherwise apply default colors
-  const savedBase=localStorage.getItem('pc_base_'+key);
+  const savedBase=localStorage.getItem(BASE_KEY_PREFIX+key);
   if(savedBase){
     try{
       const base=JSON.parse(savedBase);
@@ -1320,15 +2924,14 @@ function selectVisual(key){
   buildTexto();reloadAll();updateCanvasInfo();
 }
 function applyDefaultVisual(key){
-  state.visual=key;
   const vs=VISUAL_STYLES[key];
-  state.colors.bg=vs.bg;state.colors.text=vs.text;state.colors.accent=vs.accent;state.colors.accent2=vs.accent2;
+  applyPresetToState(key);
   syncColorPickers();
-  toast(`✓ Visual: ${vs.label}`,'ok');
+  toast(`✓ Visual: ${vs.label} · preset limpo aplicado`,'ok');
 }
 function saveVisualBase(key){
   const base={visual:key,colors:Object.assign({},state.colors),slides:state.slides,font:state.font,template:state.template};
-  localStorage.setItem('pc_base_'+key,JSON.stringify(base));
+  localStorage.setItem(BASE_KEY_PREFIX+key,JSON.stringify(base));
   const badge=document.getElementById(`badge-base-${key}`);if(badge)badge.classList.add('visible');
   toast(`✓ Base do ${VISUAL_STYLES[key].label} salva!`,'ok');
 }
@@ -1340,19 +2943,30 @@ function syncColorPickers(){
   });
 }
 
-// ── FONTES ─────────────────────────────────────────────────────────────────────
+// ── ID VISUAL: FONTES ──────────────────────────────────────────────────────────
 function buildFontes(){
-  const c=document.getElementById('fontCards');c.innerHTML='';
-  Object.entries(FONTS).forEach(([key,f])=>{
-    const card=document.createElement('div');card.className='font-card'+(state.font===key?' sel':'');card.id=`fc-${key}`;
-    card.innerHTML=`<div class="font-check"></div><div class="font-name">${f.label}</div><div class="font-desc">${f.desc}</div><div class="font-sample" style="font-family:${f.family}">Aa Bb Cc 123</div>`;
-    card.onclick=()=>selectFont(key);c.appendChild(card);
-  });
+  const c=document.getElementById('fontCards');
+  const atual=FONTS[state.font]?state.font:'inter';
+  if(!FONTS[state.font]) state.font=atual;
+  c.innerHTML=`
+    <div class="font-select-wrap">
+      <select class="font-select" id="fontSelect" onchange="selectFont(this.value)">
+        ${Object.entries(FONTS).map(([key,f])=>`<option value="${key}" ${atual===key?'selected':''}>${f.label} — ${f.desc}</option>`).join('')}
+      </select>
+    </div>
+    <div class="font-preview-box">
+      <div class="font-preview-label">Preview da fonte</div>
+      <div class="font-preview-text" id="fontPreviewText" style="font-family:${FONTS[atual].family}">Aa Bb Cc 123</div>
+    </div>
+  `;
 }
 function selectFont(key){
+  if(!FONTS[key]) key='inter';
   state.font=key;saveState();
-  document.querySelectorAll('.font-card').forEach(c=>c.classList.remove('sel'));
-  document.getElementById(`fc-${key}`).classList.add('sel');
+  const select=document.getElementById('fontSelect');
+  if(select) select.value=key;
+  const preview=document.getElementById('fontPreviewText');
+  if(preview) preview.style.fontFamily=FONTS[key].family;
   reloadAll();updateCanvasInfo();toast(`✓ Fonte: ${FONTS[key].label}`,'ok');
 }
 
@@ -1690,15 +3304,11 @@ function setMobileEditorTab(tab){
 }
 
 function mobileEditableKeys(slide){
-  const keys=['tag','headline','bloco1','bloco2'];
-  if(['dados','cenarios'].includes(slide.type))keys.push('extra');
-  return keys;
+  return ['tag','headline','bloco1','bloco2','extra'];
 }
 
 function mobileElementKeys(slide){
-  const keys=['headline','bloco1','bloco2'];
-  if(['dados','cenarios'].includes(slide.type))keys.push('extra');
-  return keys;
+  return ['headline','bloco1','bloco2','extra'];
 }
 
 function mobileLabel(key){
@@ -1725,7 +3335,7 @@ function renderMobileEditorBody(slide){
     return;
   }
   if(mobileEditorTab==='color'){
-    body.innerHTML=`<div class="mobile-color-grid">${['headline','bloco1','bloco2'].map(key=>{
+    body.innerHTML=`<div class="mobile-color-grid">${['headline','bloco1','bloco2','extra'].map(key=>{
       const val=(slide.el_colors&&slide.el_colors[key])||state.colors.accent||'#C9A96E';
       return `<div class="mobile-color-card"><label>${mobileLabel(key)}</label><input type="color" value="${val}" oninput="mobileColorChange('${key}',this.value)"></div>`;
     }).join('')}</div><button class="mobile-action-btn" style="width:100%;margin-top:12px" onclick="mobileResetColors()">Resetar cores do slide</button>`;
@@ -1801,7 +3411,7 @@ function mobileColorChange(key,value){
 
 function mobileResetColors(){
   const slide=getMobileSlide(mobileSelectedSlide);if(!slide)return;
-  slide.el_colors={headline:'',bloco1:'',bloco2:''};
+  slide.el_colors={headline:'',bloco1:'',bloco2:'',extra:''};
   saveState();reloadPreview(slide.num);renderMobileEditorBody(slide);
 }
 
@@ -1827,7 +3437,7 @@ function toast(msg,type){const t=document.getElementById('toast');t.textContent=
 function init(){
   loadFromURL();
   document.getElementById('nomeInput').value=state.nome||'meu-carrossel';
-  document.getElementById('handleInput').value=state.colors.handle||'@glendonassis';
+  document.getElementById('handleInput').value=state.colors.handle||'@seuperfil';
   document.getElementById('copyrightInput').value=state.colors.copyright||'© COPYRIGHT 2025';
   document.getElementById('nomeInput').addEventListener('input',function(){state.nome=this.value;saveState();});
   syncColorPickers();
