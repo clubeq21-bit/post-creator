@@ -313,7 +313,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
       <div class="sec-title" style="margin-top:20px">Copyright (Q21 Impact)</div>
       <input class="fi" id="copyrightInput" value="© COPYRIGHT 2025" oninput="debounce(()=>updateCopyright(this.value),400)">
       <div class="sec-title" style="margin-top:20px">Status</div>
-      <div style="margin-top:4px"><div style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(63,185,80,0.1);border:1px solid rgba(63,185,80,0.25);border-radius:12px;font-size:11px;color:var(--green);font-weight:600"><span>●</span> Post Creator Q21 Pro v3.6.1 · Private</div></div>
+      <div style="margin-top:4px"><div style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(63,185,80,0.1);border:1px solid rgba(63,185,80,0.25);border-radius:12px;font-size:11px;color:var(--green);font-weight:600"><span>●</span> Post Creator Q21 Pro v3.6.2 · Private</div></div>
       <div style="font-size:11px;color:var(--muted);line-height:1.8;margin-top:10px">Export: PNG 1080×1350px via browser<br>Storage: localStorage</div>
     </div>
   </div>
@@ -435,7 +435,7 @@ const VISUAL_STYLES = {
   },
   statement_duo: {
     label: 'Q21 Statement Duo',
-    desc: 'Variação bilíngue premium do Statement, com português e inglês em blocos limpos.',
+    desc: 'Variação bilíngue premium: headline em português e bloco 1 com a mesma ideia em inglês.',
     bg: '#EAEAE4', text: '#1A1A1A', accent: '#AAAAAA', accent2: '#888888',
     preview: {bg:'#EAEAE4', accent:'#1A1A1A', label:'Duo'}
   }
@@ -965,41 +965,74 @@ function renderStatement(s,c){
 // ── Q21 STATEMENT DUO RENDERER ────────────────────────────────────────────────
 function renderSans(s,c){
   const total=state.slides.length,counter=`${s.num}/${total}`;
-  const hs=sz(s,'headline',96),b1s=sz(s,'bloco1',44),b2s=sz(s,'bloco2',96);
+
+  /*
+    Q21 Statement Duo — layout corrigido
+    Regra visual:
+    - HEADLINE = frase principal em português
+    - BLOCO 1 = a mesma ideia em inglês
+    - BLOCO 2 = apoio opcional curto
+    - EXTRA = assinatura/CTA mínimo
+    Todos os elementos têm posição independente para evitar sobreposição.
+  */
+  const hs=sz(s,'headline',82);
+  const b1s=sz(s,'bloco1',34);
+  const b2s=sz(s,'bloco2',28);
+  const exs=sz(s,'extra',16);
+
   const bg=c.bg||'#EAEAE4';
   const darkText=c.text||'#1A1A1A';
-  const grayText=c.accent||'#AAAAAA';
+  const grayText=c.accent||'#9B9B9B';
 
-  // HEADLINE in dark, BLOCO 2 in gray (same large size — the "two-tone" effect)
   const hHtml=parseInline(brk(s.headline||''),grayText);
   const b1Html=s.bloco1?parseInline(brk(s.bloco1),grayText):'';
   const b2Html=s.bloco2?parseInline(brk(s.bloco2),grayText):'';
 
-  // Cada elemento posicionado independentemente
-  const hlLines   = Math.max(1,(s.headline||'').split('\n').filter(l=>l.trim()).length);
-  const estHlH    = Math.round(hlLines * hs * 1.08);
-  const hlBase    = 460;
+  const headlineTop = 310 + offY(s,'headline');
+  const bloco1Top   = 610 + offY(s,'bloco1');
+  const bloco2Top   = 790 + offY(s,'bloco2');
+  const extraBottom = 90 - offY(s,'extra');
 
-  const headlineTop = hlBase + offY(s,'headline');
-  const bloco2Top   = headlineTop + estHlH + offY(s,'bloco2');
-  const bloco1Top   = headlineTop - 80 + offY(s,'bloco1');
-
-  const tagHtml   = s.tag   ? `<div style="position:absolute;top:60px;left:70px;font-size:13px;font-weight:500;letter-spacing:5px;text-transform:uppercase;color:#999999;font-family:'Inter',sans-serif">${s.tag}</div>` : '';
-  const extraHtml = s.extra ? `<div style="position:absolute;bottom:${90-offY(s,'extra')}px;left:70px;right:70px;font-size:${sz(s,'extra',16)}px;font-weight:400;color:${ec(s,'extra','#999999')};font-family:'Inter',sans-serif;letter-spacing:1px">${parseInline(brk(s.extra),grayText)}</div>` : '';
+  const tagHtml = s.tag ? `<div style="position:absolute;top:60px;left:70px;font-size:13px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:#999999;font-family:'Inter',sans-serif">${s.tag}</div>` : '';
+  const extraHtml = s.extra ? `<div style="position:absolute;bottom:${extraBottom}px;left:70px;right:70px;font-size:${exs}px;font-weight:500;color:${ec(s,'extra','#8A8A8A')};font-family:'Inter',sans-serif;letter-spacing:.8px;line-height:1.35">${parseInline(brk(s.extra),grayText)}</div>` : '';
 
   return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${bg};font-family:'Inter',sans-serif}</style>
   </head><body>
   <div style="width:1080px;height:1350px;background:${bg};position:relative;overflow:hidden">
     ${tagHtml}
     <div style="position:absolute;top:48px;right:50px;background:rgba(50,50,50,0.75);border-radius:40px;padding:10px 22px;font-size:22px;color:rgba(255,255,255,0.85);font-weight:600;font-family:'Inter',sans-serif">${counter}</div>
-    <h1 style="position:absolute;top:${headlineTop}px;left:70px;right:70px;font-size:${hs}px;font-weight:700;line-height:1.05;color:${ec(s,'headline',darkText)};font-family:'Inter',sans-serif">${hHtml}</h1>
-    ${b1Html?`<p style="position:absolute;top:${bloco1Top}px;left:70px;right:70px;font-size:${b1s}px;font-weight:700;line-height:1.2;color:${ec(s,'bloco1',darkText)};font-family:'Inter',sans-serif">${b1Html}</p>`:''}
-    ${b2Html?`<p style="position:absolute;top:${bloco2Top}px;left:70px;right:70px;font-size:${b2s}px;font-weight:700;line-height:1.05;color:${ec(s,'bloco2',grayText)};font-family:'Inter',sans-serif">${b2Html}</p>`:''}
+
+    <h1 style="position:absolute;top:${headlineTop}px;left:70px;right:70px;font-size:${hs}px;font-weight:800;line-height:1.03;color:${ec(s,'headline',darkText)};font-family:'Inter',sans-serif;letter-spacing:-1.7px">${hHtml}</h1>
+
+    ${b1Html?`<p style="position:absolute;top:${bloco1Top}px;left:70px;right:110px;font-size:${b1s}px;font-weight:700;line-height:1.18;color:${ec(s,'bloco1',grayText)};font-family:'Inter',sans-serif;letter-spacing:-.4px">${b1Html}</p>`:''}
+
+    ${b2Html?`<p style="position:absolute;top:${bloco2Top}px;left:70px;right:110px;font-size:${b2s}px;font-weight:500;line-height:1.35;color:${ec(s,'bloco2',darkText)};font-family:'Inter',sans-serif;opacity:.82">${b2Html}</p>`:''}
+
     ${extraHtml}
+
     <div style="position:absolute;bottom:52px;left:70px;font-size:18px;color:#555555;font-family:'Inter',sans-serif;font-weight:400;letter-spacing:0">${c.handle||'@glendonassis'}</div>
   </div>`;
+}
+
+function applyDuoLayoutDefaults(){
+  state.slides = state.slides.map(sl => {
+    const s = makeSlide(sl);
+    s.sizes = Object.assign({}, s.sizes || {}, {
+      headline:82,
+      bloco1:34,
+      bloco2:28,
+      extra:16
+    });
+    s.offsets = Object.assign({}, s.offsets || {}, {
+      headline:0,
+      bloco1:0,
+      bloco2:0,
+      extra:0
+    });
+    return s;
+  });
 }
 
 // ── MAIN RENDERER DISPATCHER ───────────────────────────────────────────────────
@@ -1147,6 +1180,7 @@ function applyPaste() {
     const vs = VISUAL_STYLES[result.visual];
     state.colors.bg = vs.bg; state.colors.text = vs.text;
     state.colors.accent = vs.accent; state.colors.accent2 = vs.accent2;
+    if (result.visual === 'statement_duo') applyDuoLayoutDefaults();
     syncColorPickers();
     document.querySelectorAll('.style-card').forEach(c => c.classList.remove('sel'));
     const vc = document.getElementById(`vc-${result.visual}`);
@@ -1358,6 +1392,7 @@ function applyDefaultVisual(key){
   state.visual=key;
   const vs=VISUAL_STYLES[key];
   state.colors.bg=vs.bg;state.colors.text=vs.text;state.colors.accent=vs.accent;state.colors.accent2=vs.accent2;
+  if(key==='statement_duo') applyDuoLayoutDefaults();
   syncColorPickers();
   toast(`✓ Visual: ${vs.label}`,'ok');
 }
