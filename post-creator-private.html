@@ -1311,13 +1311,26 @@ function buildTexto(){
       posSec.appendChild(row);
     });
     body.appendChild(posSec);
-    // Cores elementos
+    // Cores elementos — swatches das cores do ID Visual
     const ecSec=document.createElement('div');ecSec.className='el-section';
     ecSec.innerHTML='<div class="el-section-title">Cor dos elementos</div>';
     [['headline','Headline'],['bloco1','Bloco 1'],['bloco2','Bloco 2'],['extra','Extra']].forEach(([elName,lbl])=>{
-      const curV=(slide.el_colors&&slide.el_colors[elName])||'#C9A96E';
-      const row=document.createElement('div');row.className='ec-row';
-      row.innerHTML=`<div class="ec-sw" id="ecsw-${slide.num}-${elName}" style="background:${curV}"><input type="color" value="${curV}" data-num="${slide.num}" data-el="${elName}" oninput="onElColorChange(this)"></div><span class="ec-lbl">${lbl}</span><button class="btn-ec-reset" onclick="resetElColor(${slide.num},'${elName}')">Reset</button>`;
+      const curV=(slide.el_colors&&slide.el_colors[elName])||'';
+      const palette=[
+        {c:state.colors.bg},
+        {c:state.colors.text},
+        {c:state.colors.accent},
+        {c:state.colors.accent2},
+        {c:'#FFFFFF'},
+        {c:'#000000'},
+      ];
+      const swatchHtml=palette.map(({c:cor})=>{
+        const sel=curV===cor;
+        return `<div class="ec-swatch" data-color="${cor}" onclick="setElColorDirect(${slide.num},'${elName}','${cor}')" style="width:24px;height:24px;border-radius:50%;background:${cor};cursor:pointer;border:${sel?'2px solid var(--gold)':'1px solid rgba(255,255,255,0.18)'};box-shadow:${sel?'0 0 0 1px var(--gold)':'none'};flex-shrink:0"></div>`;
+      }).join('');
+      const row=document.createElement('div');
+      row.style.cssText='margin-bottom:10px';
+      row.innerHTML=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px"><span style="font-size:10px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase">${lbl}</span><button class="btn-ec-reset" onclick="resetElColor(${slide.num},'${elName}')">Reset</button></div><div id="ec-swatches-${slide.num}-${elName}" style="display:flex;gap:8px;flex-wrap:wrap">${swatchHtml}</div>`;
       ecSec.appendChild(row);
     });
     body.appendChild(ecSec);
@@ -1360,7 +1373,21 @@ function onElColorChange(el){
 function resetElColor(num,elName){
   const sl=state.slides.find(s=>s.num===num);if(!sl)return;
   if(!sl.el_colors)sl.el_colors={};sl.el_colors[elName]='';
-  saveState();reloadPreview(num);toast('✓ Cor resetada','ok');
+  saveState();reloadPreview(num);
+  const cont=document.getElementById(`ec-swatches-${num}-${elName}`);
+  if(cont)cont.querySelectorAll('.ec-swatch').forEach(sw=>{sw.style.border='1px solid rgba(255,255,255,0.18)';sw.style.boxShadow='none';});
+  toast('✓ Cor resetada','ok');
+}
+function setElColorDirect(num,elName,cor){
+  const sl=state.slides.find(s=>s.num===num);if(!sl)return;
+  if(!sl.el_colors)sl.el_colors={};sl.el_colors[elName]=cor;
+  saveState();reloadPreview(num);
+  const cont=document.getElementById(`ec-swatches-${num}-${elName}`);
+  if(cont)cont.querySelectorAll('.ec-swatch').forEach(sw=>{
+    const sel=sw.dataset.color===cor;
+    sw.style.border=sel?'2px solid var(--gold)':'1px solid rgba(255,255,255,0.18)';
+    sw.style.boxShadow=sel?'0 0 0 1px var(--gold)':'none';
+  });
 }
 
 // ── MODELOS TAB ────────────────────────────────────────────────────────────────
@@ -1828,10 +1855,16 @@ function renderMobileEditorBody(slide){
     return;
   }
   if(mobileEditorTab==='color'){
-    body.innerHTML=`<div class="mobile-color-grid">${['headline','bloco1','bloco2','extra'].map(key=>{
-      const val=(slide.el_colors&&slide.el_colors[key])||state.colors.accent||'#C9A96E';
-      return `<div class="mobile-color-card"><label>${mobileLabel(key)}</label><input type="color" value="${val}" oninput="mobileColorChange('${key}',this.value)"></div>`;
-    }).join('')}</div><button class="mobile-action-btn" style="width:100%;margin-top:12px" onclick="mobileResetColors()">Resetar cores do slide</button>`;
+    const palette=[state.colors.bg,state.colors.text,state.colors.accent,state.colors.accent2,'#FFFFFF','#000000'];
+    const els=[['headline','Headline'],['bloco1','Bloco 1'],['bloco2','Bloco 2'],['extra','Extra']];
+    body.innerHTML=els.map(([key,lbl])=>{
+      const cur=(slide.el_colors&&slide.el_colors[key])||'';
+      const swatches=palette.map(cor=>{
+        const sel=cur===cor;
+        return `<div onclick="mobileColorChange('${key}','${cor}')" style="width:34px;height:34px;border-radius:50%;background:${cor};cursor:pointer;border:${sel?'3px solid var(--gold)':'1px solid rgba(255,255,255,0.2)'};box-shadow:${sel?'0 0 0 1px var(--gold)':'none'}"></div>`;
+      }).join('');
+      return `<div style="margin-bottom:18px"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><span style="font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted)">${lbl}</span><button class="mobile-action-btn" style="padding:4px 10px;font-size:9px" onclick="mobileColorChange('${key}','')">Reset</button></div><div style="display:flex;gap:10px;flex-wrap:wrap">${swatches}</div></div>`;
+    }).join('')+`<button class="mobile-action-btn" style="width:100%;margin-top:6px" onclick="mobileResetColors()">Resetar todas as cores do slide</button>`;
     return;
   }
   if(mobileEditorTab==='image'){
