@@ -3426,10 +3426,16 @@ function renderMobileEditorBody(slide){
     return;
   }
   if(mobileEditorTab==='color'){
-    body.innerHTML=`<div class="mobile-color-grid">${['headline','bloco1','bloco2','extra'].map(key=>{
-      const val=(slide.el_colors&&slide.el_colors[key])||state.colors.accent||'#C9A96E';
-      return `<div class="mobile-color-card"><label>${mobileLabel(key)}</label><input type="color" value="${val}" oninput="mobileColorChange('${key}',this.value)"></div>`;
-    }).join('')}</div><button class="mobile-action-btn" style="width:100%;margin-top:12px" onclick="mobileResetColors()">Resetar cores do slide</button>`;
+    const palette=[state.colors.bg,state.colors.text,state.colors.accent,state.colors.accent2,'#FFFFFF','#000000'];
+    const els=[['slide_bg','Fundo'],['headline','Headline'],['bloco1','Bloco 1'],['bloco2','Bloco 2'],['extra','Extra']];
+    body.innerHTML=els.map(([key,lbl])=>{
+      const cur=(slide.el_colors&&slide.el_colors[key])||'';
+      const swatches=palette.map(cor=>{
+        const sel=cur===cor;
+        return `<div onclick="mobileColorChange('${key}','${cor}')" style="width:34px;height:34px;border-radius:50%;background:${cor};cursor:pointer;border:${sel?'3px solid var(--gold)':'1px solid rgba(255,255,255,0.2)'};box-shadow:${sel?'0 0 0 1px var(--gold)':'none'}"></div>`;
+      }).join('');
+      return `<div style="margin-bottom:18px"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><span style="font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted)">${lbl}</span><button class="mobile-action-btn" style="padding:4px 10px;font-size:9px" onclick="mobileColorChange('${key}','')">Reset</button></div><div style="display:flex;gap:10px;flex-wrap:wrap">${swatches}</div></div>`;
+    }).join('')+`<button class="mobile-action-btn" style="width:100%;margin-top:6px" onclick="mobileResetColors()">Resetar todas as cores do slide</button>`;
     return;
   }
   if(mobileEditorTab==='image'){
