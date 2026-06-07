@@ -304,9 +304,11 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
       <div class="cor-row"><div class="cor-sw" id="sw-accent2" style="background:#C1622A"><input type="color" value="#C1622A" id="pk-accent2" oninput="previewCor('accent2',this.value)"></div><div style="flex:1"><div class="cor-nm">Destaque 2</div><div class="cor-hx" id="hx-accent2">#C1622A</div></div><button class="btn-ac" onclick="aplicarCor('accent2')">+ Aplicar</button></div>
       <button class="btn-todas" onclick="aplicarTodas()">Aplicar Todas as Cores</button>
       <div class="sec-title" style="margin-top:20px">Paletas Sugeridas</div>
-      <div class="pal-row" onclick="aplicarPaleta('#F4F1EA','#1D1D1D','#B99A5B','#6F6F6F')"><div class="psw" style="background:#F4F1EA"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#B99A5B"></div><div class="plbl">Base Q21</div></div>
-      <div class="pal-row" onclick="aplicarPaleta('#111111','#FFFFFF','#D7B56D','#B5B5B5')"><div class="psw" style="background:#111111"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#D7B56D"></div><div class="plbl">Impacto Q21</div></div>
-      <div class="pal-row" onclick="aplicarPaleta('#EAEAE4','#1A1A1A','#9A9A9A','#777777')"><div class="psw" style="background:#EAEAE4"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#1A1A1A"></div><div class="plbl">Frase Q21</div></div>
+      <div class="pal-row" onclick="aplicarPaleta('#F7F4ED','#181818','#C9A96E','#6B7280')"><div class="psw" style="background:#F7F4ED"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#C9A96E"></div><div class="plbl">Passo a Passo</div></div>
+      <div class="pal-row" onclick="aplicarPaleta('#FFFDF7','#1F2937','#16A34A','#64748B')"><div class="psw" style="background:#FFFDF7"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#16A34A"></div><div class="plbl">Checklist</div></div>
+      <div class="pal-row" onclick="aplicarPaleta('#111827','#F9FAFB','#F59E0B','#EF4444')"><div class="psw" style="background:#111827"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#F59E0B"></div><div class="plbl">Mito ou Fato</div></div>
+      <div class="pal-row" onclick="aplicarPaleta('#0B1220','#E5E7EB','#38BDF8','#94A3B8')"><div class="psw" style="background:#0B1220"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#38BDF8"></div><div class="plbl">Dados</div></div>
+      <div class="pal-row" onclick="aplicarPaleta('#F8FAFC','#0F172A','#2563EB','#94A3B8')"><div class="psw" style="background:#F8FAFC"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#2563EB"></div><div class="plbl">Antes e Depois</div></div>
       <div class="pal-row" onclick="aplicarPaleta('#F4EFE6','#1A1209','#C9A961','#7A5230')"><div class="psw" style="background:#F4EFE6"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#7A5230"></div><div class="plbl">Editorial Q21</div></div>
       <div class="pal-row" onclick="aplicarPaleta('#0F1115','#FFFFFF','#F5C542','#9CA3AF')"><div class="psw" style="background:#0F1115"></div><div style="font-size:11px;color:var(--muted)">→</div><div class="psw" style="background:#F5C542"></div><div class="plbl">Revista Q21</div></div>
       <div class="sec-title" style="margin-top:22px">Ajustes</div>
@@ -323,7 +325,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 <div class="canvas">
   <div class="canvas-header">
     <div class="canvas-title" id="canvasTitle">9 slides</div>
-    <div class="canvas-info"><div class="dot"></div><span id="canvasInfo">Base Q21</span></div>
+    <div class="canvas-info"><div class="dot"></div><span id="canvasInfo">Passo a Passo</span></div>
   </div>
   <div class="slides-grid" id="slidesGrid"></div>
 </div>
@@ -417,23 +419,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ── VISUAL STYLES ──────────────────────────────────────────────────────────────
 const VISUAL_STYLES = {
-  clean: {
-    label: 'Base Q21',
-    desc: 'Modelo claro e organizado para ensinar ideias com leveza.',
-    bg: '#F4F1EA', text: '#1D1D1D', accent: '#B99A5B', accent2: '#6F6F6F',
-    preview: {bg:'#F4F1EA', accent:'#B99A5B', label:'CF'}
+  passo: {
+    label: 'Passo a Passo',
+    desc: 'Modelo didático com numeração grande, ritmo de tutorial e muito espaço em branco.',
+    bg: '#F7F4ED', text: '#181818', accent: '#C9A96E', accent2: '#6B7280',
+    preview: {bg:'#F7F4ED', accent:'#C9A96E', label:'01'}
   },
-  impact: {
-    label: 'Impacto Q21',
-    desc: 'Modelo forte e direto para chamadas, provocações e ideias de impacto.',
-    bg: '#111111', text: '#FFFFFF', accent: '#D7B56D', accent2: '#B5B5B5',
-    preview: {bg:'#111111', accent:'#D7B56D', label:'BS'}
+  checklist: {
+    label: 'Checklist',
+    desc: 'Modelo simples, autêntico e fácil de salvar, inspirado em notas e listas práticas.',
+    bg: '#FFFDF7', text: '#1F2937', accent: '#16A34A', accent2: '#64748B',
+    preview: {bg:'#FFFDF7', accent:'#16A34A', label:'✓'}
   },
-  statement: {
-    label: 'Frase Q21',
-    desc: 'Modelo simples e elegante para frases, reflexões e mensagens memoráveis.',
-    bg: '#EAEAE4', text: '#1A1A1A', accent: '#9A9A9A', accent2: '#777777',
-    preview: {bg:'#EAEAE4', accent:'#1A1A1A', label:'SS'}
+  mito: {
+    label: 'Mito ou Fato',
+    desc: 'Modelo comparativo para quebrar crenças, gerar comentários e construir autoridade.',
+    bg: '#111827', text: '#F9FAFB', accent: '#F59E0B', accent2: '#EF4444',
+    preview: {bg:'#111827', accent:'#F59E0B', label:'M/F'}
+  },
+  dados: {
+    label: 'Dados',
+    desc: 'Modelo com estética analítica para números, insights, gráficos simples e provas.',
+    bg: '#0B1220', text: '#E5E7EB', accent: '#38BDF8', accent2: '#94A3B8',
+    preview: {bg:'#0B1220', accent:'#38BDF8', label:'%'}
+  },
+  antesdepois: {
+    label: 'Antes e Depois',
+    desc: 'Modelo de transformação visual para mostrar mudança, contraste e prova social.',
+    bg: '#F8FAFC', text: '#0F172A', accent: '#2563EB', accent2: '#94A3B8',
+    preview: {bg:'#F8FAFC', accent:'#2563EB', label:'A/D'}
   },
   serif: {
     label: 'Editorial Q21',
@@ -544,8 +558,8 @@ function makeSlide(s) {
   return sl;
 }
 let state = {
-  visual:'clean', template:'explicativo', font:'inter', nome:'meu-carrossel',
-  colors:{bg:'#1A1510',text:'#F5EFE6',accent:'#C9A96E',accent2:'#C1622A',handle:'@seuperfil',copyright:'© COPYRIGHT 2025'},
+  visual:'passo', template:'explicativo', font:'inter', nome:'meu-carrossel',
+  colors:{bg:'#F7F4ED',text:'#181818',accent:'#C9A96E',accent2:'#6B7280',handle:'@seuperfil',copyright:'© COPYRIGHT 2025'},
   slides: TEMPLATES.explicativo.slides.map(makeSlide)
 };
 // Reset localStorage via URL param
@@ -566,8 +580,8 @@ try {
 } catch(e){ localStorage.removeItem('pc_state'); }
 
 // Migração de versões antigas.
-if(state.visual === 'sans') state.visual = 'statement';
-if(!VISUAL_STYLES[state.visual]) state.visual = 'clean';
+if(['clean','impact','statement','sans'].includes(state.visual)) state.visual = 'passo';
+if(!VISUAL_STYLES[state.visual]) state.visual = 'passo';
 
 function saveState(){try{localStorage.setItem('pc_state',JSON.stringify(state));}catch(e){}}
 function offY(s,key){return(s.offsets&&s.offsets[key])||0;}
@@ -1010,13 +1024,132 @@ function renderSans(s,c){
   </div>`;
 }
 
+
+// ── STUDENT MODEL: PASSO A PASSO ──────────────────────────────────────────────
+function renderPasso(s,c,fk){
+  const total=state.slides.length,counter=`${String(s.num).padStart(2,'0')}/${String(total).padStart(2,'0')}`;
+  const hs=sz(s,'headline',72),b1s=sz(s,'bloco1',32),b2s=sz(s,'bloco2',27),exs=sz(s,'extra',18);
+  const f=FONTS[fk]||FONTS.inter;
+  const headline=parseInline(brk(s.headline),c.accent);
+  const b1=parseInline(brk(s.bloco1||''),c.accent);
+  const b2=parseInline(brk(s.bloco2||''),c.accent);
+  const extra=s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;font-size:${exs}px;font-weight:600;color:${ec(s,'extra',c.accent2)};font-family:${f.family};letter-spacing:.5px">${parseInline(brk(s.extra),c.accent)}</div>`:'';
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@400;600;700;800;900&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${c.bg};font-family:${f.family}}</style></head><body>
+  <div style="width:1080px;height:1350px;background:${c.bg};position:relative;overflow:hidden;color:${c.text}">
+    <div style="position:absolute;top:54px;left:70px;font-size:13px;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:${c.accent2};font-family:${f.family}">${s.tag||'Passo a passo'}</div>
+    <div style="position:absolute;top:48px;right:70px;font-size:16px;font-weight:800;letter-spacing:2px;color:${c.accent2};font-family:${f.family}">${counter}</div>
+    <div style="position:absolute;top:${155+offY(s,'headline')}px;left:70px;right:70px;display:grid;grid-template-columns:260px 1fr;gap:46px;align-items:start">
+      <div style="font-size:210px;line-height:.85;font-weight:900;letter-spacing:-10px;color:${c.accent};font-family:${f.family}">${String(s.num).padStart(2,'0')}</div>
+      <h1 style="font-size:${hs}px;line-height:1.02;font-weight:900;letter-spacing:-2.5px;color:${ec(s,'headline',c.text)};font-family:${f.family}">${headline}</h1>
+    </div>
+    <div style="position:absolute;top:${625+offY(s,'bloco1')}px;left:70px;right:70px;border-top:2px solid ${c.accent};padding-top:42px;display:grid;grid-template-columns:1fr 1fr;gap:34px">
+      ${b1?`<p style="font-size:${b1s}px;line-height:1.45;font-weight:600;color:${ec(s,'bloco1',c.text)};font-family:${f.family}">${b1}</p>`:''}
+      ${b2?`<p style="font-size:${b2s}px;line-height:1.55;font-weight:500;color:${ec(s,'bloco2',c.accent2)};font-family:${f.family}">${b2}</p>`:''}
+    </div>
+    ${extra}
+    <div style="position:absolute;bottom:40px;left:70px;right:70px;height:1px;background:${c.accent};opacity:.35"></div>
+    <div style="position:absolute;bottom:28px;right:70px;font-size:15px;font-weight:700;color:${c.accent2};font-family:${f.family}">${c.handle||'@seuperfil'}</div>
+  </div>`;
+}
+
+// ── STUDENT MODEL: CHECKLIST ──────────────────────────────────────────────────
+function renderChecklist(s,c,fk){
+  const f=FONTS[fk]||FONTS.inter;
+  const hs=sz(s,'headline',60),b1s=sz(s,'bloco1',30),b2s=sz(s,'bloco2',27),exs=sz(s,'extra',17);
+  const lines=[...(s.bloco1||'').split('\n'),...(s.bloco2||'').split('\n')].map(x=>x.replace(/^[✓✔☐\-•]\s*/,'').trim()).filter(Boolean).slice(0,7);
+  const items=lines.map((l,i)=>`<div style="display:flex;gap:18px;align-items:flex-start;margin-bottom:22px"><span style="width:34px;height:34px;border-radius:10px;background:${c.accent};color:#fff;display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:900;flex:0 0 auto">✓</span><span style="font-size:${i<3?b1s:b2s}px;line-height:1.35;font-weight:${i<3?'700':'500'};color:${i<3?ec(s,'bloco1',c.text):ec(s,'bloco2',c.text)};font-family:${f.family}">${parseInline(l,c.accent)}</span></div>`).join('');
+  const extra=s.extra?`<div style="position:absolute;bottom:${90-offY(s,'extra')}px;left:82px;right:82px;padding-top:22px;border-top:1px solid rgba(100,116,139,.25);font-size:${exs}px;font-weight:600;color:${ec(s,'extra',c.accent2)};font-family:${f.family}">${parseInline(brk(s.extra),c.accent)}</div>`:'';
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${c.bg};font-family:${f.family}}</style></head><body>
+  <div style="width:1080px;height:1350px;background:${c.bg};position:relative;overflow:hidden;color:${c.text}">
+    <div style="position:absolute;top:52px;left:58px;right:58px;height:82px;border-radius:24px;background:rgba(15,23,42,.06);display:flex;align-items:center;padding:0 28px;gap:14px">
+      <span style="width:16px;height:16px;border-radius:50%;background:#FF5F57"></span><span style="width:16px;height:16px;border-radius:50%;background:#FFBD2E"></span><span style="width:16px;height:16px;border-radius:50%;background:#28C840"></span>
+      <span style="margin-left:auto;font-size:16px;font-weight:800;color:${c.accent2};letter-spacing:2px;text-transform:uppercase">Checklist</span>
+    </div>
+    <div style="position:absolute;top:${190+offY(s,'headline')}px;left:82px;right:82px">
+      ${s.tag?`<div style="font-size:13px;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:${c.accent};margin-bottom:22px">${s.tag}</div>`:''}
+      <h1 style="font-size:${hs}px;line-height:1.08;font-weight:900;letter-spacing:-1.5px;color:${ec(s,'headline',c.text)};font-family:${f.family}">${parseInline(brk(s.headline),c.accent)}</h1>
+    </div>
+    <div style="position:absolute;top:${465+offY(s,'bloco1')}px;left:82px;right:82px">${items}</div>
+    ${extra}
+    <div style="position:absolute;bottom:42px;right:82px;font-size:16px;font-weight:700;color:${c.accent2};font-family:${f.family}">${c.handle||'@seuperfil'}</div>
+  </div>`;
+}
+
+// ── STUDENT MODEL: MITO OU FATO ───────────────────────────────────────────────
+function renderMito(s,c,fk){
+  const f=FONTS[fk]||FONTS.inter;
+  const hs=sz(s,'headline',58),b1s=sz(s,'bloco1',36),b2s=sz(s,'bloco2',36),exs=sz(s,'extra',18);
+  const mitoColor=c.accent2||'#EF4444', fatoColor=c.accent||'#F59E0B';
+  const extra=s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;text-align:center;font-size:${exs}px;font-weight:700;color:${ec(s,'extra',c.accent)};font-family:${f.family};letter-spacing:.5px">${parseInline(brk(s.extra),c.accent)}</div>`:'';
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Montserrat:wght@500;700;800;900&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${c.bg};font-family:${f.family}}</style></head><body>
+  <div style="width:1080px;height:1350px;background:${c.bg};position:relative;overflow:hidden;color:${c.text}">
+    <div style="position:absolute;top:52px;left:70px;font-size:13px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:${c.accent};font-family:${f.family}">${s.tag||'Quebra de crença'}</div>
+    <h1 style="position:absolute;top:${130+offY(s,'headline')}px;left:70px;right:70px;text-align:center;font-size:${hs}px;line-height:1.05;font-weight:900;letter-spacing:-1.7px;color:${ec(s,'headline',c.text)};font-family:${f.family}">${parseInline(brk(s.headline),c.accent)}</h1>
+    <div style="position:absolute;top:${420+offY(s,'bloco1')}px;left:58px;width:464px;height:610px;border-radius:36px;background:rgba(239,68,68,.12);border:2px solid rgba(239,68,68,.45);padding:42px 38px">
+      <div style="font-size:18px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:${mitoColor};margin-bottom:46px">Mito</div>
+      <p style="font-size:${b1s}px;line-height:1.22;font-weight:800;color:${ec(s,'bloco1',c.text)};font-family:${f.family}">${parseInline(brk(s.bloco1||''),mitoColor)}</p>
+    </div>
+    <div style="position:absolute;top:${420+offY(s,'bloco2')}px;right:58px;width:464px;height:610px;border-radius:36px;background:rgba(245,158,11,.13);border:2px solid rgba(245,158,11,.5);padding:42px 38px">
+      <div style="font-size:18px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:${fatoColor};margin-bottom:46px">Fato</div>
+      <p style="font-size:${b2s}px;line-height:1.22;font-weight:800;color:${ec(s,'bloco2',c.text)};font-family:${f.family}">${parseInline(brk(s.bloco2||''),fatoColor)}</p>
+    </div>
+    ${extra}
+    <div style="position:absolute;bottom:38px;right:70px;font-size:15px;font-weight:700;color:rgba(249,250,251,.5);font-family:${f.family}">${c.handle||'@seuperfil'}</div>
+  </div>`;
+}
+
+// ── STUDENT MODEL: DADOS ──────────────────────────────────────────────────────
+function renderDados(s,c,fk){
+  const f=FONTS[fk]||FONTS.inter;
+  const hs=sz(s,'headline',150),b1s=sz(s,'bloco1',30),b2s=sz(s,'bloco2',26),exs=sz(s,'extra',16);
+  const lines=(s.bloco2||'').split('\n').map(x=>x.trim()).filter(Boolean).slice(0,4);
+  const bars=(lines.length?lines:['Clareza','Consistência','Execução']).map((l,i)=>{const w=[86,68,54,42][i]||50;return `<div style="margin-bottom:22px"><div style="display:flex;justify-content:space-between;font-size:17px;font-weight:700;color:${c.accent2};margin-bottom:9px"><span>${parseInline(l,c.accent)}</span><span>${w}%</span></div><div style="height:18px;border-radius:20px;background:rgba(148,163,184,.18);overflow:hidden"><div style="height:100%;width:${w}%;border-radius:20px;background:${c.accent}"></div></div></div>`}).join('');
+  const extra=s.extra?`<div style="position:absolute;bottom:${80-offY(s,'extra')}px;left:70px;right:70px;font-size:${exs}px;font-weight:600;color:${ec(s,'extra',c.accent2)};font-family:${f.family};letter-spacing:.4px">${parseInline(brk(s.extra),c.accent)}</div>`:'';
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${c.bg};font-family:${f.family}}</style></head><body>
+  <div style="width:1080px;height:1350px;background:${c.bg};position:relative;overflow:hidden;color:${c.text}">
+    <div style="position:absolute;inset:0;background:radial-gradient(circle at 80% 10%,rgba(56,189,248,.18),transparent 35%),radial-gradient(circle at 15% 85%,rgba(56,189,248,.10),transparent 40%)"></div>
+    <div style="position:absolute;top:56px;left:70px;right:70px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:${c.accent}">${s.tag||'Insight'}</span><span style="font-size:15px;font-weight:800;color:${c.accent2}">${String(s.num).padStart(2,'0')}</span></div>
+    <h1 style="position:absolute;top:${180+offY(s,'headline')}px;left:70px;right:70px;font-size:${hs}px;line-height:.88;font-weight:900;letter-spacing:-5px;color:${ec(s,'headline',c.text)};font-family:${f.family}">${parseInline(brk(s.headline),c.accent)}</h1>
+    <p style="position:absolute;top:${535+offY(s,'bloco1')}px;left:74px;right:74px;font-size:${b1s}px;line-height:1.45;font-weight:600;color:${ec(s,'bloco1',c.text)};font-family:${f.family};opacity:.92">${parseInline(brk(s.bloco1||''),c.accent)}</p>
+    <div style="position:absolute;top:${775+offY(s,'bloco2')}px;left:70px;right:70px;padding:34px;border-radius:30px;background:rgba(15,23,42,.42);border:1px solid rgba(148,163,184,.22);backdrop-filter:blur(10px)">
+      <div style="font-size:${b2s}px;font-weight:900;color:${c.accent};margin-bottom:22px;letter-spacing:-.5px">Indicadores</div>${bars}</div>
+    ${extra}
+    <div style="position:absolute;bottom:38px;right:70px;font-size:15px;font-weight:700;color:${c.accent2};font-family:${f.family}">${c.handle||'@seuperfil'}</div>
+  </div>`;
+}
+
+// ── STUDENT MODEL: ANTES E DEPOIS ─────────────────────────────────────────────
+function renderAntesDepois(s,c,fk){
+  const f=FONTS[fk]||FONTS.inter;
+  const hs=sz(s,'headline',58),b1s=sz(s,'bloco1',34),b2s=sz(s,'bloco2',34),exs=sz(s,'extra',18);
+  const extra=s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;text-align:center;font-size:${exs}px;font-weight:700;color:${ec(s,'extra',c.accent)};font-family:${f.family}">${parseInline(brk(s.extra),c.accent)}</div>`:'';
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${c.bg};font-family:${f.family}}</style></head><body>
+  <div style="width:1080px;height:1350px;background:${c.bg};position:relative;overflow:hidden;color:${c.text}">
+    <div style="position:absolute;top:58px;left:70px;font-size:13px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:${c.accent2};font-family:${f.family}">${s.tag||'Transformação'}</div>
+    <h1 style="position:absolute;top:${130+offY(s,'headline')}px;left:70px;right:70px;text-align:center;font-size:${hs}px;line-height:1.05;font-weight:900;letter-spacing:-1.8px;color:${ec(s,'headline',c.text)};font-family:${f.family}">${parseInline(brk(s.headline),c.accent)}</h1>
+    <div style="position:absolute;top:${410+offY(s,'bloco1')}px;left:58px;width:464px;height:585px;border-radius:34px;background:rgba(15,23,42,.06);border:1px solid rgba(15,23,42,.12);padding:38px">
+      <div style="font-size:16px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:${c.accent2};margin-bottom:36px">Antes</div>
+      <p style="font-size:${b1s}px;line-height:1.28;font-weight:800;color:${ec(s,'bloco1',c.text)};font-family:${f.family}">${parseInline(brk(s.bloco1||''),c.accent)}</p>
+    </div>
+    <div style="position:absolute;top:${410+offY(s,'bloco2')}px;right:58px;width:464px;height:585px;border-radius:34px;background:${c.accent};border:1px solid ${c.accent};padding:38px;box-shadow:0 28px 80px rgba(37,99,235,.22)">
+      <div style="font-size:16px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.72);margin-bottom:36px">Depois</div>
+      <p style="font-size:${b2s}px;line-height:1.28;font-weight:900;color:#fff;font-family:${f.family}">${parseInline(brk(s.bloco2||''),'#fff')}</p>
+    </div>
+    <div style="position:absolute;top:656px;left:512px;width:56px;height:56px;border-radius:50%;background:#fff;border:1px solid rgba(15,23,42,.12);display:flex;align-items:center;justify-content:center;font-size:28px;color:${c.accent};font-weight:900;box-shadow:0 14px 40px rgba(15,23,42,.15)">→</div>
+    ${extra}
+    <div style="position:absolute;bottom:38px;right:70px;font-size:15px;font-weight:700;color:${c.accent2};font-family:${f.family}">${c.handle||'@seuperfil'}</div>
+  </div>`;
+}
+
 // ── MAIN RENDERER DISPATCHER ───────────────────────────────────────────────────
 function renderSlide(slide,colors,fontKey){
-  const vs=state.visual||'clean';
-  if(vs==='clean') return renderClean(slide,colors,fontKey);
-  if(vs==='impact') return renderImpact(slide,colors,fontKey);
+  const vs=state.visual||'passo';
+  if(vs==='passo') return renderPasso(slide,colors,fontKey);
+  if(vs==='checklist') return renderChecklist(slide,colors,fontKey);
+  if(vs==='mito') return renderMito(slide,colors,fontKey);
+  if(vs==='dados') return renderDados(slide,colors,fontKey);
+  if(vs==='antesdepois') return renderAntesDepois(slide,colors,fontKey);
   if(vs==='serif') return renderSerif(slide,colors,fontKey);
-  if(vs==='statement') return renderStatement(slide,colors,fontKey);
   const fn=MAG_RENDERERS[slide.type]||rMagCapa;
   return fn(slide,colors,fontKey);
 }
@@ -1152,7 +1285,7 @@ function applyPaste() {
 
   // Aplicar visual detectado
   if (result.visual) {
-    state.visual = result.visual;
+    state.visual = VISUAL_STYLES[result.visual] ? result.visual : 'passo';
     const vs = VISUAL_STYLES[result.visual];
     state.colors.bg = vs.bg; state.colors.text = vs.text;
     state.colors.accent = vs.accent; state.colors.accent2 = vs.accent2;
