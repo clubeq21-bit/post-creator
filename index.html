@@ -2524,7 +2524,7 @@ function renderEditorialPremium(s,c,fk){
   }
 
   const tagColor=hasPhoto?'rgba(255,255,255,0.5)':(isLight?'#8B6B4E':'rgba(240,233,223,0.42)');
-  const tagHtml=s.tag?`<p style="font-family:${sans};font-size:13px;font-weight:500;letter-spacing:3.5px;text-transform:uppercase;color:${tagColor};margin-bottom:18px">${s.tag}</p>`:'';
+  const tagHtml=s.tag?`<div style="position:absolute;top:62px;left:70px;font-family:${sans};font-size:13px;font-weight:500;letter-spacing:3.5px;text-transform:uppercase;color:${tagColor};${zi}">${s.tag}</div>`:'';
 
   const extraColor=hasPhoto?'rgba(255,255,255,0.42)':(isLight?'rgba(42,22,8,0.38)':'rgba(240,233,223,0.35)');
   const extraHtml=s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;font-family:${sans};font-size:${sz(s,'extra',16)}px;color:${extraColor};text-align:center;${zi}">${s.extra}</div>`:'';
@@ -2545,8 +2545,8 @@ function renderEditorialPremium(s,c,fk){
   </head><body>
   <div style="width:1080px;height:1350px;background:${bgColor};position:relative;overflow:hidden">
     ${photoBg}${photoOverlay}
+    ${tagHtml}
     <div style="${contentStyle}">
-      ${tagHtml}
       <h1 style="font-family:${serif};font-size:${hs}px;font-weight:600;line-height:1.06;color:${hColor}">${hHtml}</h1>
       ${b1Html}
       ${b2Html}
