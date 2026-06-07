@@ -419,7 +419,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ── VISUAL STYLES ──────────────────────────────────────────────────────────────
 const VISUAL_STYLES = {
-  jornada: {label:'Jornada',desc:'Storytelling pessoal, origem, tensão, virada e aprendizado. Funciona muito bem com imagem de fundo.',bg:'#15110E',text:'#F9F3E8',accent:'#D6B56D',accent2:'#B8A48A',preview:{bg:'#15110E',accent:'#D6B56D',label:'J'}},
+  jornada: {label:'Presença',desc:'Apresentação profissional, autoridade pessoal, serviços e posicionamento direto. Usa fundo escuro e imagem de fundo.',bg:'#050505',text:'#F7F7F7',accent:'#12324A',accent2:'#8CB7A7',preview:{bg:'#050505',accent:'#12324A',label:'Pr'}},
   transformacao: {label:'Transformação',desc:'Antes e depois emocional, profissional ou comportamental. Ideal para provas, cases e evolução.',bg:'#F7F1E8',text:'#201812',accent:'#9B6A3D',accent2:'#7C5A42',preview:{bg:'#F7F1E8',accent:'#9B6A3D',label:'A→D'}},
   metodo: {label:'Método',desc:'Passos, mapas, frameworks e processos simples para ensinar com clareza.',bg:'#F8F6F0',text:'#181818',accent:'#C9A96E',accent2:'#6B7280',preview:{bg:'#F8F6F0',accent:'#C9A96E',label:'01'}},
   contraste: {label:'Contraste',desc:'Erro vs acerto, mito vs verdade, antes vs depois, aparência vs realidade.',bg:'#101114',text:'#F9FAFB',accent:'#E7B456',accent2:'#EF6A4D',preview:{bg:'#101114',accent:'#E7B456',label:'VS'}},
@@ -512,210 +512,210 @@ const TEMPLATES = {
 
 
 // ── STUDENT MODEL PRESETS ─────────────────────────────────────────────────────
-const APP_VERSION = 'student-v4.5-strong-story-layouts';
-const STORAGE_KEY = 'pc_state_student_v4_5';
-const BASE_KEY_PREFIX = 'pc_base_student_v4_5_';
+const APP_VERSION = 'student-v4.6-presenca-layout';
+const STORAGE_KEY = 'pc_state_student_v4_6';
+const BASE_KEY_PREFIX = 'pc_base_student_v4_6_';
 const VISUAL_PRESETS = {
   "jornada": {
-    "font": "playfair",
+    "font": "montserrat",
     "colors": {
-      "bg": "#15110E",
-      "text": "#F9F3E8",
-      "accent": "#D6B56D",
-      "accent2": "#B8A48A"
+        "bg": "#050505",
+        "text": "#F7F7F7",
+        "accent": "#12324A",
+        "accent2": "#8CB7A7"
     },
     "slides": [
-      {
-        "num": 1,
-        "type": "capa",
-        "tag": "História",
-        "headline": "EU NÃO\nCOMECEI\nPRONTA.",
-        "bloco1": "Mas teve um momento em que precisei parar de fugir da minha própria voz.",
-        "bloco2": "",
-        "extra": "Uma história sobre identidade, coragem e direção.",
-        "sizes": {
-          "headline": 78,
-          "bloco1": 28,
-          "bloco2": 24,
-          "extra": 18
+        {
+            "num": 1,
+            "type": "capa",
+            "tag": "NOME SOBRENOME",
+            "headline": "QUEM É\n[SEU NOME]?",
+            "bloco1": "Conheça um pouco sobre mim.",
+            "bloco2": "Mentoria • liderança • desenvolvimento humano",
+            "extra": "ARRASTE PARA O LADO",
+            "sizes": {
+                "headline": 88,
+                "bloco1": 28,
+                "bloco2": 32,
+                "extra": 20
+            },
+            "offsets": {
+                "headline": 210,
+                "bloco1": 230,
+                "bloco2": 245,
+                "extra": 0
+            }
         },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 2,
-        "type": "contexto",
-        "tag": "O começo",
-        "headline": "POR FORA,\nEU DAVA\nCONTA.",
-        "bloco1": "Por dentro, eu carregava dúvidas que quase ninguém percebia.",
-        "bloco2": "Eu sabia ajudar pessoas, mas ainda não sabia sustentar minha própria presença.",
-        "extra": "Toda jornada começa com uma verdade difícil.",
-        "sizes": {
-          "headline": 72,
-          "bloco1": 28,
-          "bloco2": 24,
-          "extra": 18
+        {
+            "num": 2,
+            "type": "contexto",
+            "tag": "POSICIONAMENTO",
+            "headline": "Vamos conversar sobre\ncomo posso contribuir\npara o seu crescimento?",
+            "bloco1": "Seja na liderança, na comunicação ou na construção de uma cultura mais humana.",
+            "bloco2": "Estou aqui para ajudar.",
+            "extra": "CURTA ESSE POST",
+            "sizes": {
+                "headline": 54,
+                "bloco1": 28,
+                "bloco2": 28,
+                "extra": 18
+            },
+            "offsets": {
+                "headline": 150,
+                "bloco1": 145,
+                "bloco2": 155,
+                "extra": 0
+            }
         },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 3,
-        "type": "contexto",
-        "tag": "O conflito",
-        "headline": "O QUE ME\nTRAVAVA\nNÃO ERA\nCAPACIDADE.",
-        "bloco1": "Era medo de aparecer, medo de errar e medo de ser julgada.",
-        "bloco2": "A insegurança não gritava. Ela só adiava minhas decisões.",
-        "extra": "Talento sem direção também cansa.",
-        "sizes": {
-          "headline": 70,
-          "bloco1": 28,
-          "bloco2": 24,
-          "extra": 18
+        {
+            "num": 3,
+            "type": "contexto",
+            "tag": "CRENÇA",
+            "headline": "Eu acredito que\no crescimento começa\ncom pessoas.",
+            "bloco1": "Resultados sustentáveis nascem quando gente, processo e propósito caminham juntos.",
+            "bloco2": "Inteligência emocional + liderança = ambientes mais fortes.",
+            "extra": "DESLIZE →",
+            "sizes": {
+                "headline": 58,
+                "bloco1": 30,
+                "bloco2": 30,
+                "extra": 18
+            },
+            "offsets": {
+                "headline": 120,
+                "bloco1": 140,
+                "bloco2": 150,
+                "extra": 0
+            }
         },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 4,
-        "type": "virada",
-        "tag": "A virada",
-        "headline": "UM DIA,\nEU MUDEI\nA PERGUNTA.",
-        "bloco1": "Em vez de perguntar: “e se não der certo?”",
-        "bloco2": "Comecei a perguntar: “quem deixa de ser ajudado enquanto eu me escondo?”",
-        "extra": "Essa pergunta virou chave.",
-        "sizes": {
-          "headline": 72,
-          "bloco1": 28,
-          "bloco2": 24,
-          "extra": 18
+        {
+            "num": 4,
+            "type": "virada",
+            "tag": "ATUAÇÃO",
+            "headline": "Especialista em\ndesenvolvimento\nhumano e liderança.",
+            "bloco1": "Aplico treinamentos e processos para fortalecer pessoas, equipes e comunicação.",
+            "bloco2": "Mais clareza. Mais conexão. Mais performance.",
+            "extra": "PRESENÇA COM DIREÇÃO",
+            "sizes": {
+                "headline": 58,
+                "bloco1": 30,
+                "bloco2": 32,
+                "extra": 18
+            },
+            "offsets": {
+                "headline": 105,
+                "bloco1": 135,
+                "bloco2": 145,
+                "extra": 0
+            }
         },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 5,
-        "type": "dois_col",
-        "tag": "Antes e Depois",
-        "headline": "A MINHA\nPOSTURA\nMUDOU.",
-        "bloco1": "Antes:\nEu esperava segurança\nEu comparava minha voz\nEu adiava o próximo passo",
-        "bloco2": "Depois:\nEu assumi meu processo\nEu comuniquei com verdade\nEu comecei com o que tinha",
-        "extra": "A mudança começou antes do resultado.",
-        "sizes": {
-          "headline": 68,
-          "bloco1": 25,
-          "bloco2": 25,
-          "extra": 18
+        {
+            "num": 5,
+            "type": "dois_col",
+            "tag": "SOLUÇÕES",
+            "headline": "Eu ajudo pessoas\ne equipes a evoluírem\ncom clareza.",
+            "bloco1": "— Desenvolver líderes mais empáticos e eficazes\n\n— Fortalecer a conexão entre equipes\n\n— Melhorar comunicação e cultura",
+            "bloco2": "Tudo isso com foco em pessoas, performance e resultados.",
+            "extra": "DESLIZE →",
+            "sizes": {
+                "headline": 52,
+                "bloco1": 31,
+                "bloco2": 30,
+                "extra": 18
+            },
+            "offsets": {
+                "headline": 85,
+                "bloco1": 120,
+                "bloco2": 140,
+                "extra": 0
+            }
         },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 6,
-        "type": "cenarios",
-        "tag": "O processo",
-        "headline": "NÃO FOI\nMÁGICO.\nFOI\nCONSTRUÍDO.",
-        "bloco1": "Pequenas decisões repetidas começaram a reconstruir minha confiança.",
-        "bloco2": "Eu não esperei me sentir pronta. Eu me movi até me reconhecer no caminho.",
-        "extra": "Consistência também cura identidade.",
-        "sizes": {
-          "headline": 68,
-          "bloco1": 28,
-          "bloco2": 24,
-          "extra": 18
+        {
+            "num": 6,
+            "type": "cenarios",
+            "tag": "EXPERIÊNCIA",
+            "headline": "Experiência não é\napenas tempo.\nÉ repertório aplicado.",
+            "bloco1": "Cada processo, atendimento e treinamento amplia a capacidade de conduzir pessoas com mais maturidade.",
+            "bloco2": "O objetivo não é impressionar. É gerar transformação real.",
+            "extra": "AUTORIDADE COM HUMANIDADE",
+            "sizes": {
+                "headline": 56,
+                "bloco1": 30,
+                "bloco2": 30,
+                "extra": 18
+            },
+            "offsets": {
+                "headline": 110,
+                "bloco1": 130,
+                "bloco2": 145,
+                "extra": 0
+            }
         },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 7,
-        "type": "sintese",
-        "tag": "O aprendizado",
-        "headline": "A SUA\nHISTÓRIA\nNÃO É UM\nPESO.",
-        "bloco1": "Ela pode ser ponte para alguém que ainda não sabe como atravessar.",
-        "bloco2": "O que você viveu pode virar linguagem, presença e serviço.",
-        "extra": "Quando a dor ganha direção, ela deixa de mandar.",
-        "sizes": {
-          "headline": 68,
-          "bloco1": 28,
-          "bloco2": 24,
-          "extra": 18
+        {
+            "num": 7,
+            "type": "sintese",
+            "tag": "DIFERENCIAL",
+            "headline": "Meu trabalho une\nestratégia, presença\ne comportamento.",
+            "bloco1": "Porque técnica sem humanidade não sustenta cultura.",
+            "bloco2": "E cuidado sem direção também não gera resultado.",
+            "extra": "O EQUILÍBRIO É O CAMINHO",
+            "sizes": {
+                "headline": 58,
+                "bloco1": 31,
+                "bloco2": 31,
+                "extra": 18
+            },
+            "offsets": {
+                "headline": 120,
+                "bloco1": 145,
+                "bloco2": 155,
+                "extra": 0
+            }
         },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 8,
-        "type": "aplicacao",
-        "tag": "Aplicação",
-        "headline": "QUAL PARTE\nDA SUA\nHISTÓRIA\nPRECISA VIRAR\nVOZ?",
-        "bloco1": "Escolha um episódio. Encontre a virada. Extraia o aprendizado. Compartilhe com maturidade.",
-        "bloco2": "Storytelling não é exposição. É condução com propósito.",
-        "extra": "Conte com verdade, não com exagero.",
-        "sizes": {
-          "headline": 64,
-          "bloco1": 28,
-          "bloco2": 24,
-          "extra": 18
+        {
+            "num": 8,
+            "type": "aplicacao",
+            "tag": "CONVITE",
+            "headline": "Se você quer crescer,\ncomece pelas pessoas\nque sustentam o crescimento.",
+            "bloco1": "Sua equipe não precisa apenas de metas. Precisa de consciência, comunicação e direção.",
+            "bloco2": "Esse é o tipo de liderança que transforma ambientes.",
+            "extra": "SALVE PARA REVISAR",
+            "sizes": {
+                "headline": 54,
+                "bloco1": 30,
+                "bloco2": 30,
+                "extra": 18
+            },
+            "offsets": {
+                "headline": 120,
+                "bloco1": 145,
+                "bloco2": 155,
+                "extra": 0
+            }
         },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
+        {
+            "num": 9,
+            "type": "cta",
+            "tag": "AÇÃO",
+            "headline": "Vamos construir\no próximo nível\ncom mais presença?",
+            "bloco1": "Me acompanhe por aqui para conteúdos sobre liderança, inteligência emocional e desenvolvimento humano.",
+            "bloco2": "E me chame se quiser levar isso para sua equipe, mentoria ou treinamento.",
+            "extra": "COMENTE: PRESENÇA",
+            "sizes": {
+                "headline": 60,
+                "bloco1": 29,
+                "bloco2": 29,
+                "extra": 18
+            },
+            "offsets": {
+                "headline": 120,
+                "bloco1": 145,
+                "bloco2": 155,
+                "extra": 0
+            }
         }
-      },
-      {
-        "num": 9,
-        "type": "cta",
-        "tag": "Ação",
-        "headline": "SALVE\nPARA CONTAR\nA SUA\nJORNADA.",
-        "bloco1": "A próxima pessoa que precisa ouvir sua história talvez ainda nem saiba como pedir ajuda.",
-        "bloco2": "Use este modelo para transformar vivência em mensagem.",
-        "extra": "Sua história pode ser direção.",
-        "sizes": {
-          "headline": 68,
-          "bloco1": 28,
-          "bloco2": 24,
-          "extra": 18
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      }
     ]
-  },
+},
   "transformacao": {
     "font": "manrope",
     "colors": {
@@ -2352,27 +2352,39 @@ function renderAntesDepois(s,c,fk){
 
 // ── STUDENT STRONG LAYOUT: JORNADA ────────────────────────────────────────────
 function renderJornada(s,c,fk){
-  const f=FONTS[fk]||FONTS.playfair;
-  const hs=sz(s,'headline',72),b1s=sz(s,'bloco1',28),b2s=sz(s,'bloco2',24),exs=sz(s,'extra',18);
-  const hasBg=s.image&&s.imagePos==='background';
-  const tc=studentTextColor(s,c), muted=studentMutedColor(s,c);
-  const bgLayers=renderStudentImageBg(s,'warm');
-  const floatImg=renderStudentFloatImage(s,'right');
-  const rightPad=s.image&&s.imagePos==='float'?'500px':'70px';
-  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800;900&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${c.bg};font-family:${f.family}}</style></head><body>
-  <div style="width:1080px;height:1350px;background:${c.bg};position:relative;overflow:hidden;color:${tc}">
-    ${bgLayers||`<div style="position:absolute;inset:0;background:radial-gradient(circle at 80% 15%,rgba(214,181,109,.18),transparent 34%),linear-gradient(180deg,${c.bg},#080706)"></div>`}
-    ${floatImg}
+  const f=FONTS[fk]||FONTS.montserrat;
+  const hs=sz(s,'headline',58),b1s=sz(s,'bloco1',30),b2s=sz(s,'bloco2',28),exs=sz(s,'extra',18);
+  const hasImg=!!s.image;
+  const brand=(c.handle||'@seuperfil');
+  const name=s.tag||brand.replace('@','').toUpperCase();
+  const bgImg=hasImg?`<div style="position:absolute;inset:0;background:url('${s.image}') center/cover no-repeat;filter:grayscale(1) contrast(1.12) brightness(.72);z-index:0"></div><div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.42) 0%,rgba(0,0,0,.70) 48%,rgba(0,0,0,.92) 100%);z-index:1"></div>`:`<div style="position:absolute;inset:0;background:#050505;z-index:0"></div><div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 20%,rgba(18,50,74,.20),transparent 32%),linear-gradient(180deg,#050505,#020202);z-index:1"></div><div style="position:absolute;inset:0;opacity:.18;background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);z-index:1"></div>`;
+  const centerTypes=['capa','contexto'];
+  const isCover=s.type==='capa';
+  const isCenter=centerTypes.includes(s.type);
+  const headAlign=isCover?'center':(isCenter?'center':'left');
+  const headLeft=isCover?'95px':(isCenter?'105px':'155px');
+  const headRight=isCover?'95px':(isCenter?'105px':'150px');
+  const headTop=isCover?`${560+offY(s,'headline')}px`:`${250+offY(s,'headline')}px`;
+  const bloco1Top=isCover?`${760+offY(s,'bloco1')}px`:`${510+offY(s,'bloco1')}px`;
+  const faixaTop=isCover?`${875+offY(s,'bloco2')}px`:`${690+offY(s,'bloco2')}px`;
+  const bodyLeft=isCover?'145px':(isCenter?'160px':'155px');
+  const bodyRight=isCover?'145px':(isCenter?'160px':'150px');
+  const headlineWeight=isCover?300:800;
+  const headlineStyle=isCover?'font-style:italic;':'font-style:normal;';
+  const firstWord=String(s.extra||'').split(' ')[0]||'';
+  const restWords=String(s.extra||'').split(' ').slice(1).join(' ');
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:#050505;font-family:${f.family}}</style></head><body>
+  <div style="width:1080px;height:1350px;background:#050505;position:relative;overflow:hidden;color:#F7F7F7">
+    ${bgImg}
     <div style="position:absolute;inset:0;z-index:2">
-      <div style="position:absolute;top:62px;left:70px;font-family:'Manrope',sans-serif;font-size:13px;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:${hasBg?'rgba(255,255,255,.68)':c.accent}">${s.tag||'Jornada'}</div>
-      <div style="position:absolute;top:58px;right:70px;font-family:'Manrope',sans-serif;font-size:13px;font-weight:700;letter-spacing:3px;color:${muted}">${String(s.num).padStart(2,'0')}</div>
-      <h1 style="position:absolute;top:${185+offY(s,'headline')}px;left:70px;right:${rightPad};font-size:${hs}px;line-height:.96;font-weight:800;letter-spacing:-2px;color:${ec(s,'headline',tc)};font-family:${f.family}">${parseInline(brk(s.headline),c.accent)}</h1>
-      <p style="position:absolute;top:${610+offY(s,'bloco1')}px;left:74px;right:${rightPad};font-family:'Manrope',sans-serif;font-size:${b1s}px;line-height:1.45;font-weight:600;color:${ec(s,'bloco1',hasBg?'rgba(255,255,255,.9)':c.text)}">${parseInline(brk(s.bloco1||''),c.accent)}</p>
-      ${s.bloco2?`<p style="position:absolute;top:${790+offY(s,'bloco2')}px;left:74px;right:${rightPad};font-family:'Manrope',sans-serif;font-size:${b2s}px;line-height:1.48;font-weight:500;color:${ec(s,'bloco2',hasBg?'rgba(255,255,255,.78)':c.accent2)}">${parseInline(brk(s.bloco2),c.accent)}</p>`:''}
-      ${s.extra?`<div style="position:absolute;bottom:${92-offY(s,'extra')}px;left:70px;right:70px;border-top:1px solid ${hasBg?'rgba(255,255,255,.22)':'rgba(122,82,48,.22)'};padding-top:22px;font-family:'Manrope',sans-serif;font-size:${exs}px;font-weight:700;letter-spacing:.4px;color:${ec(s,'extra',hasBg?c.accent:c.accent2)}">${parseInline(brk(s.extra),c.accent)}</div>`:''}
-      <div style="position:absolute;bottom:42px;right:70px;font-family:'Manrope',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:${hasBg?'rgba(255,255,255,.45)':c.accent2}">${c.handle||'@seuperfil'}</div>
+      <div style="position:absolute;top:64px;left:70px;font-family:'Montserrat',Arial,sans-serif;font-size:18px;letter-spacing:.7px;text-transform:uppercase;color:rgba(255,255,255,.92);font-weight:300"><strong style="font-weight:800">${parseInline(name,c.accent2)}</strong></div>
+      ${!isCover?`<div style="position:absolute;bottom:78px;right:70px;font-family:'Montserrat',Arial,sans-serif;font-size:34px;font-weight:300;color:rgba(255,255,255,.88);letter-spacing:2px">»</div>`:''}
+      <h1 style="position:absolute;top:${headTop};left:${headLeft};right:${headRight};text-align:${headAlign};font-family:${f.family};font-size:${hs}px;line-height:1.10;font-weight:${headlineWeight};letter-spacing:${isCover?'-1.2px':'-.8px'};${headlineStyle}color:${ec(s,'headline','#F7F7F7')}">${parseInline(brk(s.headline),c.accent2)}</h1>
+      ${s.bloco1?`<div style="position:absolute;top:${bloco1Top};left:${bodyLeft};right:${bodyRight};font-family:${f.family};font-size:${b1s}px;line-height:1.38;font-weight:700;color:${ec(s,'bloco1','#F7F7F7')};text-align:${isCenter?'center':'left'}">${parseInline(brk(s.bloco1),c.accent2)}</div>`:''}
+      ${s.bloco2?`<div style="position:absolute;top:${faixaTop};left:${isCenter?'170px':'155px'};right:${isCenter?'170px':'150px'};background:linear-gradient(90deg,rgba(18,50,74,.88),rgba(18,50,74,.66));padding:18px 28px;border-radius:0;font-family:${f.family};font-size:${b2s}px;line-height:1.42;font-weight:300;font-style:italic;color:${ec(s,'bloco2','#F2F4F5')};text-align:${isCenter?'center':'left'}">${parseInline(brk(s.bloco2),c.accent2)}</div>`:''}
+      ${s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;text-align:${isCover?'left':'center'};font-family:'Montserrat',Arial,sans-serif;font-size:${exs}px;line-height:1.2;font-weight:300;font-style:italic;letter-spacing:1.4px;text-transform:uppercase;color:${ec(s,'extra','rgba(255,255,255,.88)')}"><strong style="font-weight:800;font-style:normal">${parseInline(firstWord,c.accent2)}</strong>${restWords?' '+parseInline(restWords,c.accent2):''}</div>`:''}
     </div>
-  </div>`;
+  </div></body></html>`;
 }
 
 function renderTransformacao(s,c,fk){
