@@ -963,52 +963,78 @@ function renderStatement(s,c){
 }
 
 // ── Q21 STATEMENT DUO RENDERER ────────────────────────────────────────────────
-function renderSans(s,c){
+function renderSans(s,c,fontKey){
   const total=state.slides.length,counter=`${s.num}/${total}`;
 
   /*
-    Q21 Statement Duo — layout corrigido
+    Q21 Statement Duo — layout final
     Regra visual:
     - HEADLINE = frase principal em português
     - BLOCO 1 = a mesma ideia em inglês
     - BLOCO 2 = apoio opcional curto
     - EXTRA = assinatura/CTA mínimo
-    Todos os elementos têm posição independente para evitar sobreposição.
+
+    Esta versão usa proteção automática contra sobreposição:
+    mesmo que o texto venha maior ou o slider esteja negativo,
+    o bloco seguinte nunca invade visualmente o anterior.
   */
-  const hs=sz(s,'headline',82);
+  const hs=sz(s,'headline',72);
   const b1s=sz(s,'bloco1',34);
-  const b2s=sz(s,'bloco2',28);
-  const exs=sz(s,'extra',16);
+  const b2s=sz(s,'bloco2',24);
+  const exs=sz(s,'extra',15);
 
   const bg=c.bg||'#EAEAE4';
   const darkText=c.text||'#1A1A1A';
   const grayText=c.accent||'#9B9B9B';
+  const fam=(FONTS[fontKey||state.font]&&FONTS[fontKey||state.font].family)||"'Inter', Arial, sans-serif";
 
-  const hHtml=parseInline(brk(s.headline||''),grayText);
-  const b1Html=s.bloco1?parseInline(brk(s.bloco1),grayText):'';
-  const b2Html=s.bloco2?parseInline(brk(s.bloco2),grayText):'';
+  const rawHeadline=String(s.headline||'').trim();
+  const rawBloco1=String(s.bloco1||'').trim();
+  const rawBloco2=String(s.bloco2||'').trim();
 
-  const headlineTop = 310 + offY(s,'headline');
-  const bloco1Top   = 610 + offY(s,'bloco1');
-  const bloco2Top   = 790 + offY(s,'bloco2');
-  const extraBottom = 90 - offY(s,'extra');
+  const hHtml=parseInline(brk(rawHeadline),grayText);
+  const b1Html=rawBloco1?parseInline(brk(rawBloco1),grayText):'';
+  const b2Html=rawBloco2?parseInline(brk(rawBloco2),grayText):'';
+
+  function estimatedLines(txt, charsPerLine){
+    const lines=String(txt||'').split('\n').filter(Boolean);
+    if(!lines.length) return 1;
+    return lines.reduce((sum,line)=>sum+Math.max(1,Math.ceil(line.trim().length/charsPerLine)),0);
+  }
+
+  const headlineTop = 330 + offY(s,'headline');
+  const hLines = estimatedLines(rawHeadline, 19);
+  const hHeight = hLines * hs * 1.08;
+
+  const b1MinTop = headlineTop + hHeight + 76;
+  const b1DesiredTop = 650 + offY(s,'bloco1');
+  const bloco1Top = Math.max(b1DesiredTop, b1MinTop);
+
+  const b1Lines = rawBloco1 ? estimatedLines(rawBloco1, 28) : 0;
+  const b1Height = b1Lines * b1s * 1.22;
+
+  const b2MinTop = bloco1Top + b1Height + 70;
+  const b2DesiredTop = 850 + offY(s,'bloco2');
+  const bloco2Top = Math.max(b2DesiredTop, b2MinTop);
+
+  const extraBottom = 92 - offY(s,'extra');
 
   const tagHtml = s.tag ? `<div style="position:absolute;top:60px;left:70px;font-size:13px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:#999999;font-family:'Inter',sans-serif">${s.tag}</div>` : '';
   const extraHtml = s.extra ? `<div style="position:absolute;bottom:${extraBottom}px;left:70px;right:70px;font-size:${exs}px;font-weight:500;color:${ec(s,'extra','#8A8A8A')};font-family:'Inter',sans-serif;letter-spacing:.8px;line-height:1.35">${parseInline(brk(s.extra),grayText)}</div>` : '';
 
   return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${bg};font-family:'Inter',sans-serif}</style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cormorant+Garamond:wght@500;600;700&family=Playfair+Display:wght@600;700;800&family=Montserrat:wght@500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${bg};font-family:${fam}}</style>
   </head><body>
   <div style="width:1080px;height:1350px;background:${bg};position:relative;overflow:hidden">
     ${tagHtml}
     <div style="position:absolute;top:48px;right:50px;background:rgba(50,50,50,0.75);border-radius:40px;padding:10px 22px;font-size:22px;color:rgba(255,255,255,0.85);font-weight:600;font-family:'Inter',sans-serif">${counter}</div>
 
-    <h1 style="position:absolute;top:${headlineTop}px;left:70px;right:70px;font-size:${hs}px;font-weight:800;line-height:1.03;color:${ec(s,'headline',darkText)};font-family:'Inter',sans-serif;letter-spacing:-1.7px">${hHtml}</h1>
+    <h1 style="position:absolute;top:${headlineTop}px;left:70px;right:70px;font-size:${hs}px;font-weight:800;line-height:1.06;color:${ec(s,'headline',darkText)};font-family:${fam};letter-spacing:-1.4px">${hHtml}</h1>
 
-    ${b1Html?`<p style="position:absolute;top:${bloco1Top}px;left:70px;right:110px;font-size:${b1s}px;font-weight:700;line-height:1.18;color:${ec(s,'bloco1',grayText)};font-family:'Inter',sans-serif;letter-spacing:-.4px">${b1Html}</p>`:''}
+    ${b1Html?`<p style="position:absolute;top:${bloco1Top}px;left:70px;right:110px;font-size:${b1s}px;font-weight:600;line-height:1.24;color:${ec(s,'bloco1',grayText)};font-family:${fam};letter-spacing:-.2px">${b1Html}</p>`:''}
 
-    ${b2Html?`<p style="position:absolute;top:${bloco2Top}px;left:70px;right:110px;font-size:${b2s}px;font-weight:500;line-height:1.35;color:${ec(s,'bloco2',darkText)};font-family:'Inter',sans-serif;opacity:.82">${b2Html}</p>`:''}
+    ${b2Html?`<p style="position:absolute;top:${bloco2Top}px;left:70px;right:130px;font-size:${b2s}px;font-weight:500;line-height:1.35;color:${ec(s,'bloco2',darkText)};font-family:${fam};opacity:.72">${b2Html}</p>`:''}
 
     ${extraHtml}
 
@@ -1020,10 +1046,10 @@ function applyDuoLayoutDefaults(){
   state.slides = state.slides.map(sl => {
     const s = makeSlide(sl);
     s.sizes = Object.assign({}, s.sizes || {}, {
-      headline:82,
+      headline:72,
       bloco1:34,
-      bloco2:28,
-      extra:16
+      bloco2:24,
+      extra:15
     });
     s.offsets = Object.assign({}, s.offsets || {}, {
       headline:0,
