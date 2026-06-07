@@ -419,48 +419,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ── VISUAL STYLES ──────────────────────────────────────────────────────────────
 const VISUAL_STYLES = {
-  passo: {
-    label: 'Passo a Passo',
-    desc: 'Modelo didático com numeração grande, ritmo de tutorial e muito espaço em branco.',
-    bg: '#F7F4ED', text: '#181818', accent: '#C9A96E', accent2: '#6B7280',
-    preview: {bg:'#F7F4ED', accent:'#C9A96E', label:'01'}
-  },
-  checklist: {
-    label: 'Checklist',
-    desc: 'Modelo simples, autêntico e fácil de salvar, inspirado em notas e listas práticas.',
-    bg: '#FFFDF7', text: '#1F2937', accent: '#16A34A', accent2: '#64748B',
-    preview: {bg:'#FFFDF7', accent:'#16A34A', label:'✓'}
-  },
-  mito: {
-    label: 'Mito ou Fato',
-    desc: 'Modelo comparativo para quebrar crenças, gerar comentários e construir autoridade.',
-    bg: '#111827', text: '#F9FAFB', accent: '#F59E0B', accent2: '#EF4444',
-    preview: {bg:'#111827', accent:'#F59E0B', label:'M/F'}
-  },
-  dados: {
-    label: 'Dados',
-    desc: 'Modelo com estética analítica para números, insights, gráficos simples e provas.',
-    bg: '#0B1220', text: '#E5E7EB', accent: '#38BDF8', accent2: '#94A3B8',
-    preview: {bg:'#0B1220', accent:'#38BDF8', label:'%'}
-  },
-  antesdepois: {
-    label: 'Antes e Depois',
-    desc: 'Modelo de transformação visual para mostrar mudança, contraste e prova social.',
-    bg: '#F8FAFC', text: '#0F172A', accent: '#2563EB', accent2: '#94A3B8',
-    preview: {bg:'#F8FAFC', accent:'#2563EB', label:'A/D'}
-  },
-  serif: {
-    label: 'Editorial Q21',
-    desc: 'Modelo com estética editorial para conteúdos mais sofisticados.',
-    bg: '#F4EFE6', text: '#1A1209', accent: '#C9A961', accent2: '#7A5230',
-    preview: {bg:'#F4EFE6', accent:'#7A5230', label:'Ed'}
-  },
-  magazine: {
-    label: 'Revista Q21',
-    desc: 'Modelo moderno e escuro com contraste forte e aparência de revista digital.',
-    bg: '#0F1115', text: '#FFFFFF', accent: '#F5C542', accent2: '#9CA3AF',
-    preview: {bg:'#0F1115', accent:'#F5C542', label:'Mg'}
-  }
+  jornada: {label:'Jornada',desc:'Storytelling pessoal, origem, tensão, virada e aprendizado. Funciona muito bem com imagem de fundo.',bg:'#15110E',text:'#F9F3E8',accent:'#D6B56D',accent2:'#B8A48A',preview:{bg:'#15110E',accent:'#D6B56D',label:'J'}},
+  transformacao: {label:'Transformação',desc:'Antes e depois emocional, profissional ou comportamental. Ideal para provas, cases e evolução.',bg:'#F7F1E8',text:'#201812',accent:'#9B6A3D',accent2:'#7C5A42',preview:{bg:'#F7F1E8',accent:'#9B6A3D',label:'A→D'}},
+  metodo: {label:'Método',desc:'Passos, mapas, frameworks e processos simples para ensinar com clareza.',bg:'#F8F6F0',text:'#181818',accent:'#C9A96E',accent2:'#6B7280',preview:{bg:'#F8F6F0',accent:'#C9A96E',label:'01'}},
+  contraste: {label:'Contraste',desc:'Erro vs acerto, mito vs verdade, antes vs depois, aparência vs realidade.',bg:'#101114',text:'#F9FAFB',accent:'#E7B456',accent2:'#EF6A4D',preview:{bg:'#101114',accent:'#E7B456',label:'VS'}},
+  serif: {label:'Editorial',desc:'Modelo elegante para posicionamento, autoridade, reflexão e marca pessoal.',bg:'#F4EFE6',text:'#1A1209',accent:'#C9A961',accent2:'#7A5230',preview:{bg:'#F4EFE6',accent:'#7A5230',label:'Ed'}},
+  magazine: {label:'Revista',desc:'Modelo visual e dinâmico com aparência de matéria, destaque ou capa digital.',bg:'#0F1115',text:'#FFFFFF',accent:'#F5C542',accent2:'#9CA3AF',preview:{bg:'#0F1115',accent:'#F5C542',label:'Mg'}}
 };
 
 // ── FONTS ──────────────────────────────────────────────────────────────────────
@@ -548,14 +512,414 @@ const TEMPLATES = {
 
 
 // ── STUDENT MODEL PRESETS ─────────────────────────────────────────────────────
-const APP_VERSION = 'student-v4.4-presets';
-const STORAGE_KEY = 'pc_state_student_v4_4';
-const BASE_KEY_PREFIX = 'pc_base_student_v4_4_';
+const APP_VERSION = 'student-v4.5-strong-story-layouts';
+const STORAGE_KEY = 'pc_state_student_v4_5';
+const BASE_KEY_PREFIX = 'pc_base_student_v4_5_';
 const VISUAL_PRESETS = {
-  "passo": {
+  "jornada": {
+    "font": "playfair",
+    "colors": {
+      "bg": "#15110E",
+      "text": "#F9F3E8",
+      "accent": "#D6B56D",
+      "accent2": "#B8A48A"
+    },
+    "slides": [
+      {
+        "num": 1,
+        "type": "capa",
+        "tag": "História",
+        "headline": "EU NÃO\nCOMECEI\nPRONTA.",
+        "bloco1": "Mas teve um momento em que precisei parar de fugir da minha própria voz.",
+        "bloco2": "",
+        "extra": "Uma história sobre identidade, coragem e direção.",
+        "sizes": {
+          "headline": 78,
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 2,
+        "type": "contexto",
+        "tag": "O começo",
+        "headline": "POR FORA,\nEU DAVA\nCONTA.",
+        "bloco1": "Por dentro, eu carregava dúvidas que quase ninguém percebia.",
+        "bloco2": "Eu sabia ajudar pessoas, mas ainda não sabia sustentar minha própria presença.",
+        "extra": "Toda jornada começa com uma verdade difícil.",
+        "sizes": {
+          "headline": 72,
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 3,
+        "type": "contexto",
+        "tag": "O conflito",
+        "headline": "O QUE ME\nTRAVAVA\nNÃO ERA\nCAPACIDADE.",
+        "bloco1": "Era medo de aparecer, medo de errar e medo de ser julgada.",
+        "bloco2": "A insegurança não gritava. Ela só adiava minhas decisões.",
+        "extra": "Talento sem direção também cansa.",
+        "sizes": {
+          "headline": 70,
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 4,
+        "type": "virada",
+        "tag": "A virada",
+        "headline": "UM DIA,\nEU MUDEI\nA PERGUNTA.",
+        "bloco1": "Em vez de perguntar: “e se não der certo?”",
+        "bloco2": "Comecei a perguntar: “quem deixa de ser ajudado enquanto eu me escondo?”",
+        "extra": "Essa pergunta virou chave.",
+        "sizes": {
+          "headline": 72,
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 5,
+        "type": "dois_col",
+        "tag": "Antes e Depois",
+        "headline": "A MINHA\nPOSTURA\nMUDOU.",
+        "bloco1": "Antes:\nEu esperava segurança\nEu comparava minha voz\nEu adiava o próximo passo",
+        "bloco2": "Depois:\nEu assumi meu processo\nEu comuniquei com verdade\nEu comecei com o que tinha",
+        "extra": "A mudança começou antes do resultado.",
+        "sizes": {
+          "headline": 68,
+          "bloco1": 25,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 6,
+        "type": "cenarios",
+        "tag": "O processo",
+        "headline": "NÃO FOI\nMÁGICO.\nFOI\nCONSTRUÍDO.",
+        "bloco1": "Pequenas decisões repetidas começaram a reconstruir minha confiança.",
+        "bloco2": "Eu não esperei me sentir pronta. Eu me movi até me reconhecer no caminho.",
+        "extra": "Consistência também cura identidade.",
+        "sizes": {
+          "headline": 68,
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 7,
+        "type": "sintese",
+        "tag": "O aprendizado",
+        "headline": "A SUA\nHISTÓRIA\nNÃO É UM\nPESO.",
+        "bloco1": "Ela pode ser ponte para alguém que ainda não sabe como atravessar.",
+        "bloco2": "O que você viveu pode virar linguagem, presença e serviço.",
+        "extra": "Quando a dor ganha direção, ela deixa de mandar.",
+        "sizes": {
+          "headline": 68,
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 8,
+        "type": "aplicacao",
+        "tag": "Aplicação",
+        "headline": "QUAL PARTE\nDA SUA\nHISTÓRIA\nPRECISA VIRAR\nVOZ?",
+        "bloco1": "Escolha um episódio. Encontre a virada. Extraia o aprendizado. Compartilhe com maturidade.",
+        "bloco2": "Storytelling não é exposição. É condução com propósito.",
+        "extra": "Conte com verdade, não com exagero.",
+        "sizes": {
+          "headline": 64,
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 9,
+        "type": "cta",
+        "tag": "Ação",
+        "headline": "SALVE\nPARA CONTAR\nA SUA\nJORNADA.",
+        "bloco1": "A próxima pessoa que precisa ouvir sua história talvez ainda nem saiba como pedir ajuda.",
+        "bloco2": "Use este modelo para transformar vivência em mensagem.",
+        "extra": "Sua história pode ser direção.",
+        "sizes": {
+          "headline": 68,
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      }
+    ]
+  },
+  "transformacao": {
+    "font": "manrope",
+    "colors": {
+      "bg": "#F7F1E8",
+      "text": "#201812",
+      "accent": "#9B6A3D",
+      "accent2": "#7C5A42"
+    },
+    "slides": [
+      {
+        "num": 1,
+        "type": "capa",
+        "tag": "Transformação",
+        "headline": "ANTES\nEU ME\nPERDIA.\nHOJE EU ME\nCONDUZO.",
+        "bloco1": "Uma mudança real não começa no resultado. Começa na forma como você se enxerga.",
+        "bloco2": "",
+        "extra": "Do invisível ao intencional.",
+        "sizes": {
+          "headline": 72,
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 2,
+        "type": "contexto",
+        "tag": "Antes",
+        "headline": "EU ACHAVA\nQUE O PROBLEMA\nERA FALTA DE\nDISCIPLINA.",
+        "bloco1": "Mas a falta de constância era só o sintoma.",
+        "bloco2": "O problema real era tentar construir rotina sem clareza emocional.",
+        "extra": "Quando a raiz muda, o comportamento acompanha.",
+        "sizes": {
+          "headline": 64,
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 3,
+        "type": "dois_col",
+        "tag": "Comparação",
+        "headline": "O QUE\nMUDOU\nNA PRÁTICA.",
+        "bloco1": "ANTES\nEu reagia ao dia\nEu acumulava culpa\nEu esperava motivação",
+        "bloco2": "DEPOIS\nEu organizo minha energia\nEu decido com clareza\nEu ajo com direção",
+        "extra": "Transformação é comportamento novo sustentado.",
+        "sizes": {
+          "headline": 66,
+          "bloco1": 25,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 4,
+        "type": "virada",
+        "tag": "A chave",
+        "headline": "O PONTO DE\nVIRADA FOI\nPARAR DE\nME COBRAR\nSEM ME ENTENDER.",
+        "bloco1": "Autoconhecimento não virou desculpa. Virou estratégia.",
+        "bloco2": "Quando eu entendi meus padrões, comecei a criar caminhos mais possíveis.",
+        "extra": "Clareza diminui peso.",
+        "sizes": {
+          "headline": 62,
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 5,
+        "type": "cenarios",
+        "tag": "Processo",
+        "headline": "A MUDANÇA\nVEIO EM\nCAMADAS.",
+        "bloco1": "Primeiro: consciência.\nDepois: escolha.\nDepois: repetição.\nDepois: identidade.",
+        "bloco2": "Nenhuma transformação real acontece só por empolgação.",
+        "extra": "Ela acontece quando a nova versão ganha rotina.",
+        "sizes": {
+          "headline": 68,
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 6,
+        "type": "sintese",
+        "tag": "Resultado",
+        "headline": "O RESULTADO\nNÃO FOI SÓ\nFAZER MAIS.",
+        "bloco1": "Foi viver com mais presença, menos culpa e mais direção.",
+        "bloco2": "Produtividade sem identidade vira pressão. Identidade com direção vira movimento.",
+        "extra": "O resultado externo confirmou uma mudança interna.",
+        "sizes": {
+          "headline": 66,
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 7,
+        "type": "aplicacao",
+        "tag": "Para você",
+        "headline": "SE VOCÊ QUER\nMUDAR, NÃO\nCOMECE PELO\nPESO.",
+        "bloco1": "Comece perguntando: que padrão eu continuo repetindo sem perceber?",
+        "bloco2": "A resposta mostra o primeiro ajuste de 2 milímetros.",
+        "extra": "Pequena consciência. Grande virada.",
+        "sizes": {
+          "headline": 62,
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 8,
+        "type": "contexto",
+        "tag": "Exercício",
+        "headline": "ESCREVA\nSEU ANTES\nE SEU\nDEPOIS.",
+        "bloco1": "Antes eu...\nHoje eu escolho...\nA partir de agora eu...",
+        "bloco2": "Esse exercício transforma intenção em linguagem.",
+        "extra": "Nomear a mudança ajuda a sustentá-la.",
+        "sizes": {
+          "headline": 68,
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 9,
+        "type": "cta",
+        "tag": "Ação",
+        "headline": "SALVE\nPARA REVER\nQUANDO VOCÊ\nESQUECER\nQUEM ESTÁ\nSE TORNANDO.",
+        "bloco1": "Transformação não é um evento. É uma decisão que você aprende a repetir.",
+        "bloco2": "",
+        "extra": "Volte aqui quando precisar lembrar.",
+        "sizes": {
+          "headline": 58,
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      }
+    ]
+  },
+  "metodo": {
     "font": "montserrat",
     "colors": {
-      "bg": "#F7F4ED",
+      "bg": "#F8F6F0",
       "text": "#181818",
       "accent": "#C9A96E",
       "accent2": "#6B7280"
@@ -564,15 +928,15 @@ const VISUAL_PRESETS = {
       {
         "num": 1,
         "type": "capa",
-        "tag": "Guia rápido",
-        "headline": "7 PASSOS\nPARA SAIR\nDO ZERO",
-        "bloco1": "Um roteiro simples para transformar uma ideia solta em ação concreta.",
-        "bloco2": "Use cada slide como uma etapa prática do processo.",
-        "extra": "Salve para revisar depois.",
+        "tag": "Método",
+        "headline": "O MAPA\nSIMPLES PARA\nTRANSFORMAR\nIDEIA EM AÇÃO.",
+        "bloco1": "Um framework prático para sair do pensamento solto e conduzir com clareza.",
+        "bloco2": "",
+        "extra": "Salve para aplicar.",
         "sizes": {
-          "headline": 72,
-          "bloco1": 30,
-          "bloco2": 25,
+          "headline": 68,
+          "bloco1": 28,
+          "bloco2": 24,
           "extra": 18
         },
         "offsets": {
@@ -586,14 +950,14 @@ const VISUAL_PRESETS = {
         "num": 2,
         "type": "contexto",
         "tag": "Passo 01",
-        "headline": "DEFINA\nO RESULTADO\nFINAL",
-        "bloco1": "Antes de começar, escreva exatamente o que você quer construir.",
-        "bloco2": "Sem destino claro, qualquer tarefa parece prioridade.",
-        "extra": "Clareza vem antes de velocidade.",
+        "headline": "NOMEIE\nO PROBLEMA.",
+        "bloco1": "Antes de ensinar, defina exatamente o que sua audiência está tentando resolver.",
+        "bloco2": "Problema claro cria atenção imediata.",
+        "extra": "Sem problema, não existe condução.",
         "sizes": {
-          "headline": 68,
-          "bloco1": 30,
-          "bloco2": 25,
+          "headline": 72,
+          "bloco1": 28,
+          "bloco2": 24,
           "extra": 18
         },
         "offsets": {
@@ -607,14 +971,14 @@ const VISUAL_PRESETS = {
         "num": 3,
         "type": "contexto",
         "tag": "Passo 02",
-        "headline": "ENTENDA\nQUEM VOCÊ\nQUER AJUDAR",
-        "bloco1": "Liste as dores, desejos e dúvidas reais da pessoa que vai consumir seu conteúdo.",
-        "bloco2": "Quanto mais específico o público, mais forte a mensagem.",
-        "extra": "Fale com uma pessoa, não com uma multidão.",
+        "headline": "MOSTRE\nA RAIZ.",
+        "bloco1": "O que a pessoa chama de falta de disciplina pode ser medo, confusão ou excesso de cobrança.",
+        "bloco2": "Conteúdo bom aprofunda sem complicar.",
+        "extra": "A raiz muda a conversa.",
         "sizes": {
-          "headline": 64,
-          "bloco1": 29,
-          "bloco2": 25,
+          "headline": 72,
+          "bloco1": 28,
+          "bloco2": 24,
           "extra": 18
         },
         "offsets": {
@@ -628,14 +992,14 @@ const VISUAL_PRESETS = {
         "num": 4,
         "type": "virada",
         "tag": "Passo 03",
-        "headline": "ESCOLHA\nUMA ÚNICA\nIDEIA CENTRAL",
-        "bloco1": "Um carrossel forte não tenta explicar tudo. Ele conduz uma ideia com profundidade.",
-        "bloco2": "Uma ideia clara gera mais salvamentos do que dez ideias soltas.",
-        "extra": "Menos informação. Mais direção.",
+        "headline": "APRESENTE\nUM NOVO\nOLHAR.",
+        "bloco1": "A virada acontece quando você mostra uma forma mais madura de enxergar o problema.",
+        "bloco2": "É aqui que o conteúdo deixa de ser óbvio.",
+        "extra": "Insight gera salvamento.",
         "sizes": {
-          "headline": 66,
-          "bloco1": 29,
-          "bloco2": 25,
+          "headline": 72,
+          "bloco1": 28,
+          "bloco2": 24,
           "extra": 18
         },
         "offsets": {
@@ -649,14 +1013,14 @@ const VISUAL_PRESETS = {
         "num": 5,
         "type": "dois_col",
         "tag": "Passo 04",
-        "headline": "TRANSFORME\nEM ETAPAS",
-        "bloco1": "Comece com:\nContexto\nProblema\nVirada",
-        "bloco2": "Finalize com:\nExemplo\nAplicação\nCTA",
-        "extra": "Estrutura cria retenção.",
+        "headline": "TRANSFORME\nEM CAMINHO.",
+        "bloco1": "Estrutura:\n1. Consciência\n2. Escolha\n3. Prática",
+        "bloco2": "Aplicação:\nO que fazer hoje\nO que evitar\nComo medir progresso",
+        "extra": "Método é ponte entre ideia e execução.",
         "sizes": {
-          "headline": 66,
-          "bloco1": 29,
-          "bloco2": 29,
+          "headline": 68,
+          "bloco1": 25,
+          "bloco2": 25,
           "extra": 18
         },
         "offsets": {
@@ -670,14 +1034,14 @@ const VISUAL_PRESETS = {
         "num": 6,
         "type": "cenarios",
         "tag": "Passo 05",
-        "headline": "DEIXE\nO TEXTO\nRESPIRAR",
-        "bloco1": "Evite blocos longos. Quebre o conteúdo em frases curtas e fáceis de ler.",
-        "bloco2": "O leitor precisa entender antes de decidir continuar.",
-        "extra": "Design também é clareza.",
+        "headline": "DÊ UM\nEXEMPLO\nREAL.",
+        "bloco1": "Mostre como isso aparece no dia a dia de uma pessoa comum.",
+        "bloco2": "Exemplo transforma teoria em identificação.",
+        "extra": "A pessoa precisa se ver no conteúdo.",
         "sizes": {
-          "headline": 68,
-          "bloco1": 30,
-          "bloco2": 25,
+          "headline": 72,
+          "bloco1": 28,
+          "bloco2": 24,
           "extra": 18
         },
         "offsets": {
@@ -690,15 +1054,15 @@ const VISUAL_PRESETS = {
       {
         "num": 7,
         "type": "sintese",
-        "tag": "Passo 06",
-        "headline": "CRIE\nUMA VIRADA\nNO MEIO",
-        "bloco1": "Mostre uma crença comum e depois revele uma visão mais madura.",
-        "bloco2": "É nessa virada que o conteúdo deixa de ser óbvio.",
-        "extra": "A surpresa sustenta o swipe.",
+        "tag": "Resumo",
+        "headline": "O MÉTODO\nÉ SIMPLES.",
+        "bloco1": "Problema → Raiz → Novo olhar → Caminho → Exemplo → Ação",
+        "bloco2": "Repita essa estrutura sempre que quiser ensinar com clareza.",
+        "extra": "Clareza é autoridade.",
         "sizes": {
-          "headline": 68,
-          "bloco1": 30,
-          "bloco2": 25,
+          "headline": 72,
+          "bloco1": 28,
+          "bloco2": 24,
           "extra": 18
         },
         "offsets": {
@@ -711,15 +1075,15 @@ const VISUAL_PRESETS = {
       {
         "num": 8,
         "type": "aplicacao",
-        "tag": "Passo 07",
-        "headline": "TERMINE\nCOM UMA\nAÇÃO",
-        "bloco1": "Não encerre apenas com informação. Mostre o próximo passo.",
-        "bloco2": "Salvar, comentar, aplicar ou enviar para alguém.",
-        "extra": "Conteúdo bom move comportamento.",
+        "tag": "Aplicação",
+        "headline": "AGORA\nPEGUE UMA\nIDEIA SUA.",
+        "bloco1": "Escreva o problema, a raiz e uma ação prática.",
+        "bloco2": "Depois transforme cada parte em um slide.",
+        "extra": "O conteúdo nasce do método.",
         "sizes": {
-          "headline": 70,
-          "bloco1": 30,
-          "bloco2": 25,
+          "headline": 72,
+          "bloco1": 28,
+          "bloco2": 24,
           "extra": 18
         },
         "offsets": {
@@ -732,15 +1096,15 @@ const VISUAL_PRESETS = {
       {
         "num": 9,
         "type": "cta",
-        "tag": "Agora é sua vez",
-        "headline": "SALVE\nESSE\nGUIA",
-        "bloco1": "Use este modelo sempre que precisar transformar uma ideia em carrossel.",
-        "bloco2": "Depois adapte para sua voz, sua oferta e sua identidade visual.",
-        "extra": "Post Creator · Q21 Hub",
+        "tag": "Ação",
+        "headline": "SALVE\nESSE MAPA.",
+        "bloco1": "Use sempre que precisar transformar conhecimento em conteúdo simples e útil.",
+        "bloco2": "",
+        "extra": "Com método, a ideia anda.",
         "sizes": {
-          "headline": 82,
-          "bloco1": 29,
-          "bloco2": 25,
+          "headline": 76,
+          "bloco1": 28,
+          "bloco2": 24,
           "extra": 18
         },
         "offsets": {
@@ -752,28 +1116,28 @@ const VISUAL_PRESETS = {
       }
     ]
   },
-  "checklist": {
-    "font": "dm_sans",
+  "contraste": {
+    "font": "space",
     "colors": {
-      "bg": "#FFFDF7",
-      "text": "#1F2937",
-      "accent": "#16A34A",
-      "accent2": "#64748B"
+      "bg": "#101114",
+      "text": "#F9FAFB",
+      "accent": "#E7B456",
+      "accent2": "#EF6A4D"
     },
     "slides": [
       {
         "num": 1,
         "type": "capa",
-        "tag": "Checklist",
-        "headline": "ANTES DE\nPUBLICAR\nCONFIRA ISSO",
-        "bloco1": "Gancho claro\nTexto fácil de ler\nUma ideia por slide",
-        "bloco2": "CTA simples\nVisual limpo\nPromessa honesta",
-        "extra": "Checklist rápido para posts melhores.",
+        "tag": "Contraste",
+        "headline": "O QUE PARECE\nFORÇA...\nPODE SER\nMEDO DISFARÇADO.",
+        "bloco1": "Nem toda postura firme nasce de segurança. Algumas nascem de defesa.",
+        "bloco2": "",
+        "extra": "Uma reflexão sobre liderança emocional.",
         "sizes": {
-          "headline": 62,
-          "bloco1": 30,
-          "bloco2": 27,
-          "extra": 17
+          "headline": 66,
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
         },
         "offsets": {
           "headline": 0,
@@ -785,16 +1149,16 @@ const VISUAL_PRESETS = {
       {
         "num": 2,
         "type": "contexto",
-        "tag": "Clareza",
-        "headline": "A IDEIA\nESTÁ FÁCIL\nDE ENTENDER?",
-        "bloco1": "O leitor precisa saber em poucos segundos o que vai ganhar ao continuar.",
-        "bloco2": "Se ele precisa pensar demais, ele sai.",
-        "extra": "Clareza segura atenção.",
+        "tag": "O mito",
+        "headline": "MITO:\nLIDERAR É\nCONTROLAR\nTUDO.",
+        "bloco1": "Esse pensamento parece responsabilidade, mas muitas vezes revela insegurança.",
+        "bloco2": "Controle excessivo não gera equipe madura. Gera dependência.",
+        "extra": "Nem todo controle é cuidado.",
         "sizes": {
-          "headline": 58,
-          "bloco1": 29,
-          "bloco2": 27,
-          "extra": 17
+          "headline": 64,
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
         },
         "offsets": {
           "headline": 0,
@@ -805,59 +1169,59 @@ const VISUAL_PRESETS = {
       },
       {
         "num": 3,
-        "type": "dados",
-        "tag": "Hook",
-        "headline": "O PRIMEIRO\nSLIDE GERA\nCURIOSIDADE?",
-        "bloco1": "Promessa específica\nTensão leve\nBenefício claro",
-        "bloco2": "Evite títulos genéricos\nEvite explicar tudo\nAbra uma lacuna",
-        "extra": "O hook vende o próximo slide.",
-        "sizes": {
-          "headline": 56,
-          "bloco1": 29,
-          "bloco2": 26,
-          "extra": 17
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 4,
         "type": "virada",
-        "tag": "Leitura",
-        "headline": "O TEXTO\nESTÁ CURTO\nO SUFICIENTE?",
-        "bloco1": "Frases curtas\nPoucas linhas\nRitmo visual",
-        "bloco2": "Nada de parágrafos grandes\nNada de excesso técnico\nNada de poluição",
-        "extra": "Menos peso. Mais leitura.",
-        "sizes": {
-          "headline": 56,
-          "bloco1": 29,
-          "bloco2": 26,
-          "extra": 17
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 5,
-        "type": "dois_col",
-        "tag": "Design",
-        "headline": "O VISUAL\nAJUDA OU\nATRAPALHA?",
-        "bloco1": "Confirme:\nContraste bom\nEspaço em branco\nHierarquia clara",
-        "bloco2": "Evite:\nTexto colado\nCores demais\nFontes confusas",
-        "extra": "Design deve servir a mensagem.",
+        "tag": "A verdade",
+        "headline": "VERDADE:\nLIDERAR É\nCRIAR CLAREZA\nPARA AS PESSOAS\nAGIREM MELHOR.",
+        "bloco1": "Autoridade saudável não sufoca. Ela orienta.",
+        "bloco2": "A equipe cresce quando entende direção, limite e confiança.",
+        "extra": "Clareza reduz ruído.",
         "sizes": {
           "headline": 58,
           "bloco1": 28,
-          "bloco2": 26,
-          "extra": 17
+          "bloco2": 24,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 4,
+        "type": "dois_col",
+        "tag": "Comparação",
+        "headline": "CONTROLE\nVS\nCONDUÇÃO.",
+        "bloco1": "CONTROLE\nCentraliza\nCobra sem contexto\nApaga autonomia",
+        "bloco2": "CONDUÇÃO\nDireciona\nAlinha expectativa\nDesenvolve maturidade",
+        "extra": "A diferença muda o clima da equipe.",
+        "sizes": {
+          "headline": 66,
+          "bloco1": 25,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 5,
+        "type": "cenarios",
+        "tag": "Na prática",
+        "headline": "A MESMA\nSITUAÇÃO.\nDUAS\nPOSTURAS.",
+        "bloco1": "Controle pergunta:\n“Por que você ainda não fez?”",
+        "bloco2": "Condução pergunta:\n“O que está faltando para você avançar com clareza?”",
+        "extra": "Perguntas revelam cultura.",
+        "sizes": {
+          "headline": 66,
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
         },
         "offsets": {
           "headline": 0,
@@ -868,59 +1232,17 @@ const VISUAL_PRESETS = {
       },
       {
         "num": 6,
-        "type": "cenarios",
-        "tag": "Valor",
-        "headline": "CADA SLIDE\nENTREGA\nALGO?",
-        "bloco1": "O leitor precisa sentir avanço a cada swipe.",
-        "bloco2": "Se um slide não acrescenta, corte ou reescreva.",
-        "extra": "Retenção nasce da progressão.",
-        "sizes": {
-          "headline": 58,
-          "bloco1": 29,
-          "bloco2": 27,
-          "extra": 17
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 7,
         "type": "sintese",
-        "tag": "CTA",
-        "headline": "O FINAL\nDIZ O QUE\nFAZER?",
-        "bloco1": "Salvar\nComentar\nCompartilhar",
-        "bloco2": "Escolha uma ação principal. Muitas CTAs confundem.",
-        "extra": "Uma chamada clara funciona melhor.",
-        "sizes": {
-          "headline": 60,
-          "bloco1": 30,
-          "bloco2": 27,
-          "extra": 17
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 8,
-        "type": "aplicacao",
-        "tag": "Revisão",
-        "headline": "ANTES DE\nPOSTAR",
-        "bloco1": "Leia em voz alta\nVeja no celular\nCorte o excesso",
-        "bloco2": "Se ficar claro em 10 segundos, está no caminho certo.",
-        "extra": "O simples bem feito performa.",
+        "tag": "O novo olhar",
+        "headline": "LIDERANÇA\nEMOCIONAL\nNÃO É SER\nBONZINHO.",
+        "bloco1": "É sustentar verdade sem perder presença.",
+        "bloco2": "É corrigir sem humilhar. É alinhar sem esmagar.",
+        "extra": "Firmeza também pode ser leve.",
         "sizes": {
           "headline": 64,
-          "bloco1": 30,
-          "bloco2": 27,
-          "extra": 17
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
         },
         "offsets": {
           "headline": 0,
@@ -930,196 +1252,38 @@ const VISUAL_PRESETS = {
         }
       },
       {
-        "num": 9,
-        "type": "cta",
-        "tag": "Salve",
-        "headline": "USE ESSE\nCHECKLIST\nHOJE",
-        "bloco1": "Antes do próximo post\nAntes de publicar\nAntes de enviar para aprovação",
-        "bloco2": "Esse ritual evita conteúdo bonito que não comunica.",
-        "extra": "Post Creator · Q21 Hub",
+        "num": 7,
+        "type": "aplicacao",
+        "tag": "Aplicação",
+        "headline": "TROQUE\nA REAÇÃO\nPELA PERGUNTA.",
+        "bloco1": "Antes de cobrar, pergunte:\nA pessoa entendeu?\nEla tem recurso?\nEla sabe o próximo passo?",
+        "bloco2": "Essa pausa evita conflitos desnecessários.",
+        "extra": "Pausa não é fraqueza. É domínio.",
+        "sizes": {
+          "headline": 66,
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 8,
+        "type": "contexto",
+        "tag": "Reflexão",
+        "headline": "ONDE VOCÊ\nESTÁ CHAMANDO\nMEDO DE\nRESPONSABILIDADE?",
+        "bloco1": "Essa pergunta pode revelar padrões de liderança que precisam amadurecer.",
+        "bloco2": "Não para gerar culpa. Para gerar consciência.",
+        "extra": "Consciência é o começo da mudança.",
         "sizes": {
           "headline": 60,
-          "bloco1": 29,
-          "bloco2": 26,
-          "extra": 17
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      }
-    ]
-  },
-  "mito": {
-    "font": "montserrat",
-    "colors": {
-      "bg": "#111827",
-      "text": "#F9FAFB",
-      "accent": "#F59E0B",
-      "accent2": "#EF4444"
-    },
-    "slides": [
-      {
-        "num": 1,
-        "type": "capa",
-        "tag": "Mito ou fato",
-        "headline": "O QUE VOCÊ\nACREDITA\nPODE ESTAR\nTE TRAVANDO",
-        "bloco1": "Mito: postar mais sempre resolve.",
-        "bloco2": "Fato: clareza faz a pessoa certa entender mais rápido.",
-        "extra": "Quantidade sem clareza vira ruído.",
-        "sizes": {
-          "headline": 54,
-          "bloco1": 34,
-          "bloco2": 34,
-          "extra": 18
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 2,
-        "type": "contexto",
-        "tag": "Crença 01",
-        "headline": "POSTAR TODO\nDIA É O MAIS\nIMPORTANTE?",
-        "bloco1": "Mito: frequência sozinha resolve crescimento.",
-        "bloco2": "Fato: consistência precisa de mensagem, oferta e direção.",
-        "extra": "Ritmo sem estratégia cansa.",
-        "sizes": {
-          "headline": 54,
-          "bloco1": 34,
-          "bloco2": 34,
-          "extra": 18
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 3,
-        "type": "dados",
-        "tag": "Crença 02",
-        "headline": "CONTEÚDO\nBONITO\nVENDE?",
-        "bloco1": "Mito: design premium compensa uma mensagem fraca.",
-        "bloco2": "Fato: design chama atenção, mas clareza gera confiança.",
-        "extra": "Beleza abre a porta. Clareza mantém a pessoa dentro.",
-        "sizes": {
-          "headline": 56,
-          "bloco1": 34,
-          "bloco2": 34,
-          "extra": 18
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 4,
-        "type": "virada",
-        "tag": "Crença 03",
-        "headline": "VOCÊ PRECISA\nAGRADAR TODO\nMUNDO?",
-        "bloco1": "Mito: quanto mais amplo, mais chance de vender.",
-        "bloco2": "Fato: uma mensagem específica atrai quem realmente compra.",
-        "extra": "Posicionamento também é renúncia.",
-        "sizes": {
-          "headline": 54,
-          "bloco1": 34,
-          "bloco2": 34,
-          "extra": 18
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 5,
-        "type": "dois_col",
-        "tag": "Crença 04",
-        "headline": "VENDER\nÉ FORÇAR?",
-        "bloco1": "Mito: vender é pressionar alguém a comprar.",
-        "bloco2": "Fato: vender bem é mostrar uma solução com clareza e respeito.",
-        "extra": "A ética está na intenção e na entrega.",
-        "sizes": {
-          "headline": 58,
-          "bloco1": 34,
-          "bloco2": 34,
-          "extra": 18
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 6,
-        "type": "cenarios",
-        "tag": "Crença 05",
-        "headline": "SÓ FUNCIONA\nPARA QUEM JÁ\nTEM AUDIÊNCIA?",
-        "bloco1": "Mito: audiência grande é requisito para começar.",
-        "bloco2": "Fato: autoridade começa quando poucas pessoas certas confiam em você.",
-        "extra": "Comece pequeno, mas comece certo.",
-        "sizes": {
-          "headline": 52,
-          "bloco1": 33,
-          "bloco2": 33,
-          "extra": 18
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 7,
-        "type": "sintese",
-        "tag": "Crença 06",
-        "headline": "VOCÊ PRECISA\nSER PERFEITO?",
-        "bloco1": "Mito: só posso aparecer quando estiver tudo pronto.",
-        "bloco2": "Fato: presença consistente constrói confiança no processo.",
-        "extra": "O público acompanha evolução, não perfeição.",
-        "sizes": {
-          "headline": 54,
-          "bloco1": 34,
-          "bloco2": 34,
-          "extra": 18
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 8,
-        "type": "aplicacao",
-        "tag": "Aplicação",
-        "headline": "TROQUE\nA CRENÇA\nPELA PRÁTICA",
-        "bloco1": "Mito: preciso de mais tempo para começar.",
-        "bloco2": "Fato: preciso de um próximo passo claro para executar hoje.",
-        "extra": "Ação pequena vence teoria parada.",
-        "sizes": {
-          "headline": 58,
-          "bloco1": 34,
-          "bloco2": 34,
+          "bloco1": 28,
+          "bloco2": 24,
           "extra": 18
         },
         "offsets": {
@@ -1133,414 +1297,14 @@ const VISUAL_PRESETS = {
         "num": 9,
         "type": "cta",
         "tag": "Ação",
-        "headline": "QUAL MITO\nVOCÊ VAI\nABANDONAR?",
-        "bloco1": "Mito: vou esperar o momento perfeito.",
-        "bloco2": "Fato: o próximo post pode ser o começo da sua nova fase.",
-        "extra": "Salve e revise antes de travar de novo.",
+        "headline": "SALVE\nSE VOCÊ\nQUER LIDERAR\nCOM MAIS\nPRESENÇA.",
+        "bloco1": "E envie para alguém que está aprendendo a conduzir pessoas sem se perder.",
+        "bloco2": "",
+        "extra": "Liderança começa dentro.",
         "sizes": {
-          "headline": 54,
-          "bloco1": 34,
-          "bloco2": 34,
-          "extra": 18
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      }
-    ]
-  },
-  "dados": {
-    "font": "space",
-    "colors": {
-      "bg": "#0B1220",
-      "text": "#E5E7EB",
-      "accent": "#38BDF8",
-      "accent2": "#94A3B8"
-    },
-    "slides": [
-      {
-        "num": 1,
-        "type": "capa",
-        "tag": "Insight",
-        "headline": "3X",
-        "bloco1": "Conteúdos com estrutura clara são mais fáceis de salvar, revisar e compartilhar.",
-        "bloco2": "Clareza\nConsistência\nContexto",
-        "extra": "Use números para sustentar a ideia, não para enfeitar.",
-        "sizes": {
-          "headline": 170,
-          "bloco1": 30,
+          "headline": 62,
+          "bloco1": 28,
           "bloco2": 24,
-          "extra": 16
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 2,
-        "type": "contexto",
-        "tag": "Dado 01",
-        "headline": "72%",
-        "bloco1": "A maioria das pessoas decide continuar lendo nos primeiros segundos do conteúdo.",
-        "bloco2": "Hook\nContraste\nPromessa",
-        "extra": "O primeiro slide precisa criar motivo para o segundo.",
-        "sizes": {
-          "headline": 170,
-          "bloco1": 30,
-          "bloco2": 24,
-          "extra": 16
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 3,
-        "type": "dados",
-        "tag": "Dado 02",
-        "headline": "4:5",
-        "bloco1": "O formato vertical ocupa mais espaço na tela e favorece leitura no mobile.",
-        "bloco2": "Tela\nLeitura\nRetenção",
-        "extra": "1080×1350 px mantém boa proporção para carrosséis.",
-        "sizes": {
-          "headline": 170,
-          "bloco1": 30,
-          "bloco2": 24,
-          "extra": 16
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 4,
-        "type": "virada",
-        "tag": "Dado 03",
-        "headline": "1 IDEIA",
-        "bloco1": "Slides com uma ideia central são mais fáceis de consumir e lembrar.",
-        "bloco2": "Foco\nRitmo\nMemória",
-        "extra": "Se precisa explicar demais, divida em outro slide.",
-        "sizes": {
-          "headline": 145,
-          "bloco1": 30,
-          "bloco2": 24,
-          "extra": 16
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 5,
-        "type": "dois_col",
-        "tag": "Dado 04",
-        "headline": "3 CORES",
-        "bloco1": "Uma paleta limitada reduz ruído visual e melhora consistência.",
-        "bloco2": "Fundo\nTexto\nDestaque",
-        "extra": "Menos variação. Mais identidade.",
-        "sizes": {
-          "headline": 145,
-          "bloco1": 30,
-          "bloco2": 24,
-          "extra": 16
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 6,
-        "type": "cenarios",
-        "tag": "Dado 05",
-        "headline": "5 SEG",
-        "bloco1": "Se o leitor não entende rapidamente, o conteúdo perde força.",
-        "bloco2": "Título\nSubtítulo\nHierarquia",
-        "extra": "A primeira leitura precisa ser óbvia.",
-        "sizes": {
-          "headline": 160,
-          "bloco1": 30,
-          "bloco2": 24,
-          "extra": 16
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 7,
-        "type": "sintese",
-        "tag": "Resumo",
-        "headline": "80/20",
-        "bloco1": "A maior parte do resultado vem de poucos elementos bem ajustados.",
-        "bloco2": "Hook\nClareza\nCTA",
-        "extra": "Não complique o que precisa ser entendido.",
-        "sizes": {
-          "headline": 160,
-          "bloco1": 30,
-          "bloco2": 24,
-          "extra": 16
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 8,
-        "type": "aplicacao",
-        "tag": "Aplicação",
-        "headline": "1 AJUSTE",
-        "bloco1": "Antes de publicar, escolha apenas um ponto para melhorar.",
-        "bloco2": "Título\nContraste\nTexto",
-        "extra": "A evolução vem por ajustes repetidos.",
-        "sizes": {
-          "headline": 150,
-          "bloco1": 30,
-          "bloco2": 24,
-          "extra": 16
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 9,
-        "type": "cta",
-        "tag": "Salve",
-        "headline": "CHECK",
-        "bloco1": "Use esses indicadores para revisar seu próximo carrossel antes de postar.",
-        "bloco2": "Formato\nClareza\nRetenção",
-        "extra": "Post Creator · Q21 Hub",
-        "sizes": {
-          "headline": 160,
-          "bloco1": 30,
-          "bloco2": 24,
-          "extra": 16
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      }
-    ]
-  },
-  "antesdepois": {
-    "font": "manrope",
-    "colors": {
-      "bg": "#F8FAFC",
-      "text": "#0F172A",
-      "accent": "#2563EB",
-      "accent2": "#94A3B8"
-    },
-    "slides": [
-      {
-        "num": 1,
-        "type": "capa",
-        "tag": "Transformação",
-        "headline": "ANTES\nE DEPOIS\nDA CLAREZA",
-        "bloco1": "Antes: muitas ideias, pouca direção e conteúdo confuso.",
-        "bloco2": "Depois: uma mensagem clara, visual organizado e ação definida.",
-        "extra": "Mostre mudança de forma simples.",
-        "sizes": {
-          "headline": 56,
-          "bloco1": 32,
-          "bloco2": 32,
-          "extra": 18
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 2,
-        "type": "contexto",
-        "tag": "Ponto 01",
-        "headline": "ANTES DE\nTER MÉTODO",
-        "bloco1": "Você dependia de inspiração e começava cada post do zero.",
-        "bloco2": "Você segue uma estrutura e adapta a ideia com mais velocidade.",
-        "extra": "Estrutura economiza energia.",
-        "sizes": {
-          "headline": 58,
-          "bloco1": 32,
-          "bloco2": 32,
-          "extra": 18
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 3,
-        "type": "dados",
-        "tag": "Ponto 02",
-        "headline": "ANTES DO\nPOSICIONAMENTO",
-        "bloco1": "O conteúdo falava com todo mundo e não conectava com ninguém.",
-        "bloco2": "A mensagem conversa com a pessoa certa e gera identificação.",
-        "extra": "Especificidade aumenta conexão.",
-        "sizes": {
-          "headline": 56,
-          "bloco1": 31,
-          "bloco2": 31,
-          "extra": 18
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 4,
-        "type": "virada",
-        "tag": "Ponto 03",
-        "headline": "ANTES DA\nIDENTIDADE\nVISUAL",
-        "bloco1": "Cada post parecia de uma marca diferente.",
-        "bloco2": "O visual começa a criar reconhecimento e confiança.",
-        "extra": "Consistência vira memória.",
-        "sizes": {
-          "headline": 56,
-          "bloco1": 32,
-          "bloco2": 32,
-          "extra": 18
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 5,
-        "type": "dois_col",
-        "tag": "Ponto 04",
-        "headline": "ANTES DA\nOFERTA",
-        "bloco1": "Você entregava valor, mas não conduzia para o próximo passo.",
-        "bloco2": "O conteúdo educa, conecta e prepara a decisão.",
-        "extra": "Conteúdo também precisa conduzir.",
-        "sizes": {
-          "headline": 58,
-          "bloco1": 31,
-          "bloco2": 31,
-          "extra": 18
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 6,
-        "type": "cenarios",
-        "tag": "Ponto 05",
-        "headline": "ANTES DA\nROTINA",
-        "bloco1": "Você criava só quando sobrava tempo ou energia.",
-        "bloco2": "Você tem um fluxo simples para produzir com constância.",
-        "extra": "Rotina vence ansiedade.",
-        "sizes": {
-          "headline": 58,
-          "bloco1": 32,
-          "bloco2": 32,
-          "extra": 18
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 7,
-        "type": "sintese",
-        "tag": "Resumo",
-        "headline": "ANTES ERA\nESFORÇO.\nDEPOIS É\nSISTEMA.",
-        "bloco1": "Mais tentativa\nMenos clareza\nMais retrabalho",
-        "bloco2": "Mais direção\nMais velocidade\nMais consistência",
-        "extra": "O sistema simplifica a execução.",
-        "sizes": {
-          "headline": 52,
-          "bloco1": 30,
-          "bloco2": 30,
-          "extra": 18
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 8,
-        "type": "aplicacao",
-        "tag": "Aplicação",
-        "headline": "QUAL É O\nSEU ANTES?",
-        "bloco1": "Escolha um ponto que hoje trava sua produção de conteúdo.",
-        "bloco2": "Defina uma mudança concreta para aplicar ainda esta semana.",
-        "extra": "Transformação começa com diagnóstico.",
-        "sizes": {
-          "headline": 58,
-          "bloco1": 32,
-          "bloco2": 32,
-          "extra": 18
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 9,
-        "type": "cta",
-        "tag": "Ação",
-        "headline": "MOSTRE O\nSEU DEPOIS",
-        "bloco1": "Antes: conteúdo sem método, sem ritmo e sem direção.",
-        "bloco2": "Depois: mensagem clara, identidade forte e execução simples.",
-        "extra": "Salve este modelo para contar sua transformação.",
-        "sizes": {
-          "headline": 56,
-          "bloco1": 31,
-          "bloco2": 31,
           "extra": 18
         },
         "offsets": {
@@ -1564,15 +1328,15 @@ const VISUAL_PRESETS = {
       {
         "num": 1,
         "type": "capa",
-        "tag": "Editorial",
-        "headline": "UM GUIA\nEDITORIAL\nPARA SUA IDEIA",
-        "bloco1": "Uma estrutura elegante para transformar pensamento em conteúdo com mais profundidade.",
-        "bloco2": "Use quando quiser um tom mais sofisticado, reflexivo e premium.",
-        "extra": "Salve para revisar depois.",
+        "tag": "História",
+        "headline": "EU NÃO\nCOMECEI\nPRONTA.",
+        "bloco1": "Mas teve um momento em que precisei parar de fugir da minha própria voz.",
+        "bloco2": "",
+        "extra": "Uma história sobre identidade, coragem e direção.",
         "sizes": {
-          "headline": 64,
+          "headline": 78,
           "bloco1": 28,
-          "bloco2": 25,
+          "bloco2": 24,
           "extra": 18
         },
         "offsets": {
@@ -1585,15 +1349,15 @@ const VISUAL_PRESETS = {
       {
         "num": 2,
         "type": "contexto",
-        "tag": "Passo 01",
-        "headline": "DEFINA\nO RESULTADO\nFINAL",
-        "bloco1": "Antes de começar, escreva exatamente o que você quer construir.",
-        "bloco2": "Sem destino claro, qualquer tarefa parece prioridade.",
-        "extra": "Clareza vem antes de velocidade.",
+        "tag": "O começo",
+        "headline": "POR FORA,\nEU DAVA\nCONTA.",
+        "bloco1": "Por dentro, eu carregava dúvidas que quase ninguém percebia.",
+        "bloco2": "Eu sabia ajudar pessoas, mas ainda não sabia sustentar minha própria presença.",
+        "extra": "Toda jornada começa com uma verdade difícil.",
         "sizes": {
-          "headline": 64,
+          "headline": 72,
           "bloco1": 28,
-          "bloco2": 25,
+          "bloco2": 24,
           "extra": 18
         },
         "offsets": {
@@ -1606,15 +1370,15 @@ const VISUAL_PRESETS = {
       {
         "num": 3,
         "type": "contexto",
-        "tag": "Passo 02",
-        "headline": "ENTENDA\nQUEM VOCÊ\nQUER AJUDAR",
-        "bloco1": "Liste as dores, desejos e dúvidas reais da pessoa que vai consumir seu conteúdo.",
-        "bloco2": "Quanto mais específico o público, mais forte a mensagem.",
-        "extra": "Fale com uma pessoa, não com uma multidão.",
+        "tag": "O conflito",
+        "headline": "O QUE ME\nTRAVAVA\nNÃO ERA\nCAPACIDADE.",
+        "bloco1": "Era medo de aparecer, medo de errar e medo de ser julgada.",
+        "bloco2": "A insegurança não gritava. Ela só adiava minhas decisões.",
+        "extra": "Talento sem direção também cansa.",
         "sizes": {
-          "headline": 64,
+          "headline": 70,
           "bloco1": 28,
-          "bloco2": 25,
+          "bloco2": 24,
           "extra": 18
         },
         "offsets": {
@@ -1627,15 +1391,15 @@ const VISUAL_PRESETS = {
       {
         "num": 4,
         "type": "virada",
-        "tag": "Passo 03",
-        "headline": "ESCOLHA\nUMA ÚNICA\nIDEIA CENTRAL",
-        "bloco1": "Um carrossel forte não tenta explicar tudo. Ele conduz uma ideia com profundidade.",
-        "bloco2": "Uma ideia clara gera mais salvamentos do que dez ideias soltas.",
-        "extra": "Menos informação. Mais direção.",
+        "tag": "A virada",
+        "headline": "UM DIA,\nEU MUDEI\nA PERGUNTA.",
+        "bloco1": "Em vez de perguntar: “e se não der certo?”",
+        "bloco2": "Comecei a perguntar: “quem deixa de ser ajudado enquanto eu me escondo?”",
+        "extra": "Essa pergunta virou chave.",
         "sizes": {
-          "headline": 64,
+          "headline": 72,
           "bloco1": 28,
-          "bloco2": 25,
+          "bloco2": 24,
           "extra": 18
         },
         "offsets": {
@@ -1648,14 +1412,14 @@ const VISUAL_PRESETS = {
       {
         "num": 5,
         "type": "dois_col",
-        "tag": "Passo 04",
-        "headline": "TRANSFORME\nEM ETAPAS",
-        "bloco1": "Comece com:\nContexto\nProblema\nVirada",
-        "bloco2": "Finalize com:\nExemplo\nAplicação\nCTA",
-        "extra": "Estrutura cria retenção.",
+        "tag": "Antes e Depois",
+        "headline": "A MINHA\nPOSTURA\nMUDOU.",
+        "bloco1": "Antes:\nEu esperava segurança\nEu comparava minha voz\nEu adiava o próximo passo",
+        "bloco2": "Depois:\nEu assumi meu processo\nEu comuniquei com verdade\nEu comecei com o que tinha",
+        "extra": "A mudança começou antes do resultado.",
         "sizes": {
-          "headline": 64,
-          "bloco1": 28,
+          "headline": 68,
+          "bloco1": 25,
           "bloco2": 25,
           "extra": 18
         },
@@ -1669,15 +1433,15 @@ const VISUAL_PRESETS = {
       {
         "num": 6,
         "type": "cenarios",
-        "tag": "Passo 05",
-        "headline": "DEIXE\nO TEXTO\nRESPIRAR",
-        "bloco1": "Evite blocos longos. Quebre o conteúdo em frases curtas e fáceis de ler.",
-        "bloco2": "O leitor precisa entender antes de decidir continuar.",
-        "extra": "Design também é clareza.",
+        "tag": "O processo",
+        "headline": "NÃO FOI\nMÁGICO.\nFOI\nCONSTRUÍDO.",
+        "bloco1": "Pequenas decisões repetidas começaram a reconstruir minha confiança.",
+        "bloco2": "Eu não esperei me sentir pronta. Eu me movi até me reconhecer no caminho.",
+        "extra": "Consistência também cura identidade.",
         "sizes": {
-          "headline": 64,
+          "headline": 68,
           "bloco1": 28,
-          "bloco2": 25,
+          "bloco2": 24,
           "extra": 18
         },
         "offsets": {
@@ -1690,215 +1454,15 @@ const VISUAL_PRESETS = {
       {
         "num": 7,
         "type": "sintese",
-        "tag": "Passo 06",
-        "headline": "CRIE\nUMA VIRADA\nNO MEIO",
-        "bloco1": "Mostre uma crença comum e depois revele uma visão mais madura.",
-        "bloco2": "É nessa virada que o conteúdo deixa de ser óbvio.",
-        "extra": "A surpresa sustenta o swipe.",
+        "tag": "O aprendizado",
+        "headline": "A SUA\nHISTÓRIA\nNÃO É UM\nPESO.",
+        "bloco1": "Ela pode ser ponte para alguém que ainda não sabe como atravessar.",
+        "bloco2": "O que você viveu pode virar linguagem, presença e serviço.",
+        "extra": "Quando a dor ganha direção, ela deixa de mandar.",
         "sizes": {
-          "headline": 64,
+          "headline": 68,
           "bloco1": 28,
-          "bloco2": 25,
-          "extra": 18
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 8,
-        "type": "aplicacao",
-        "tag": "Passo 07",
-        "headline": "TERMINE\nCOM UMA\nAÇÃO",
-        "bloco1": "Não encerre apenas com informação. Mostre o próximo passo.",
-        "bloco2": "Salvar, comentar, aplicar ou enviar para alguém.",
-        "extra": "Conteúdo bom move comportamento.",
-        "sizes": {
-          "headline": 64,
-          "bloco1": 28,
-          "bloco2": 25,
-          "extra": 18
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 9,
-        "type": "cta",
-        "tag": "Agora é sua vez",
-        "headline": "SALVE\nESSE\nGUIA",
-        "bloco1": "Use este modelo sempre que precisar transformar uma ideia em carrossel.",
-        "bloco2": "Depois adapte para sua voz, sua oferta e sua identidade visual.",
-        "extra": "Post Creator · Q21 Hub",
-        "sizes": {
-          "headline": 64,
-          "bloco1": 28,
-          "bloco2": 25,
-          "extra": 18
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      }
-    ]
-  },
-  "magazine": {
-    "font": "dm_serif",
-    "colors": {
-      "bg": "#0F1115",
-      "text": "#FFFFFF",
-      "accent": "#F5C542",
-      "accent2": "#9CA3AF"
-    },
-    "slides": [
-      {
-        "num": 1,
-        "type": "capa",
-        "tag": "Revista",
-        "headline": "A IDEIA\nQUE MERECE\nVIRAR CAPA",
-        "bloco1": "Um modelo com mais contraste, presença e leitura de revista digital.",
-        "bloco2": "Use para conteúdos fortes, editoriais, anúncios e posições claras.",
-        "extra": "Quantidade sem clareza vira ruído.",
-        "sizes": {
-          "headline": 62,
-          "bloco1": 28,
-          "bloco2": 25,
-          "extra": 18
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 2,
-        "type": "contexto",
-        "tag": "Crença 01",
-        "headline": "POSTAR TODO\nDIA É O MAIS\nIMPORTANTE?",
-        "bloco1": "Mito: frequência sozinha resolve crescimento.",
-        "bloco2": "Fato: consistência precisa de mensagem, oferta e direção.",
-        "extra": "Ritmo sem estratégia cansa.",
-        "sizes": {
-          "headline": 62,
-          "bloco1": 28,
-          "bloco2": 25,
-          "extra": 18
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 3,
-        "type": "dados",
-        "tag": "Crença 02",
-        "headline": "CONTEÚDO\nBONITO\nVENDE?",
-        "bloco1": "Mito: design premium compensa uma mensagem fraca.",
-        "bloco2": "Fato: design chama atenção, mas clareza gera confiança.",
-        "extra": "Beleza abre a porta. Clareza mantém a pessoa dentro.",
-        "sizes": {
-          "headline": 62,
-          "bloco1": 28,
-          "bloco2": 25,
-          "extra": 18
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 4,
-        "type": "virada",
-        "tag": "Crença 03",
-        "headline": "VOCÊ PRECISA\nAGRADAR TODO\nMUNDO?",
-        "bloco1": "Mito: quanto mais amplo, mais chance de vender.",
-        "bloco2": "Fato: uma mensagem específica atrai quem realmente compra.",
-        "extra": "Posicionamento também é renúncia.",
-        "sizes": {
-          "headline": 62,
-          "bloco1": 28,
-          "bloco2": 25,
-          "extra": 18
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 5,
-        "type": "dois_col",
-        "tag": "Crença 04",
-        "headline": "VENDER\nÉ FORÇAR?",
-        "bloco1": "Mito: vender é pressionar alguém a comprar.",
-        "bloco2": "Fato: vender bem é mostrar uma solução com clareza e respeito.",
-        "extra": "A ética está na intenção e na entrega.",
-        "sizes": {
-          "headline": 62,
-          "bloco1": 28,
-          "bloco2": 25,
-          "extra": 18
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 6,
-        "type": "cenarios",
-        "tag": "Crença 05",
-        "headline": "SÓ FUNCIONA\nPARA QUEM JÁ\nTEM AUDIÊNCIA?",
-        "bloco1": "Mito: audiência grande é requisito para começar.",
-        "bloco2": "Fato: autoridade começa quando poucas pessoas certas confiam em você.",
-        "extra": "Comece pequeno, mas comece certo.",
-        "sizes": {
-          "headline": 62,
-          "bloco1": 28,
-          "bloco2": 25,
-          "extra": 18
-        },
-        "offsets": {
-          "headline": 0,
-          "bloco1": 0,
-          "bloco2": 0,
-          "extra": 0
-        }
-      },
-      {
-        "num": 7,
-        "type": "sintese",
-        "tag": "Crença 06",
-        "headline": "VOCÊ PRECISA\nSER PERFEITO?",
-        "bloco1": "Mito: só posso aparecer quando estiver tudo pronto.",
-        "bloco2": "Fato: presença consistente constrói confiança no processo.",
-        "extra": "O público acompanha evolução, não perfeição.",
-        "sizes": {
-          "headline": 62,
-          "bloco1": 28,
-          "bloco2": 25,
+          "bloco2": 24,
           "extra": 18
         },
         "offsets": {
@@ -1912,14 +1476,14 @@ const VISUAL_PRESETS = {
         "num": 8,
         "type": "aplicacao",
         "tag": "Aplicação",
-        "headline": "TROQUE\nA CRENÇA\nPELA PRÁTICA",
-        "bloco1": "Mito: preciso de mais tempo para começar.",
-        "bloco2": "Fato: preciso de um próximo passo claro para executar hoje.",
-        "extra": "Ação pequena vence teoria parada.",
+        "headline": "QUAL PARTE\nDA SUA\nHISTÓRIA\nPRECISA VIRAR\nVOZ?",
+        "bloco1": "Escolha um episódio. Encontre a virada. Extraia o aprendizado. Compartilhe com maturidade.",
+        "bloco2": "Storytelling não é exposição. É condução com propósito.",
+        "extra": "Conte com verdade, não com exagero.",
         "sizes": {
-          "headline": 62,
+          "headline": 64,
           "bloco1": 28,
-          "bloco2": 25,
+          "bloco2": 24,
           "extra": 18
         },
         "offsets": {
@@ -1933,14 +1497,214 @@ const VISUAL_PRESETS = {
         "num": 9,
         "type": "cta",
         "tag": "Ação",
-        "headline": "QUAL MITO\nVOCÊ VAI\nABANDONAR?",
-        "bloco1": "Mito: vou esperar o momento perfeito.",
-        "bloco2": "Fato: o próximo post pode ser o começo da sua nova fase.",
-        "extra": "Salve e revise antes de travar de novo.",
+        "headline": "SALVE\nPARA CONTAR\nA SUA\nJORNADA.",
+        "bloco1": "A próxima pessoa que precisa ouvir sua história talvez ainda nem saiba como pedir ajuda.",
+        "bloco2": "Use este modelo para transformar vivência em mensagem.",
+        "extra": "Sua história pode ser direção.",
+        "sizes": {
+          "headline": 68,
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      }
+    ]
+  },
+  "magazine": {
+    "font": "bebas",
+    "colors": {
+      "bg": "#0F1115",
+      "text": "#FFFFFF",
+      "accent": "#F5C542",
+      "accent2": "#9CA3AF"
+    },
+    "slides": [
+      {
+        "num": 1,
+        "type": "capa",
+        "tag": "Contraste",
+        "headline": "O QUE PARECE\nFORÇA...\nPODE SER\nMEDO DISFARÇADO.",
+        "bloco1": "Nem toda postura firme nasce de segurança. Algumas nascem de defesa.",
+        "bloco2": "",
+        "extra": "Uma reflexão sobre liderança emocional.",
+        "sizes": {
+          "headline": 66,
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 2,
+        "type": "contexto",
+        "tag": "O mito",
+        "headline": "MITO:\nLIDERAR É\nCONTROLAR\nTUDO.",
+        "bloco1": "Esse pensamento parece responsabilidade, mas muitas vezes revela insegurança.",
+        "bloco2": "Controle excessivo não gera equipe madura. Gera dependência.",
+        "extra": "Nem todo controle é cuidado.",
+        "sizes": {
+          "headline": 64,
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 3,
+        "type": "virada",
+        "tag": "A verdade",
+        "headline": "VERDADE:\nLIDERAR É\nCRIAR CLAREZA\nPARA AS PESSOAS\nAGIREM MELHOR.",
+        "bloco1": "Autoridade saudável não sufoca. Ela orienta.",
+        "bloco2": "A equipe cresce quando entende direção, limite e confiança.",
+        "extra": "Clareza reduz ruído.",
+        "sizes": {
+          "headline": 58,
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 4,
+        "type": "dois_col",
+        "tag": "Comparação",
+        "headline": "CONTROLE\nVS\nCONDUÇÃO.",
+        "bloco1": "CONTROLE\nCentraliza\nCobra sem contexto\nApaga autonomia",
+        "bloco2": "CONDUÇÃO\nDireciona\nAlinha expectativa\nDesenvolve maturidade",
+        "extra": "A diferença muda o clima da equipe.",
+        "sizes": {
+          "headline": 66,
+          "bloco1": 25,
+          "bloco2": 25,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 5,
+        "type": "cenarios",
+        "tag": "Na prática",
+        "headline": "A MESMA\nSITUAÇÃO.\nDUAS\nPOSTURAS.",
+        "bloco1": "Controle pergunta:\n“Por que você ainda não fez?”",
+        "bloco2": "Condução pergunta:\n“O que está faltando para você avançar com clareza?”",
+        "extra": "Perguntas revelam cultura.",
+        "sizes": {
+          "headline": 66,
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 6,
+        "type": "sintese",
+        "tag": "O novo olhar",
+        "headline": "LIDERANÇA\nEMOCIONAL\nNÃO É SER\nBONZINHO.",
+        "bloco1": "É sustentar verdade sem perder presença.",
+        "bloco2": "É corrigir sem humilhar. É alinhar sem esmagar.",
+        "extra": "Firmeza também pode ser leve.",
+        "sizes": {
+          "headline": 64,
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 7,
+        "type": "aplicacao",
+        "tag": "Aplicação",
+        "headline": "TROQUE\nA REAÇÃO\nPELA PERGUNTA.",
+        "bloco1": "Antes de cobrar, pergunte:\nA pessoa entendeu?\nEla tem recurso?\nEla sabe o próximo passo?",
+        "bloco2": "Essa pausa evita conflitos desnecessários.",
+        "extra": "Pausa não é fraqueza. É domínio.",
+        "sizes": {
+          "headline": 66,
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 8,
+        "type": "contexto",
+        "tag": "Reflexão",
+        "headline": "ONDE VOCÊ\nESTÁ CHAMANDO\nMEDO DE\nRESPONSABILIDADE?",
+        "bloco1": "Essa pergunta pode revelar padrões de liderança que precisam amadurecer.",
+        "bloco2": "Não para gerar culpa. Para gerar consciência.",
+        "extra": "Consciência é o começo da mudança.",
+        "sizes": {
+          "headline": 60,
+          "bloco1": 28,
+          "bloco2": 24,
+          "extra": 18
+        },
+        "offsets": {
+          "headline": 0,
+          "bloco1": 0,
+          "bloco2": 0,
+          "extra": 0
+        }
+      },
+      {
+        "num": 9,
+        "type": "cta",
+        "tag": "Ação",
+        "headline": "SALVE\nSE VOCÊ\nQUER LIDERAR\nCOM MAIS\nPRESENÇA.",
+        "bloco1": "E envie para alguém que está aprendendo a conduzir pessoas sem se perder.",
+        "bloco2": "",
+        "extra": "Liderança começa dentro.",
         "sizes": {
           "headline": 62,
           "bloco1": 28,
-          "bloco2": 25,
+          "bloco2": 24,
           "extra": 18
         },
         "offsets": {
@@ -1981,11 +1745,11 @@ function applyPresetToState(key){
 }
 let state = {
   appVersion: APP_VERSION,
-  visual:'passo', template:'preset_passo', font:'montserrat', nome:'meu-carrossel',
-  colors:{bg:'#F7F4ED',text:'#181818',accent:'#C9A96E',accent2:'#6B7280',handle:'@seuperfil',copyright:'© COPYRIGHT 2025'},
+  visual:'jornada', template:'preset_jornada', font:'playfair', nome:'meu-carrossel',
+  colors:{bg:'#15110E',text:'#F9F3E8',accent:'#D6B56D',accent2:'#B8A48A',handle:'@seuperfil',copyright:'© COPYRIGHT 2025'},
   slides: []
 };
-applyPresetToState('passo');
+applyPresetToState('jornada');
 // Reset localStorage via URL param
 if(new URLSearchParams(location.search).get('reset')==='1'){
   localStorage.removeItem(STORAGE_KEY);
@@ -2007,8 +1771,8 @@ try {
   localStorage.removeItem('pc_state'); }
 
 // Migração de versões antigas.
-if(['clean','impact','statement','sans'].includes(state.visual)) state.visual = 'passo';
-if(!VISUAL_STYLES[state.visual]) state.visual = 'passo';
+if(['clean','impact','statement','sans','passo','checklist','mito','dados','antesdepois'].includes(state.visual)) state.visual = 'jornada';
+if(!VISUAL_STYLES[state.visual]) state.visual = 'jornada';
 
 function saveState(){try{state.appVersion=APP_VERSION;localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch(e){}}
 function offY(s,key){return(s.offsets&&s.offsets[key])||0;}
@@ -2018,6 +1782,23 @@ function sz(s,el,def){return(s.sizes&&s.sizes[el])||def;}
 function ec(s,el,fb){return(s.el_colors&&s.el_colors[el])||fb;}
 function brk(t){return String(t||'').replace(/\n/g,'<br>');}
 function parseInline(t,accent){return String(t||'').replace(/\*(.*?)\*/g,`<span style="color:${accent}">$1</span>`);}
+
+function renderStudentImageBg(s, overlay='dark'){
+  if(!s.image || s.imagePos==='float') return '';
+  const ov = overlay==='light'
+    ? 'linear-gradient(90deg,rgba(248,246,240,.92),rgba(248,246,240,.74),rgba(248,246,240,.36))'
+    : overlay==='warm'
+      ? 'linear-gradient(180deg,rgba(21,17,14,.28),rgba(21,17,14,.80))'
+      : 'linear-gradient(180deg,rgba(0,0,0,.38),rgba(0,0,0,.82))';
+  return `<div style="position:absolute;inset:0;background:url('${s.image}') center/cover no-repeat;z-index:0"></div><div style="position:absolute;inset:0;background:${ov};z-index:1"></div>`;
+}
+function renderStudentFloatImage(s, side='right'){
+  if(!s.image || s.imagePos==='background') return '';
+  const pos = side==='left' ? 'left:60px;right:auto' : 'right:60px;left:auto';
+  return `<img src="${s.image}" style="position:absolute;top:210px;${pos};width:390px;height:520px;object-fit:cover;border-radius:34px;box-shadow:0 30px 90px rgba(0,0,0,.28);z-index:2">`;
+}
+function studentTextColor(s,c,dark=false){return s.image&&s.imagePos==='background' ? (dark?'#15110E':'#fff') : c.text;}
+function studentMutedColor(s,c){return s.image&&s.imagePos==='background' ? 'rgba(255,255,255,.72)' : c.accent2;}
 function hlFn(t,accent,accentLast=true){
   const lines=parseInline(String(t||''),accent).split('\n');
   if(!accentLast||!lines.length)return lines.join('<br>');
@@ -2568,14 +2349,84 @@ function renderAntesDepois(s,c,fk){
   </div>`;
 }
 
+
+// ── STUDENT STRONG LAYOUT: JORNADA ────────────────────────────────────────────
+function renderJornada(s,c,fk){
+  const f=FONTS[fk]||FONTS.playfair;
+  const hs=sz(s,'headline',72),b1s=sz(s,'bloco1',28),b2s=sz(s,'bloco2',24),exs=sz(s,'extra',18);
+  const hasBg=s.image&&s.imagePos==='background';
+  const tc=studentTextColor(s,c), muted=studentMutedColor(s,c);
+  const bgLayers=renderStudentImageBg(s,'warm');
+  const floatImg=renderStudentFloatImage(s,'right');
+  const rightPad=s.image&&s.imagePos==='float'?'500px':'70px';
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800;900&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${c.bg};font-family:${f.family}}</style></head><body>
+  <div style="width:1080px;height:1350px;background:${c.bg};position:relative;overflow:hidden;color:${tc}">
+    ${bgLayers||`<div style="position:absolute;inset:0;background:radial-gradient(circle at 80% 15%,rgba(214,181,109,.18),transparent 34%),linear-gradient(180deg,${c.bg},#080706)"></div>`}
+    ${floatImg}
+    <div style="position:absolute;inset:0;z-index:2">
+      <div style="position:absolute;top:62px;left:70px;font-family:'Manrope',sans-serif;font-size:13px;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:${hasBg?'rgba(255,255,255,.68)':c.accent}">${s.tag||'Jornada'}</div>
+      <div style="position:absolute;top:58px;right:70px;font-family:'Manrope',sans-serif;font-size:13px;font-weight:700;letter-spacing:3px;color:${muted}">${String(s.num).padStart(2,'0')}</div>
+      <h1 style="position:absolute;top:${185+offY(s,'headline')}px;left:70px;right:${rightPad};font-size:${hs}px;line-height:.96;font-weight:800;letter-spacing:-2px;color:${ec(s,'headline',tc)};font-family:${f.family}">${parseInline(brk(s.headline),c.accent)}</h1>
+      <p style="position:absolute;top:${610+offY(s,'bloco1')}px;left:74px;right:${rightPad};font-family:'Manrope',sans-serif;font-size:${b1s}px;line-height:1.45;font-weight:600;color:${ec(s,'bloco1',hasBg?'rgba(255,255,255,.9)':c.text)}">${parseInline(brk(s.bloco1||''),c.accent)}</p>
+      ${s.bloco2?`<p style="position:absolute;top:${790+offY(s,'bloco2')}px;left:74px;right:${rightPad};font-family:'Manrope',sans-serif;font-size:${b2s}px;line-height:1.48;font-weight:500;color:${ec(s,'bloco2',hasBg?'rgba(255,255,255,.78)':c.accent2)}">${parseInline(brk(s.bloco2),c.accent)}</p>`:''}
+      ${s.extra?`<div style="position:absolute;bottom:${92-offY(s,'extra')}px;left:70px;right:70px;border-top:1px solid ${hasBg?'rgba(255,255,255,.22)':'rgba(122,82,48,.22)'};padding-top:22px;font-family:'Manrope',sans-serif;font-size:${exs}px;font-weight:700;letter-spacing:.4px;color:${ec(s,'extra',hasBg?c.accent:c.accent2)}">${parseInline(brk(s.extra),c.accent)}</div>`:''}
+      <div style="position:absolute;bottom:42px;right:70px;font-family:'Manrope',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:${hasBg?'rgba(255,255,255,.45)':c.accent2}">${c.handle||'@seuperfil'}</div>
+    </div>
+  </div>`;
+}
+
+function renderTransformacao(s,c,fk){
+  const f=FONTS[fk]||FONTS.manrope;
+  const hs=sz(s,'headline',66),b1s=sz(s,'bloco1',25),b2s=sz(s,'bloco2',25),exs=sz(s,'extra',18);
+  const hasBg=s.image&&s.imagePos==='background';
+  const tc=studentTextColor(s,c);
+  const bgLayers=renderStudentImageBg(s,'light');
+  const floatImg=renderStudentFloatImage(s,'left');
+  const topBox=s.image&&s.imagePos==='float'?470:430;
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${c.bg};font-family:${f.family}}</style></head><body>
+  <div style="width:1080px;height:1350px;background:${c.bg};position:relative;overflow:hidden;color:${tc}">
+    ${bgLayers||`<div style="position:absolute;inset:0;background:linear-gradient(135deg,${c.bg},#fffaf0)"></div>`}
+    ${floatImg}
+    <div style="position:absolute;inset:0;z-index:2">
+      <div style="position:absolute;top:58px;left:70px;font-size:13px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:${c.accent2};font-family:${f.family}">${s.tag||'Transformação'}</div>
+      <h1 style="position:absolute;top:${132+offY(s,'headline')}px;left:${s.image&&s.imagePos==='float'?'500px':'70px'};right:70px;text-align:${s.image&&s.imagePos==='float'?'left':'center'};font-size:${hs}px;line-height:1.03;font-weight:900;letter-spacing:-2px;color:${ec(s,'headline',tc)};font-family:${f.family}">${parseInline(brk(s.headline),c.accent)}</h1>
+      <div style="position:absolute;top:${topBox+offY(s,'bloco1')}px;left:58px;width:464px;height:560px;border-radius:34px;background:${hasBg?'rgba(255,255,255,.78)':'rgba(255,255,255,.48)'};border:1px solid rgba(32,24,18,.12);padding:38px;backdrop-filter:blur(8px)"><div style="font-size:16px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:${c.accent2};margin-bottom:32px">Antes</div><p style="font-size:${b1s}px;line-height:1.28;font-weight:800;color:${ec(s,'bloco1',c.text)};font-family:${f.family}">${parseInline(brk(s.bloco1||''),c.accent)}</p></div>
+      <div style="position:absolute;top:${topBox+offY(s,'bloco2')}px;right:58px;width:464px;height:560px;border-radius:34px;background:${c.accent};padding:38px;box-shadow:0 28px 80px rgba(32,24,18,.22)"><div style="font-size:16px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.74);margin-bottom:32px">Depois</div><p style="font-size:${b2s}px;line-height:1.28;font-weight:900;color:#fff;font-family:${f.family}">${parseInline(brk(s.bloco2||''),'#fff')}</p></div>
+      <div style="position:absolute;top:${topBox+246}px;left:512px;width:56px;height:56px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;color:${c.accent};font-weight:900;box-shadow:0 14px 40px rgba(32,24,18,.18)">→</div>
+      ${s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;text-align:center;font-size:${exs}px;font-weight:800;color:${ec(s,'extra',hasBg?'#fff':c.accent2)};font-family:${f.family}">${parseInline(brk(s.extra),c.accent)}</div>`:''}
+      <div style="position:absolute;bottom:38px;right:70px;font-size:15px;font-weight:700;color:${hasBg?'rgba(255,255,255,.65)':c.accent2};font-family:${f.family}">${c.handle||'@seuperfil'}</div>
+    </div>
+  </div>`;
+}
+
+function renderMetodo(s,c,fk){
+  const f=FONTS[fk]||FONTS.montserrat;
+  const hs=sz(s,'headline',68),b1s=sz(s,'bloco1',28),b2s=sz(s,'bloco2',24),exs=sz(s,'extra',18);
+  const hasBg=s.image&&s.imagePos==='background';
+  const bgLayers=renderStudentImageBg(s,'light');
+  const tc=studentTextColor(s,c,true);
+  const floatImg=renderStudentFloatImage(s,'right');
+  const rightPad=s.image&&s.imagePos==='float'?'510px':'70px';
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${c.bg};font-family:${f.family}}</style></head><body>
+  <div style="width:1080px;height:1350px;background:${c.bg};position:relative;overflow:hidden;color:${tc}">${bgLayers||`<div style="position:absolute;inset:0;background:${c.bg}"></div><div style="position:absolute;right:-160px;top:-160px;width:520px;height:520px;border-radius:50%;background:${c.accent};opacity:.12"></div>`}${floatImg}<div style="position:absolute;inset:0;z-index:2"><div style="position:absolute;top:54px;left:70px;width:78px;height:78px;border-radius:24px;background:${c.accent};display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px;font-weight:900;font-family:${f.family}">${String(s.num).padStart(2,'0')}</div><div style="position:absolute;top:72px;left:170px;font-size:13px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:${c.accent2};font-family:${f.family}">${s.tag||'Método'}</div><h1 style="position:absolute;top:${205+offY(s,'headline')}px;left:70px;right:${rightPad};font-size:${hs}px;line-height:1.02;font-weight:900;letter-spacing:-2px;color:${ec(s,'headline',tc)};font-family:${f.family}">${parseInline(brk(s.headline),c.accent)}</h1><p style="position:absolute;top:${560+offY(s,'bloco1')}px;left:74px;right:${rightPad};font-family:'Inter',sans-serif;font-size:${b1s}px;line-height:1.45;font-weight:600;color:${ec(s,'bloco1',tc)}">${parseInline(brk(s.bloco1||''),c.accent)}</p>${s.bloco2?`<div style="position:absolute;top:${760+offY(s,'bloco2')}px;left:70px;right:${rightPad};padding:28px 32px;border-radius:28px;background:${hasBg?'rgba(255,255,255,.82)':'rgba(201,169,110,.11)'};border:1px solid rgba(201,169,110,.24);font-family:'Inter',sans-serif;font-size:${b2s}px;line-height:1.5;font-weight:700;color:${ec(s,'bloco2',tc)}">${parseInline(brk(s.bloco2),c.accent)}</div>`:''}${s.extra?`<div style="position:absolute;bottom:${88-offY(s,'extra')}px;left:70px;right:70px;font-family:'Inter',sans-serif;font-size:${exs}px;font-weight:800;color:${ec(s,'extra',c.accent2)}">${parseInline(brk(s.extra),c.accent)}</div>`:''}<div style="position:absolute;bottom:42px;right:70px;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:${c.accent2}">${c.handle||'@seuperfil'}</div></div></div>`;
+}
+
+function renderContraste(s,c,fk){
+  const f=FONTS[fk]||FONTS.space;
+  const hs=sz(s,'headline',64),b1s=sz(s,'bloco1',25),b2s=sz(s,'bloco2',25),exs=sz(s,'extra',18);
+  const hasBg=s.image&&s.imagePos==='background';
+  const bgLayers=renderStudentImageBg(s,'dark');
+  const floatImg=renderStudentFloatImage(s,'right');
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${c.bg};font-family:${f.family}}</style></head><body><div style="width:1080px;height:1350px;background:${c.bg};position:relative;overflow:hidden;color:${c.text}">${bgLayers||`<div style="position:absolute;inset:0;background:linear-gradient(135deg,#101114,#1b1d23)"></div>`}${floatImg}<div style="position:absolute;inset:0;z-index:2"><div style="position:absolute;top:58px;left:70px;font-size:13px;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:${c.accent};font-family:${f.family}">${s.tag||'Contraste'}</div><h1 style="position:absolute;top:${128+offY(s,'headline')}px;left:70px;right:${s.image&&s.imagePos==='float'?'520px':'70px'};font-size:${hs}px;line-height:1.04;font-weight:800;letter-spacing:-2px;color:${ec(s,'headline',c.text)};font-family:${f.family}">${parseInline(brk(s.headline),c.accent)}</h1><div style="position:absolute;top:${470+offY(s,'bloco1')}px;left:58px;width:464px;min-height:430px;border-radius:34px;background:${hasBg?'rgba(0,0,0,.46)':'rgba(255,255,255,.06)'};border:1px solid rgba(255,255,255,.14);padding:36px;backdrop-filter:blur(8px)"><div style="font-size:14px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:${c.accent2};margin-bottom:28px">Lado A</div><p style="font-size:${b1s}px;line-height:1.32;font-weight:700;color:${ec(s,'bloco1','#fff')};font-family:'Inter',sans-serif">${parseInline(brk(s.bloco1||''),c.accent2)}</p></div><div style="position:absolute;top:${470+offY(s,'bloco2')}px;right:58px;width:464px;min-height:430px;border-radius:34px;background:${c.accent};padding:36px;box-shadow:0 24px 80px rgba(0,0,0,.22)"><div style="font-size:14px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:rgba(0,0,0,.45);margin-bottom:28px">Lado B</div><p style="font-size:${b2s}px;line-height:1.32;font-weight:800;color:#111;font-family:'Inter',sans-serif">${parseInline(brk(s.bloco2||''),'#111')}</p></div><div style="position:absolute;top:626px;left:495px;width:90px;height:90px;border-radius:50%;background:#fff;color:#111;display:flex;align-items:center;justify-content:center;font-size:27px;font-weight:900;font-family:${f.family};box-shadow:0 20px 50px rgba(0,0,0,.28)">VS</div>${s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;text-align:center;font-size:${exs}px;font-weight:700;color:${ec(s,'extra',c.accent)};font-family:'Inter',sans-serif">${parseInline(brk(s.extra),c.accent)}</div>`:''}<div style="position:absolute;bottom:38px;right:70px;font-size:15px;font-weight:700;color:rgba(249,250,251,.54);font-family:'Inter',sans-serif">${c.handle||'@seuperfil'}</div></div></div>`;
+}
+
 // ── MAIN RENDERER DISPATCHER ───────────────────────────────────────────────────
 function renderSlide(slide,colors,fontKey){
-  const vs=state.visual||'passo';
-  if(vs==='passo') return renderPasso(slide,colors,fontKey);
-  if(vs==='checklist') return renderChecklist(slide,colors,fontKey);
-  if(vs==='mito') return renderMito(slide,colors,fontKey);
-  if(vs==='dados') return renderDados(slide,colors,fontKey);
-  if(vs==='antesdepois') return renderAntesDepois(slide,colors,fontKey);
+  const vs=state.visual||'jornada';
+  if(vs==='jornada') return renderJornada(slide,colors,fontKey);
+  if(vs==='transformacao') return renderTransformacao(slide,colors,fontKey);
+  if(vs==='metodo') return renderMetodo(slide,colors,fontKey);
+  if(vs==='contraste') return renderContraste(slide,colors,fontKey);
   if(vs==='serif') return renderSerif(slide,colors,fontKey);
   const fn=MAG_RENDERERS[slide.type]||rMagCapa;
   return fn(slide,colors,fontKey);
@@ -2597,7 +2448,12 @@ function handleImageUpload(num,file){
       canvas.getContext('2d').drawImage(img,0,0,w,h);
       const data=canvas.toDataURL('image/jpeg',0.8);
       const sl=state.slides.find(s=>s.num===num);
-      if(sl){sl.image=data;saveState();reloadPreview(num);updateImagePreview(num,data);}
+      if(sl){
+        sl.image=data;
+        sl.imagePos='background';
+        saveState();reloadPreview(num);updateImagePreview(num,data);
+        document.querySelectorAll(`[data-imgpos="${num}"]`).forEach(b=>{b.classList.toggle('sel',b.dataset.pos==='background');});
+      }
     };
     img.src=e.target.result;
   };
