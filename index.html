@@ -2500,7 +2500,7 @@ function renderTopHalfImage(s){
 }
 
 // Imagem caixa: retângulo contido no slide, posicionável via slider bloco2
-function renderBoxImage(s, topPx=480){
+function renderBoxImage(s, topPx=750){
   if(!s.image||s.imagePos!=='box') return '';
   const focal=s.imageFocal||'center center';
   return `<img src="${s.image}" style="position:absolute;top:${topPx+offY(s,'bloco2')}px;left:60px;right:60px;width:960px;height:420px;object-fit:cover;object-position:${focal};border-radius:18px;z-index:2">`;
@@ -2915,11 +2915,11 @@ function buildTexto(){
     // Posição vertical
     const posSec=document.createElement('div');posSec.className='el-section';
     posSec.innerHTML='<div class="el-section-title">Posição vertical</div>';
-    const posFields=[['headline','Headline'],['bloco1','Bloco 1'],['bloco2','Bloco 2'],['extra','Extra']];
+    const posFields=[['headline','Headline'],['bloco1','Bloco 1'],['bloco2','Bloco 2 / Caixa'],['extra','Extra']];
     posFields.forEach(([elName,lbl])=>{
       const dv=(slide.offsets&&slide.offsets[elName])||0;
       const row=document.createElement('div');row.className='sz-row';
-      row.innerHTML=`<span class="sz-lbl">${lbl}</span><input type="range" class="sz-slider" min="-150" max="150" value="${dv}" data-num="${slide.num}" data-el="${elName}" id="pos-${slide.num}-${elName}" oninput="onOffsetChange(this)"><span class="sz-val" id="pv-${slide.num}-${elName}">${dv>0?'+':''}${dv}px</span>`;
+      row.innerHTML=`<span class="sz-lbl">${lbl}</span><input type="range" class="sz-slider" min="-400" max="600" value="${dv}" data-num="${slide.num}" data-el="${elName}" id="pos-${slide.num}-${elName}" oninput="onOffsetChange(this)"><span class="sz-val" id="pv-${slide.num}-${elName}">${dv>0?'+':''}${dv}px</span>`;
       posSec.appendChild(row);
     });
     body.appendChild(posSec);
