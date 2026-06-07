@@ -532,6 +532,7 @@ function makeSlide(s) {
   if (!sl.el_colors.slide_bg) sl.el_colors.slide_bg = '';
   if (!sl.image) sl.image = '';
   if (!sl.imagePos) sl.imagePos = 'float';
+  if (!sl.imageFocal) sl.imageFocal = 'center center';
   if (!sl.offsets) sl.offsets = {headline:0,bloco1:0,bloco2:0,extra:0};
   if (!sl.sizes.extra) sl.sizes.extra = 22;
   return sl;
@@ -953,6 +954,7 @@ function renderStatement(s,c){
   <style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${bg};font-family:'Inter',sans-serif}</style>
   </head><body>
   <div style="width:1080px;height:1350px;background:${bg};position:relative;overflow:hidden">
+    ${renderTopHalfImage(s)}${renderBoxImage(s,480)}
     ${tagHtml}
     <div style="position:absolute;top:48px;right:50px;background:rgba(50,50,50,0.75);border-radius:40px;padding:10px 22px;font-size:22px;color:rgba(255,255,255,0.85);font-weight:600;font-family:'Inter',sans-serif">${counter}</div>
     <h1 style="position:absolute;top:${headlineTop}px;left:70px;right:70px;font-size:${hs}px;font-weight:800;line-height:1.04;color:${ec(s,'headline',darkText)};font-family:'Inter',sans-serif;letter-spacing:-2px">${hHtml}</h1>
@@ -1028,6 +1030,7 @@ function renderSans(s,c,fontKey){
   <style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${bg};font-family:${fam}}</style>
   </head><body>
   <div style="width:1080px;height:1350px;background:${bg};position:relative;overflow:hidden">
+    ${renderTopHalfImage(s)}${renderBoxImage(s,480)}
     ${tagHtml}
     <div style="position:absolute;top:48px;right:50px;background:rgba(50,50,50,0.75);border-radius:40px;padding:10px 22px;font-size:22px;color:rgba(255,255,255,0.85);font-weight:600;font-family:'Inter',sans-serif">${counter}</div>
 
@@ -1060,6 +1063,18 @@ function applyDuoLayoutDefaults(){
     });
     return s;
   });
+}
+
+// ── IMAGE POSITION HELPERS ────────────────────────────────────────────────────
+function renderTopHalfImage(s){
+  if(!s.image||s.imagePos!=='top_half') return '';
+  const focal=s.imageFocal||'center center';
+  return `<div style="position:absolute;top:0;left:0;right:0;height:580px;overflow:hidden;z-index:0"><img src="${s.image}" style="width:100%;height:100%;object-fit:cover;object-position:${focal}"></div>`;
+}
+function renderBoxImage(s,topPx=480){
+  if(!s.image||s.imagePos!=='box') return '';
+  const focal=s.imageFocal||'center center';
+  return `<img src="${s.image}" style="position:absolute;top:${topPx+offY(s,'bloco2')}px;left:60px;right:60px;width:960px;height:420px;object-fit:cover;object-position:${focal};border-radius:18px;z-index:2">`;
 }
 
 // ── MAIN RENDERER DISPATCHER ───────────────────────────────────────────────────
@@ -1121,6 +1136,28 @@ function setImagePos(num,pos){
   const sl=state.slides.find(s=>s.num===num);
   if(sl){sl.imagePos=pos;saveState();reloadPreview(num);}
   document.querySelectorAll(`[data-imgpos="${num}"]`).forEach(b=>{b.classList.toggle('sel',b.dataset.pos===pos);});
+  const focalWrap=document.getElementById(`focal-wrap-${num}`);
+  if(focalWrap) focalWrap.style.display=['top_half','box'].includes(pos)?'block':'none';
+}
+function setImageFocal(num,focal){
+  const sl=state.slides.find(s=>s.num===num);
+  if(!sl)return;
+  sl.imageFocal=focal;saveState();reloadPreview(num);
+  document.querySelectorAll(`[data-focal="${num}"]`).forEach(b=>{
+    b.style.background=b.dataset.pos===focal?'var(--gold)':'rgba(255,255,255,0.15)';
+  });
+}
+function buildFocalGrid(num,curFocal){
+  const positions=[
+    ['left top','↖'],['center top','↑'],['right top','↗'],
+    ['left center','←'],['center center','·'],['right center','→'],
+    ['left bottom','↙'],['center bottom','↓'],['right bottom','↘'],
+  ];
+  const btns=positions.map(([pos,icon])=>{
+    const sel=curFocal===pos;
+    return `<div data-focal="${num}" data-pos="${pos}" onclick="setImageFocal(${num},'${pos}')" style="width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;background:${sel?'var(--gold)':'rgba(255,255,255,0.15)'};color:${sel?'#000':'var(--text)'};transition:all .15s">${icon}</div>`;
+  }).join('');
+  return `<div id="focal-wrap-${num}" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border2)"><div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Foco da imagem</div><div style="display:grid;grid-template-columns:repeat(3,28px);gap:4px">${btns}</div></div>`;
 }
 
 // ── COLAR CARROSSEL ────────────────────────────────────────────────────────────
@@ -1287,11 +1324,14 @@ function buildTexto(){
         <div style="font-size:11px;color:var(--muted)">📎 Clique para adicionar imagem</div>
         <img id="img-thumb-${slide.num}" class="img-thumb" ${hasImg?`src="${slide.image}" style="display:block"`:'style="display:none"'}>
       </div>
-      <div class="img-pos-row" id="img-pos-${slide.num}" style="display:${hasImg?'flex':'none'}">
+      <div class="img-pos-row" id="img-pos-${slide.num}" style="display:${hasImg?'flex':'none'};flex-wrap:wrap;gap:6px">
         <button class="img-pos-btn${(slide.imagePos||'float')==='float'?' sel':''}" data-imgpos="${slide.num}" data-pos="float" onclick="setImagePos(${slide.num},'float')">Flutuar</button>
         <button class="img-pos-btn${slide.imagePos==='background'?' sel':''}" data-imgpos="${slide.num}" data-pos="background" onclick="setImagePos(${slide.num},'background')">Fundo</button>
+        <button class="img-pos-btn${slide.imagePos==='top_half'?' sel':''}" data-imgpos="${slide.num}" data-pos="top_half" onclick="setImagePos(${slide.num},'top_half')">Meio sup.</button>
+        <button class="img-pos-btn${slide.imagePos==='box'?' sel':''}" data-imgpos="${slide.num}" data-pos="box" onclick="setImagePos(${slide.num},'box')">Caixa</button>
       </div>
-      <button class="img-remove" id="img-rm-${slide.num}" style="display:${hasImg?'inline-block':'none'}" onclick="removeImage(${slide.num})">✕ Remover imagem</button>`;
+      <button class="img-remove" id="img-rm-${slide.num}" style="display:${hasImg?'inline-block':'none'}" onclick="removeImage(${slide.num})">✕ Remover imagem</button>
+      ${hasImg&&['top_half','box'].includes(slide.imagePos)?buildFocalGrid(slide.num,slide.imageFocal||'center center'):''}`;
     body.appendChild(imgSec);
     // Tamanhos
     const szSec=document.createElement('div');szSec.className='el-section';
