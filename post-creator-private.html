@@ -528,7 +528,8 @@ const TEMPLATES = {
 function makeSlide(s) {
   const sl = Object.assign({}, s);
   if (!sl.sizes) sl.sizes = Object.assign({}, DEFAULT_SIZES[s.type]||{headline:60,bloco1:30,bloco2:30});
-  if (!sl.el_colors) sl.el_colors = {headline:'',bloco1:'',bloco2:''};
+  if (!sl.el_colors) sl.el_colors = {headline:'',bloco1:'',bloco2:'',slide_bg:''};
+  if (!sl.el_colors.slide_bg) sl.el_colors.slide_bg = '';
   if (!sl.image) sl.image = '';
   if (!sl.imagePos) sl.imagePos = 'float';
   if (!sl.offsets) sl.offsets = {headline:0,bloco1:0,bloco2:0,extra:0};
@@ -1063,12 +1064,15 @@ function applyDuoLayoutDefaults(){
 
 // ── MAIN RENDERER DISPATCHER ───────────────────────────────────────────────────
 function renderSlide(slide,colors,fontKey){
+  const c=(slide.el_colors&&slide.el_colors.slide_bg)
+    ? Object.assign({},colors,{bg:slide.el_colors.slide_bg})
+    : colors;
   const vs=state.visual||'clean';
-  if(vs==='clean') return renderClean(slide,colors,fontKey);
-  if(vs==='impact') return renderImpact(slide,colors,fontKey);
-  if(vs==='serif') return renderSerif(slide,colors,fontKey);
-  if(vs==='statement') return renderStatement(slide,colors,fontKey);
-  if(vs==='statement_duo') return renderSans(slide,colors,fontKey);
+  if(vs==='clean') return renderClean(slide,c,fontKey);
+  if(vs==='impact') return renderImpact(slide,c,fontKey);
+  if(vs==='serif') return renderSerif(slide,c,fontKey);
+  if(vs==='statement') return renderStatement(slide,c,fontKey);
+  if(vs==='statement_duo') return renderSans(slide,c,fontKey);
   const fn=MAG_RENDERERS[slide.type]||rMagCapa;
   return fn(slide,colors,fontKey);
 }
@@ -1314,7 +1318,7 @@ function buildTexto(){
     // Cores elementos — swatches das cores do ID Visual
     const ecSec=document.createElement('div');ecSec.className='el-section';
     ecSec.innerHTML='<div class="el-section-title">Cor dos elementos</div>';
-    [['headline','Headline'],['bloco1','Bloco 1'],['bloco2','Bloco 2'],['extra','Extra']].forEach(([elName,lbl])=>{
+    [['slide_bg','Fundo do slide'],['headline','Headline'],['bloco1','Bloco 1'],['bloco2','Bloco 2'],['extra','Extra']].forEach(([elName,lbl])=>{
       const curV=(slide.el_colors&&slide.el_colors[elName])||'';
       const palette=[
         {c:state.colors.bg},
@@ -1856,7 +1860,7 @@ function renderMobileEditorBody(slide){
   }
   if(mobileEditorTab==='color'){
     const palette=[state.colors.bg,state.colors.text,state.colors.accent,state.colors.accent2,'#FFFFFF','#000000'];
-    const els=[['headline','Headline'],['bloco1','Bloco 1'],['bloco2','Bloco 2'],['extra','Extra']];
+    const els=[['slide_bg','Fundo'],['headline','Headline'],['bloco1','Bloco 1'],['bloco2','Bloco 2'],['extra','Extra']];
     body.innerHTML=els.map(([key,lbl])=>{
       const cur=(slide.el_colors&&slide.el_colors[key])||'';
       const swatches=palette.map(cor=>{
