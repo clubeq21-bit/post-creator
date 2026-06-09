@@ -3604,17 +3604,25 @@ function init(){
 }
 init();
 
-// Ajuste para barra do WordPress
+// Ajuste para barra do WordPress (funciona com iframe e página direta)
 (function(){
-  const bar=document.getElementById('wpadminbar');
-  if(!bar)return;
-  function fix(){
-    const h=bar.offsetHeight||32;
-    const layout=document.querySelector('.layout');
-    if(layout)layout.style.height='calc(100vh - '+h+'px)';
+  function fixAdminBar(){
+    // Tenta pelo elemento WP
+    const bar=document.getElementById('wpadminbar');
+    const barH=bar?bar.offsetHeight:0;
+    // Lê o margin-top que o WP injeta no <html>
+    const marginTop=parseFloat(window.getComputedStyle(document.documentElement).marginTop)||0;
+    const offset=Math.max(barH,marginTop);
+    if(offset>0){
+      const layout=document.querySelector('.layout');
+      if(layout){
+        layout.style.height='calc(100vh - '+offset+'px)';
+        layout.style.marginTop='0';
+      }
+    }
   }
-  fix();
-  window.addEventListener('resize',fix);
+  fixAdminBar();
+  window.addEventListener('resize',fixAdminBar);
 })();
 
 </script>
