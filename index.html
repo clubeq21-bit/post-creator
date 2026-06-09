@@ -11,10 +11,6 @@
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#0D1117;--panel:#161B22;--panel2:#1C2230;--panel3:#21283A;--gold:#C9A96E;--gold2:#E8C98A;--red:#C1622A;--green:#3FB950;--text:#E6EDF3;--muted:#7D8590;--border:rgba(201,169,110,0.12);--border2:rgba(230,237,243,0.08);--radius:6px}
 html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:14px}
-/* WordPress admin bar */
-html.admin-bar .layout{height:calc(100vh - 32px)!important}
-html.admin-bar body{overflow:hidden!important}
-@media screen and (max-width:782px){html.admin-bar .layout{height:calc(100vh - 46px)!important}}
 #slide-render{position:fixed;left:-9999px;top:0;width:1080px;height:1350px;overflow:hidden;z-index:-999}
 .layout{display:grid;grid-template-rows:56px 1fr;grid-template-columns:360px 1fr;height:100vh}
 .topbar{grid-column:1/-1;background:rgba(13,17,23,0.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;padding:0;z-index:100}
@@ -3604,26 +3600,6 @@ function init(){
 }
 init();
 
-// Ajuste para barra do WordPress (funciona com iframe e página direta)
-(function(){
-  function fixAdminBar(){
-    // Tenta pelo elemento WP
-    const bar=document.getElementById('wpadminbar');
-    const barH=bar?bar.offsetHeight:0;
-    // Lê o margin-top que o WP injeta no <html>
-    const marginTop=parseFloat(window.getComputedStyle(document.documentElement).marginTop)||0;
-    const offset=Math.max(barH,marginTop);
-    if(offset>0){
-      const layout=document.querySelector('.layout');
-      if(layout){
-        layout.style.height='calc(100vh - '+offset+'px)';
-        layout.style.marginTop='0';
-      }
-    }
-  }
-  fixAdminBar();
-  window.addEventListener('resize',fixAdminBar);
-})();
 
 </script>
 </body>
