@@ -805,10 +805,18 @@ function renderClean(s,c,fk){
   const b1Html=parseInline(brk(s.bloco1||''),c.accent);
   const b2Html=s.bloco2?parseInline(brk(s.bloco2),c.accent):'';
   const extraHtml=s.extra?`<div style="position:absolute;bottom:${94-offY(s,'extra')}px;left:80px;right:80px;font-size:${sz(s,'extra',18)}px;font-weight:500;line-height:1.4;color:${ec(s,'extra',c.accent)};font-family:'Inter',sans-serif;letter-spacing:.5px;${s.image&&s.imagePos==='background'?'z-index:3':''}">${parseInline(brk(s.extra),c.accent)}</div>`:'';
+  const isBg=s.image&&s.imagePos==='background';
+  const isFloat=s.image&&s.imagePos==='float';
   let imgHtml='';
-  if(s.image&&s.imagePos==='float'){imgHtml=`<img src="${s.image}" style="position:absolute;bottom:130px;right:50px;width:380px;max-height:420px;object-fit:cover;border-radius:14px;box-shadow:0 24px 80px rgba(0,0,0,0.7)">`;}
-  if(s.image&&s.imagePos==='background'){imgHtml=`<div style="position:absolute;inset:0;background:url('${s.image}') center/cover no-repeat;z-index:0"></div><div style="position:absolute;inset:0;background:rgba(0,0,0,0.55);z-index:1"></div>`;}
-  const zidx=s.image&&s.imagePos==='background'?'position:relative;z-index:2':'';
+  if(isBg){
+    imgHtml=`<div style="position:absolute;inset:0;background:url('${s.image}') center/cover no-repeat;z-index:0"></div><div style="position:absolute;inset:0;background:rgba(0,0,0,0.55);z-index:1"></div>`;
+  } else if(isFloat){
+    const focal=s.imageFocal||'center center';
+    imgHtml=`<img src="${s.image}" style="position:absolute;bottom:130px;right:50px;width:380px;max-height:420px;object-fit:cover;object-position:${focal};border-radius:14px;box-shadow:0 24px 80px rgba(0,0,0,0.7);z-index:1">`;
+  } else {
+    imgHtml=renderTopHalfImage(s)+renderBoxImage(s,760);
+  }
+  const zidx=isBg?'position:relative;z-index:2':'';
   return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -838,19 +846,27 @@ function renderImpact(s,c,fk){
   const b1Html=parseInline(brk(s.bloco1||''),c.accent);
   const b2Html=s.bloco2?parseInline(brk(s.bloco2),c.accent):'';
   const extraHtml=s.extra?`<div style="position:absolute;bottom:${104-offY(s,'extra')}px;left:70px;right:140px;font-size:${sz(s,'extra',18)}px;font-weight:700;line-height:1.35;color:${ec(s,'extra',c.accent)};font-family:'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;z-index:2">${parseInline(brk(s.extra),c.accent)}</div>`:'';
+  const isBgI=s.image&&s.imagePos==='background';
+  const isFloatI=s.image&&s.imagePos==='float';
   let imgHtml='';
-  if(s.image){
+  if(isBgI){
     imgHtml=`<div style="position:absolute;inset:0;background:url('${s.image}') center/cover no-repeat;z-index:0"></div><div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.75) 60%);z-index:1"></div>`;
+  } else if(isFloatI){
+    const focal=s.imageFocal||'center center';
+    imgHtml=`<img src="${s.image}" style="position:absolute;bottom:110px;right:50px;width:380px;max-height:430px;object-fit:cover;object-position:${focal};border-radius:12px;box-shadow:0 24px 80px rgba(0,0,0,0.9);z-index:1">`;
+  } else {
+    imgHtml=renderTopHalfImage(s)+renderBoxImage(s,760);
   }
+  const textRightI=isFloatI?'460px':'70px';
   const copyright=state.colors.copyright||'© COPYRIGHT 2025';
   return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${bg};font-family:'Inter',sans-serif}</style>
   </head><body>
-  <div style="width:1080px;height:1350px;background:${s.image?'transparent':bg};position:relative;overflow:hidden">
+  <div style="width:1080px;height:1350px;background:${isBgI?'transparent':bg};position:relative;overflow:hidden">
     ${imgHtml}
     <div style="position:absolute;top:48px;right:50px;background:rgba(255,255,255,0.12);border-radius:50px;padding:10px 22px;font-size:22px;color:rgba(255,255,255,0.7);font-weight:700;font-family:'Inter',sans-serif;z-index:2">${counter}</div>
-    <div style="position:absolute;top:calc(50% + ${offY(s,'headline')}px);left:70px;right:70px;transform:translateY(-50%);z-index:2">
+    <div style="position:absolute;top:calc(50% + ${offY(s,'headline')}px);left:70px;right:${textRightI};transform:translateY(-50%);z-index:2">
       <h1 style="font-size:${hs}px;font-weight:900;line-height:1.05;color:${hc};font-family:'Inter',sans-serif;margin-bottom:${b1Html?(52+offY(s,'bloco1'))+'px':'0'}">${hHtml}</h1>
       ${b1Html?`<p style="font-size:${b1s}px;font-weight:400;line-height:1.5;color:${b1c};font-family:'Inter',sans-serif">${b1Html}</p>`:''}
       ${b2Html?`<p style="font-size:${b2s}px;font-weight:700;line-height:1.4;color:${b2c};margin-top:${32+offY(s,'bloco2')}px;font-family:'Inter',sans-serif">${b2Html}</p>`:''}
@@ -886,18 +902,28 @@ function renderSerif(s,c,fk){
   const lineColor = isDark ? 'rgba(244,239,230,0.25)' : 'rgba(122,82,48,0.3)';
   const handleColor = isDark ? 'rgba(244,239,230,0.5)' : 'rgba(122,82,48,0.5)';
 
-  // Photo as full-bleed background
+  // Photo handling — 4 modes: background, float, top_half, box
+  const isSerifBg=s.image&&s.imagePos==='background';
+  const isSerifFloat=s.image&&s.imagePos==='float';
   let photoBg = '';
   let overlay = '';
-  if(s.image){
+  let floatImg = '';
+  if(isSerifBg){
     photoBg = `<div style="position:absolute;inset:0;background:url('${s.image}') center/cover no-repeat;filter:grayscale(30%);z-index:0"></div>`;
     overlay = `<div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.55) 55%,rgba(0,0,0,0.82) 100%);z-index:1"></div>`;
+  } else if(isSerifFloat){
+    const focal=s.imageFocal||'center center';
+    floatImg=`<img src="${s.image}" style="position:absolute;bottom:120px;right:50px;width:370px;max-height:430px;object-fit:cover;object-position:${focal};border-radius:14px;box-shadow:0 24px 80px rgba(0,0,0,0.5);z-index:1">`;
   }
-  const z = s.image ? 'z-index:2' : '';
-  const textOnPhoto = s.image ? '#F4EFE6' : null;
+  const topHalfHtml=(!isSerifBg&&!isSerifFloat)?renderTopHalfImage(s):'';
+  const boxHtml=(!isSerifBg&&!isSerifFloat)?renderBoxImage(s,760):'';
+  const hasPhoto=s.image&&isSerifBg;
+  const z = hasPhoto ? 'z-index:2' : '';
+  const textRightSerif=isSerifFloat?'460px':'70px';
+  const textOnPhoto = hasPhoto ? '#F4EFE6' : null;
   const finalHeadline = textOnPhoto || headlineColor;
   const finalBody = textOnPhoto ? 'rgba(244,239,230,0.88)' : bodyColor;
-  const finalBg = s.image ? '#0A0A0A' : bg;
+  const finalBg = hasPhoto ? '#0A0A0A' : bg;
 
   // Parse inline highlights
   const hHtml = parseInline(brk(s.headline||''), accent)
@@ -976,10 +1002,10 @@ function renderSerif(s,c,fk){
   <style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${finalBg}}</style>
   </head><body>
   <div style="width:1080px;height:1350px;background:${finalBg};position:relative;overflow:hidden">
-    ${photoBg}${overlay}
+    ${photoBg}${overlay}${floatImg}${topHalfHtml}${boxHtml}
     ${mainContent}
-    <div style="position:absolute;bottom:55px;left:0;right:0;text-align:center;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;letter-spacing:3px;text-transform:uppercase;color:${s.image?'rgba(244,239,230,0.45)':handleColor};${z}">${c.handle||'@glendonassis'}</div>
-    <div style="position:absolute;bottom:88px;right:60px;font-family:'DM Sans',sans-serif;font-size:12px;color:${s.image?'rgba(244,239,230,0.3)':handleColor};letter-spacing:1px;${z}">${String(s.num).padStart(2,'0')}/${String(total).padStart(2,'0')}</div>
+    <div style="position:absolute;bottom:55px;left:0;right:0;text-align:center;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;letter-spacing:3px;text-transform:uppercase;color:${hasPhoto?'rgba(244,239,230,0.45)':handleColor};${z}">${c.handle||'@glendonassis'}</div>
+    <div style="position:absolute;bottom:88px;right:60px;font-family:'DM Sans',sans-serif;font-size:12px;color:${hasPhoto?'rgba(244,239,230,0.3)':handleColor};letter-spacing:1px;${z}">${String(s.num).padStart(2,'0')}/${String(total).padStart(2,'0')}</div>
   </div>`;
 }
 
@@ -995,25 +1021,47 @@ function renderStatement(s,c){
   const b1Html=s.bloco1?parseInline(brk(s.bloco1),muted):'';
   const b2Html=s.bloco2?parseInline(brk(s.bloco2),muted):'';
 
+  const isStBg=s.image&&s.imagePos==='background';
+  const isStFloat=s.image&&s.imagePos==='float';
+  let stImgHtml='';
+  // background: overlay escuro para legibilidade no fundo claro
+  if(isStBg){
+    stImgHtml=`<div style="position:absolute;inset:0;background:url('${s.image}') center/cover no-repeat;z-index:0"></div>`
+             +`<div style="position:absolute;inset:0;background:rgba(0,0,0,0.58);z-index:1"></div>`;
+  } else if(isStFloat){
+    const focal=s.imageFocal||'center center';
+    stImgHtml=`<img src="${s.image}" style="position:absolute;bottom:120px;right:50px;width:370px;max-height:430px;object-fit:cover;object-position:${focal};border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,0.25);z-index:1">`;
+  } else {
+    stImgHtml=renderTopHalfImage(s)+renderBoxImage(s,760);
+  }
+  const stZ=isStBg?'z-index:3;position:relative':'';
+  const stTextRight=isStFloat?'460px':'70px';
+  // fundo escuro quando imagem de fundo → textos viram branco
+  const stHeadline=isStBg?'#FFFFFF':(ec(s,'headline',darkText)||darkText);
+  const stBody1=isStBg?'rgba(255,255,255,0.85)':(ec(s,'bloco1',darkText)||darkText);
+  const stBody2=isStBg?'rgba(255,255,255,0.6)':(ec(s,'bloco2',muted)||muted);
+  const stHandle=isStBg?'rgba(255,255,255,0.45)':'#555555';
+  const stBgFinal=isStBg?'transparent':bg;
+
   const headlineTop = 430 + offY(s,'headline');
   const b1Top = 760 + offY(s,'bloco1');
   const b2Top = 930 + offY(s,'bloco2');
-  const tagHtml = s.tag ? `<div style="position:absolute;top:60px;left:70px;font-size:13px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:#999999;font-family:'Inter',sans-serif">${s.tag}</div>` : '';
-  const extraHtml = s.extra ? `<div style="position:absolute;bottom:${90-offY(s,'extra')}px;left:70px;right:70px;font-size:${sz(s,'extra',16)}px;font-weight:500;color:${ec(s,'extra','#777777')};font-family:'Inter',sans-serif;letter-spacing:.5px">${parseInline(s.extra,muted)}</div>` : '';
+  const tagHtml = s.tag ? `<div style="position:absolute;top:60px;left:70px;font-size:13px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:${isStBg?'rgba(255,255,255,0.5)':'#999999'};font-family:'Inter',sans-serif;${stZ}">${s.tag}</div>` : '';
+  const extraHtml = s.extra ? `<div style="position:absolute;bottom:${90-offY(s,'extra')}px;left:70px;right:70px;font-size:${sz(s,'extra',16)}px;font-weight:500;color:${ec(s,'extra',isStBg?'rgba(255,255,255,0.5)':'#777777')};font-family:'Inter',sans-serif;letter-spacing:.5px;${stZ}">${parseInline(s.extra,muted)}</div>` : '';
 
   return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${bg};font-family:'Inter',sans-serif}</style>
   </head><body>
-  <div style="width:1080px;height:1350px;background:${bg};position:relative;overflow:hidden">
-    ${renderTopHalfImage(s)}${renderBoxImage(s,480)}
+  <div style="width:1080px;height:1350px;background:${stBgFinal};position:relative;overflow:hidden">
+    ${stImgHtml}
     ${tagHtml}
-    <div style="position:absolute;top:48px;right:50px;background:rgba(50,50,50,0.75);border-radius:40px;padding:10px 22px;font-size:22px;color:rgba(255,255,255,0.85);font-weight:600;font-family:'Inter',sans-serif">${counter}</div>
-    <h1 style="position:absolute;top:${headlineTop}px;left:70px;right:70px;font-size:${hs}px;font-weight:800;line-height:1.04;color:${ec(s,'headline',darkText)};font-family:'Inter',sans-serif;letter-spacing:-2px">${hHtml}</h1>
-    ${b1Html?`<p style="position:absolute;top:${b1Top}px;left:70px;right:70px;font-size:${b1s}px;font-weight:500;line-height:1.35;color:${ec(s,'bloco1',darkText)};font-family:'Inter',sans-serif">${b1Html}</p>`:''}
-    ${b2Html?`<p style="position:absolute;top:${b2Top}px;left:70px;right:70px;font-size:${b2s}px;font-weight:500;line-height:1.35;color:${ec(s,'bloco2',muted)};font-family:'Inter',sans-serif">${b2Html}</p>`:''}
+    <div style="position:absolute;top:48px;right:50px;background:${isStBg?'rgba(0,0,0,0.5)':'rgba(50,50,50,0.75)'};border-radius:40px;padding:10px 22px;font-size:22px;color:rgba(255,255,255,0.85);font-weight:600;font-family:'Inter',sans-serif;${isStBg?'z-index:3':'z-index:2'}">${counter}</div>
+    <h1 style="position:absolute;top:${headlineTop}px;left:70px;right:${stTextRight};font-size:${hs}px;font-weight:800;line-height:1.04;color:${stHeadline};font-family:'Inter',sans-serif;letter-spacing:-2px;${stZ}">${hHtml}</h1>
+    ${b1Html?`<p style="position:absolute;top:${b1Top}px;left:70px;right:${stTextRight};font-size:${b1s}px;font-weight:500;line-height:1.35;color:${stBody1};font-family:'Inter',sans-serif;${stZ}">${b1Html}</p>`:''}
+    ${b2Html?`<p style="position:absolute;top:${b2Top}px;left:70px;right:${stTextRight};font-size:${b2s}px;font-weight:500;line-height:1.35;color:${stBody2};font-family:'Inter',sans-serif;${stZ}">${b2Html}</p>`:''}
     ${extraHtml}
-    <div style="position:absolute;bottom:52px;left:70px;font-size:18px;color:#555555;font-family:'Inter',sans-serif;font-weight:400;letter-spacing:0">${c.handle||'@glendonassis'}</div>
+    <div style="position:absolute;bottom:52px;left:70px;font-size:18px;color:${stHandle};font-family:'Inter',sans-serif;font-weight:400;letter-spacing:0;${stZ}">${c.handle||'@glendonassis'}</div>
   </div>`;
 }
 
@@ -1074,27 +1122,48 @@ function renderSans(s,c,fontKey){
 
   const extraBottom = 92 - offY(s,'extra');
 
-  const tagHtml = s.tag ? `<div style="position:absolute;top:60px;left:70px;font-size:13px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:#999999;font-family:'Inter',sans-serif">${s.tag}</div>` : '';
-  const extraHtml = s.extra ? `<div style="position:absolute;bottom:${extraBottom}px;left:70px;right:70px;font-size:${exs}px;font-weight:500;color:${ec(s,'extra','#8A8A8A')};font-family:'Inter',sans-serif;letter-spacing:.8px;line-height:1.35">${parseInline(brk(s.extra),grayText)}</div>` : '';
+  // ── Imagem: 4 modos ──
+  const isSansBg=s.image&&s.imagePos==='background';
+  const isSansFloat=s.image&&s.imagePos==='float';
+  let sansImgHtml='';
+  if(isSansBg){
+    sansImgHtml=`<div style="position:absolute;inset:0;background:url('${s.image}') center/cover no-repeat;z-index:0"></div>`
+               +`<div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);z-index:1"></div>`;
+  } else if(isSansFloat){
+    const focal=s.imageFocal||'center center';
+    sansImgHtml=`<img src="${s.image}" style="position:absolute;bottom:120px;right:50px;width:370px;max-height:430px;object-fit:cover;object-position:${focal};border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,0.22);z-index:1">`;
+  } else {
+    sansImgHtml=renderTopHalfImage(s)+renderBoxImage(s,760);
+  }
+  const sansZ=isSansBg?'z-index:3;position:relative':'';
+  const sansTextRight=isSansFloat?'460px':'110px';
+  // textos viram branco quando há fundo de imagem
+  const sansH=isSansBg?'#FFFFFF':(ec(s,'headline',darkText)||darkText);
+  const sansB1=isSansBg?'rgba(255,255,255,0.65)':(ec(s,'bloco1',grayText)||grayText);
+  const sansB2=isSansBg?'rgba(255,255,255,0.5)':(ec(s,'bloco2',darkText)||darkText);
+  const sansHandle=isSansBg?'rgba(255,255,255,0.4)':'#555555';
+
+  const tagHtml = s.tag ? `<div style="position:absolute;top:60px;left:70px;font-size:13px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:${isSansBg?'rgba(255,255,255,0.5)':'#999999'};font-family:'Inter',sans-serif;${sansZ}">${s.tag}</div>` : '';
+  const extraHtml = s.extra ? `<div style="position:absolute;bottom:${extraBottom}px;left:70px;right:70px;font-size:${exs}px;font-weight:500;color:${ec(s,'extra',isSansBg?'rgba(255,255,255,0.45)':'#8A8A8A')};font-family:'Inter',sans-serif;letter-spacing:.8px;line-height:1.35;${sansZ}">${parseInline(brk(s.extra),grayText)}</div>` : '';
 
   return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cormorant+Garamond:wght@500;600;700&family=Playfair+Display:wght@600;700;800&family=Montserrat:wght@500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${bg};font-family:${fam}}</style>
   </head><body>
-  <div style="width:1080px;height:1350px;background:${bg};position:relative;overflow:hidden">
-    ${renderTopHalfImage(s)}${renderBoxImage(s,480)}
+  <div style="width:1080px;height:1350px;background:${isSansBg?'transparent':bg};position:relative;overflow:hidden">
+    ${sansImgHtml}
     ${tagHtml}
-    <div style="position:absolute;top:48px;right:50px;background:rgba(50,50,50,0.75);border-radius:40px;padding:10px 22px;font-size:22px;color:rgba(255,255,255,0.85);font-weight:600;font-family:'Inter',sans-serif">${counter}</div>
+    <div style="position:absolute;top:48px;right:50px;background:${isSansBg?'rgba(0,0,0,0.5)':'rgba(50,50,50,0.75)'};border-radius:40px;padding:10px 22px;font-size:22px;color:rgba(255,255,255,0.85);font-weight:600;font-family:'Inter',sans-serif;${isSansBg?'z-index:3':'z-index:2'}">${counter}</div>
 
-    <h1 style="position:absolute;top:${headlineTop}px;left:70px;right:70px;font-size:${hs}px;font-weight:800;line-height:1.06;color:${ec(s,'headline',darkText)};font-family:${fam};letter-spacing:-1.4px">${hHtml}</h1>
+    <h1 style="position:absolute;top:${headlineTop}px;left:70px;right:${sansTextRight};font-size:${hs}px;font-weight:800;line-height:1.06;color:${sansH};font-family:${fam};letter-spacing:-1.4px;${sansZ}">${hHtml}</h1>
 
-    ${b1Html?`<p style="position:absolute;top:${bloco1Top}px;left:70px;right:110px;font-size:${b1s}px;font-weight:600;line-height:1.24;color:${ec(s,'bloco1',grayText)};font-family:${fam};letter-spacing:-.2px">${b1Html}</p>`:''}
+    ${b1Html?`<p style="position:absolute;top:${bloco1Top}px;left:70px;right:${sansTextRight};font-size:${b1s}px;font-weight:600;line-height:1.24;color:${sansB1};font-family:${fam};letter-spacing:-.2px;${sansZ}">${b1Html}</p>`:''}
 
-    ${b2Html?`<p style="position:absolute;top:${bloco2Top}px;left:70px;right:130px;font-size:${b2s}px;font-weight:500;line-height:1.35;color:${ec(s,'bloco2',darkText)};font-family:${fam};opacity:.72">${b2Html}</p>`:''}
+    ${b2Html?`<p style="position:absolute;top:${bloco2Top}px;left:70px;right:${sansTextRight};font-size:${b2s}px;font-weight:500;line-height:1.35;color:${sansB2};font-family:${fam};opacity:.72;${sansZ}">${b2Html}</p>`:''}
 
     ${extraHtml}
 
-    <div style="position:absolute;bottom:52px;left:70px;font-size:18px;color:#555555;font-family:'Inter',sans-serif;font-weight:400;letter-spacing:0">${c.handle||'@glendonassis'}</div>
+    <div style="position:absolute;bottom:52px;left:70px;font-size:18px;color:${sansHandle};font-family:'Inter',sans-serif;font-weight:400;letter-spacing:0;${sansZ}">${c.handle||'@glendonassis'}</div>
   </div>`;
 }
 
@@ -1135,6 +1204,7 @@ function renderBoxImage(s,topPx=750){
 // - BLOCO 1  = a mesma ideia em inglês (dourado/accent, menor, separada por linha dourada)
 // - BLOCO 2  = apoio opcional (branco dimmed)
 // - EXTRA    = fonte/assinatura
+// Imagem: float (direita) | background (fundo+overlay) | top_half | box
 function renderCleanDuo(s,c,fontKey){
   const total=state.slides.length,counter=`${s.num}/${total}`;
   const hs=sz(s,'headline',72),b1s=sz(s,'bloco1',34),b2s=sz(s,'bloco2',24),exs=sz(s,'extra',15);
@@ -1143,6 +1213,9 @@ function renderCleanDuo(s,c,fontKey){
   const echoColor=c.accent2||'rgba(255,255,255,0.45)';
   const accentColor=c.accent||'#C9A96E';
   const fam=(FONTS[fontKey||state.font]&&FONTS[fontKey||state.font].family)||"'Inter',Arial,sans-serif";
+  const isBg=s.image&&s.imagePos==='background';
+  const isFloat=s.image&&s.imagePos==='float';
+  const z=isBg?'z-index:3;position:relative':'';
 
   function estimatedLines(txt,cpl){
     return String(txt||'').split('\n').filter(Boolean).reduce((sum,l)=>sum+Math.max(1,Math.ceil(l.trim().length/cpl)),0);
@@ -1155,49 +1228,59 @@ function renderCleanDuo(s,c,fontKey){
   const headlineTop=290+offY(s,'headline');
   const hLines=estimatedLines(s.headline,18);
   const hHeight=hLines*hs*1.1;
-
-  // Separator + EN echo logo abaixo do headline
   const sepTop=headlineTop+hHeight+32;
   const b1Top=sepTop+44+offY(s,'bloco1');
-
   const b1Lines=s.bloco1?estimatedLines(s.bloco1,26):0;
   const b1Height=b1Lines*b1s*1.22;
   const b2MinTop=b1Top+b1Height+48;
   const b2DesiredTop=840+offY(s,'bloco2');
   const bloco2Top=Math.max(b2DesiredTop,b2MinTop);
   const extraBottom=92-offY(s,'extra');
+  // float: texto não invade imagem à direita
+  const textRight=isFloat?'460px':'70px';
 
-  const tagHtml=s.tag?`<div style="position:absolute;top:62px;left:70px;font-size:12px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:${accentColor};font-family:'Inter',sans-serif;opacity:.85">${s.tag}</div>`:'';
+  // ── Imagem ──
+  let imgHtml='';
+  if(isBg){
+    imgHtml=`<div style="position:absolute;inset:0;background:url('${s.image}') center/cover no-repeat;z-index:0"></div>`
+           +`<div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.25) 0%,rgba(0,0,0,0.7) 60%);z-index:1"></div>`;
+  } else if(isFloat){
+    const focal=s.imageFocal||'center center';
+    imgHtml=`<img src="${s.image}" style="position:absolute;bottom:120px;right:50px;width:370px;max-height:430px;object-fit:cover;object-position:${focal};border-radius:14px;box-shadow:0 24px 80px rgba(0,0,0,0.7);z-index:1">`;
+  } else {
+    imgHtml=renderTopHalfImage(s)+renderBoxImage(s,760);
+  }
 
-  // Separator linha dourada + label EN
+  const tagHtml=s.tag?`<div style="position:absolute;top:62px;left:70px;font-size:12px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:${accentColor};font-family:'Inter',sans-serif;opacity:.85;${z}">${s.tag}</div>`:'';
+
   const sepHtml=b1Html?`
-    <div style="position:absolute;top:${sepTop}px;left:70px;display:flex;align-items:center;gap:14px">
+    <div style="position:absolute;top:${sepTop}px;left:70px;display:flex;align-items:center;gap:14px;${z}">
       <div style="width:48px;height:1.5px;background:${accentColor};opacity:.6"></div>
       <span style="font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:${accentColor};opacity:.7;font-family:'Inter',sans-serif">EN</span>
     </div>`:'';
 
-  const extraHtml=s.extra?`<div style="position:absolute;bottom:${extraBottom}px;left:70px;right:70px;font-size:${exs}px;font-weight:500;color:${echoColor};font-family:'Inter',sans-serif;letter-spacing:.5px">${parseInline(brk(s.extra),accentColor)}</div>`:'';
+  const extraHtml=s.extra?`<div style="position:absolute;bottom:${extraBottom}px;left:70px;right:70px;font-size:${exs}px;font-weight:500;color:${echoColor};font-family:'Inter',sans-serif;letter-spacing:.5px;${z}">${parseInline(brk(s.extra),accentColor)}</div>`:'';
 
   return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&family=DM+Sans:wght@300;400;500;700;800&family=Manrope:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Oswald:wght@400;500;600;700&family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
   <style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${bg};font-family:${fam}}</style>
   </head><body>
-  <div style="width:1080px;height:1350px;background:${bg};position:relative;overflow:hidden">
-    ${renderTopHalfImage(s)}${renderBoxImage(s,760)}
+  <div style="width:1080px;height:1350px;background:${isBg?'transparent':bg};position:relative;overflow:hidden">
+    ${imgHtml}
     ${tagHtml}
-    <div style="position:absolute;top:48px;right:50px;background:rgba(255,255,255,0.08);border:1px solid rgba(201,169,110,0.25);border-radius:40px;padding:10px 22px;font-size:20px;color:rgba(255,255,255,0.55);font-weight:600;font-family:'Inter',sans-serif">${counter}</div>
+    <div style="position:absolute;top:48px;right:50px;background:rgba(255,255,255,0.08);border:1px solid rgba(201,169,110,0.25);border-radius:40px;padding:10px 22px;font-size:20px;color:rgba(255,255,255,0.55);font-weight:600;font-family:'Inter',sans-serif;${isBg?'z-index:3':'z-index:2'}">${counter}</div>
 
-    <h1 style="position:absolute;top:${headlineTop}px;left:70px;right:70px;font-size:${hs}px;font-weight:800;line-height:1.06;color:${ec(s,'headline',mainColor)};font-family:${fam};letter-spacing:-1.5px">${hHtml}</h1>
+    <h1 style="position:absolute;top:${headlineTop}px;left:70px;right:${textRight};font-size:${hs}px;font-weight:800;line-height:1.06;color:${ec(s,'headline',mainColor)};font-family:${fam};letter-spacing:-1.5px;${z}">${hHtml}</h1>
 
     ${sepHtml}
 
-    ${b1Html?`<p style="position:absolute;top:${b1Top}px;left:70px;right:90px;font-size:${b1s}px;font-weight:500;line-height:1.3;color:${ec(s,'bloco1',accentColor)};font-family:${fam};letter-spacing:-.1px;opacity:.9">${b1Html}</p>`:''}
+    ${b1Html?`<p style="position:absolute;top:${b1Top}px;left:70px;right:${textRight};font-size:${b1s}px;font-weight:500;line-height:1.3;color:${ec(s,'bloco1',accentColor)};font-family:${fam};letter-spacing:-.1px;opacity:.9;${z}">${b1Html}</p>`:''}
 
-    ${b2Html?`<p style="position:absolute;top:${bloco2Top}px;left:70px;right:100px;font-size:${b2s}px;font-weight:400;line-height:1.45;color:${ec(s,'bloco2',echoColor)};font-family:${fam}">${b2Html}</p>`:''}
+    ${b2Html?`<p style="position:absolute;top:${bloco2Top}px;left:70px;right:${textRight};font-size:${b2s}px;font-weight:400;line-height:1.45;color:${ec(s,'bloco2',echoColor)};font-family:${fam};${z}">${b2Html}</p>`:''}
 
     ${extraHtml}
 
-    <div style="position:absolute;bottom:0;left:0;right:0;height:62px;border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between;padding:0 50px">
+    <div style="position:absolute;bottom:0;left:0;right:0;height:62px;border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between;padding:0 50px;${isBg?'z-index:3':'z-index:2'}">
       <span style="font-size:15px;color:rgba(255,255,255,0.25);font-family:'Inter',sans-serif;letter-spacing:1px;text-transform:uppercase">Q21</span>
       <span style="font-size:16px;color:rgba(255,255,255,0.4);font-family:'Inter',sans-serif">${c.handle||'@glendonassis'}</span>
       <span style="font-size:13px;color:rgba(201,169,110,0.4);font-family:'Inter',sans-serif;letter-spacing:1px;text-transform:uppercase">ARRASTA →</span>
@@ -1208,9 +1291,10 @@ function renderCleanDuo(s,c,fontKey){
 // ── Q21 IMPACT DUO RENDERER ───────────────────────────────────────────────────
 // Regra visual:
 // - HEADLINE = frase principal em português (branco, weight 900, enorme)
-// - BLOCO 1  = a mesma ideia em inglês (branco dimmed, sem linha separadora — contraste puro)
+// - BLOCO 1  = a mesma ideia em inglês (branco dimmed — contraste puro)
 // - BLOCO 2  = apoio opcional (branco muito dimmed)
 // - EXTRA    = fonte/assinatura
+// Imagem: float (direita) | background (fundo+gradient) | top_half | box
 function renderImpactDuo(s,c,fontKey){
   const total=state.slides.length,counter=`${s.num}/${total}`;
   const hs=sz(s,'headline',82),b1s=sz(s,'bloco1',34),b2s=sz(s,'bloco2',23),exs=sz(s,'extra',15);
@@ -1220,6 +1304,9 @@ function renderImpactDuo(s,c,fontKey){
   const accentColor=c.accent||'#FFFFFF';
   const fam=(FONTS[fontKey||state.font]&&FONTS[fontKey||state.font].family)||"'Inter',Arial,sans-serif";
   const copyright=state.colors.copyright||'© COPYRIGHT 2025';
+  const isBg=s.image&&s.imagePos==='background';
+  const isFloat=s.image&&s.imagePos==='float';
+  const z=isBg?'z-index:3;position:relative':'z-index:2;position:relative';
 
   function estimatedLines(txt,cpl){
     return String(txt||'').split('\n').filter(Boolean).reduce((sum,l)=>sum+Math.max(1,Math.ceil(l.trim().length/cpl)),0);
@@ -1232,49 +1319,58 @@ function renderImpactDuo(s,c,fontKey){
   const headlineTop=270+offY(s,'headline');
   const hLines=estimatedLines(s.headline,16);
   const hHeight=hLines*hs*1.08;
-
-  // EN label discreto antes do bloco1
   const sepTop=headlineTop+hHeight+28;
   const b1Top=sepTop+36+offY(s,'bloco1');
-
   const b1Lines=s.bloco1?estimatedLines(s.bloco1,26):0;
   const b1Height=b1Lines*b1s*1.22;
   const b2MinTop=b1Top+b1Height+44;
   const b2DesiredTop=820+offY(s,'bloco2');
   const bloco2Top=Math.max(b2DesiredTop,b2MinTop);
   const extraBottom=104-offY(s,'extra');
+  const textRight=isFloat?'460px':'80px';
 
-  const tagHtml=s.tag?`<div style="position:absolute;top:62px;left:70px;font-size:12px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:rgba(255,255,255,0.45);font-family:'Inter',sans-serif">${s.tag}</div>`:'';
+  // ── Imagem ──
+  let imgHtml='';
+  if(isBg){
+    imgHtml=`<div style="position:absolute;inset:0;background:url('${s.image}') center/cover no-repeat;z-index:0"></div>`
+           +`<div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.82) 65%);z-index:1"></div>`;
+  } else if(isFloat){
+    const focal=s.imageFocal||'center center';
+    imgHtml=`<img src="${s.image}" style="position:absolute;bottom:110px;right:50px;width:370px;max-height:430px;object-fit:cover;object-position:${focal};border-radius:12px;box-shadow:0 24px 80px rgba(0,0,0,0.9);z-index:1">`;
+  } else {
+    imgHtml=renderTopHalfImage(s)+renderBoxImage(s,780);
+  }
 
-  // Separador Impact Duo: só um traço branco e label EN — sem cor, máximo contraste
+  const tagHtml=s.tag?`<div style="position:absolute;top:62px;left:70px;font-size:12px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:rgba(255,255,255,0.45);font-family:'Inter',sans-serif;${z}">${s.tag}</div>`:'';
+
   const sepHtml=b1Html?`
-    <div style="position:absolute;top:${sepTop}px;left:70px;display:flex;align-items:center;gap:14px">
+    <div style="position:absolute;top:${sepTop}px;left:70px;display:flex;align-items:center;gap:14px;${z}">
       <div style="width:40px;height:1px;background:rgba(255,255,255,0.25)"></div>
       <span style="font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.3);font-family:'Inter',sans-serif">EN</span>
     </div>`:'';
 
-  const extraHtml=s.extra?`<div style="position:absolute;bottom:${extraBottom}px;left:70px;right:140px;font-size:${exs}px;font-weight:600;color:${ec(s,'extra','rgba(255,255,255,0.3)')};font-family:'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;z-index:2">${parseInline(brk(s.extra),accentColor)}</div>`:'';
+  const extraHtml=s.extra?`<div style="position:absolute;bottom:${extraBottom}px;left:70px;right:140px;font-size:${exs}px;font-weight:600;color:${ec(s,'extra','rgba(255,255,255,0.3)')};font-family:'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;${z}">${parseInline(brk(s.extra),accentColor)}</div>`:'';
 
   return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&family=DM+Sans:wght@300;400;500;700;800&family=Manrope:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Oswald:wght@400;500;600;700&family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
   <style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${bg};font-family:${fam}}</style>
   </head><body>
-  <div style="width:1080px;height:1350px;background:${bg};position:relative;overflow:hidden">
-    ${renderTopHalfImage(s)}${renderBoxImage(s,780)}
+  <div style="width:1080px;height:1350px;background:${isBg?'transparent':bg};position:relative;overflow:hidden">
+    ${imgHtml}
     ${tagHtml}
-    <div style="position:absolute;top:48px;right:50px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:50px;padding:10px 22px;font-size:20px;color:rgba(255,255,255,0.5);font-weight:700;font-family:'Inter',sans-serif;z-index:2">${counter}</div>
+    <div style="position:absolute;top:48px;right:50px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:50px;padding:10px 22px;font-size:20px;color:rgba(255,255,255,0.5);font-weight:700;font-family:'Inter',sans-serif;${isBg?'z-index:3':'z-index:2'}">${counter}</div>
 
-    <h1 style="position:absolute;top:${headlineTop}px;left:70px;right:60px;font-size:${hs}px;font-weight:900;line-height:1.04;color:${ec(s,'headline',mainColor)};font-family:${fam};letter-spacing:-2.5px">${hHtml}</h1>
+    <h1 style="position:absolute;top:${headlineTop}px;left:70px;right:${textRight};font-size:${hs}px;font-weight:900;line-height:1.04;color:${ec(s,'headline',mainColor)};font-family:${fam};letter-spacing:-2.5px;${z}">${hHtml}</h1>
 
     ${sepHtml}
 
-    ${b1Html?`<p style="position:absolute;top:${b1Top}px;left:70px;right:80px;font-size:${b1s}px;font-weight:400;line-height:1.32;color:${ec(s,'bloco1',echoColor)};font-family:${fam};letter-spacing:-.2px">${b1Html}</p>`:''}
+    ${b1Html?`<p style="position:absolute;top:${b1Top}px;left:70px;right:${textRight};font-size:${b1s}px;font-weight:400;line-height:1.32;color:${ec(s,'bloco1',echoColor)};font-family:${fam};letter-spacing:-.2px;${z}">${b1Html}</p>`:''}
 
-    ${b2Html?`<p style="position:absolute;top:${bloco2Top}px;left:70px;right:100px;font-size:${b2s}px;font-weight:400;line-height:1.45;color:${ec(s,'bloco2','rgba(255,255,255,0.25)')};font-family:${fam}">${b2Html}</p>`:''}
+    ${b2Html?`<p style="position:absolute;top:${bloco2Top}px;left:70px;right:${textRight};font-size:${b2s}px;font-weight:400;line-height:1.45;color:${ec(s,'bloco2','rgba(255,255,255,0.25)')};font-family:${fam};${z}">${b2Html}</p>`:''}
 
     ${extraHtml}
 
-    <div style="position:absolute;bottom:0;left:0;right:0;height:64px;border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between;padding:0 50px;z-index:2">
+    <div style="position:absolute;bottom:0;left:0;right:0;height:64px;border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between;padding:0 50px;${isBg?'z-index:3':'z-index:2'}">
       <span style="font-size:13px;color:rgba(255,255,255,0.2);font-family:'Inter',sans-serif;letter-spacing:1.5px;text-transform:uppercase">${copyright}</span>
       <span style="font-size:15px;color:rgba(255,255,255,0.4);font-family:'Inter',sans-serif;letter-spacing:.5px">${c.handle||'@glendonassis'}</span>
       <span style="font-size:12px;color:rgba(255,255,255,0.2);font-family:'Inter',sans-serif;letter-spacing:1px;text-transform:uppercase">ARRASTA →</span>
