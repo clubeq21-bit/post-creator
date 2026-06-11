@@ -414,6 +414,46 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ── VISUAL STYLES ──────────────────────────────────────────────────────────────
+// ── HARDCODED BASES — tamanhos e espaçamentos configurados pelo Glendon ────────
+const HARDCODED_BASES = {
+  clean: {
+    font:'poppins',
+    colors:{bg:'#2B2B2B',text:'#FFFFFF',accent:'#C9A96E',accent2:'#C9A96E',handle:'@glendonassis',copyright:'© COPYRIGHT 2025'},
+    sizes:{1:{headline:72,bloco1:40,bloco2:30,extra:15},2:{headline:72,bloco1:40,bloco2:30,extra:15},3:{headline:80,bloco1:40,bloco2:30,extra:15},4:{headline:72,bloco1:40,bloco2:30,extra:15},5:{headline:80,bloco1:40,bloco2:30,extra:15},6:{headline:72,bloco1:40,bloco2:30,extra:15},7:{headline:78,bloco1:40,bloco2:41,extra:15},8:{headline:80,bloco1:40,bloco2:30,extra:15},9:{headline:80,bloco1:40,bloco2:38,extra:15}},
+    offsets:{1:{headline:0,bloco1:0,bloco2:0,extra:0},2:{headline:0,bloco1:0,bloco2:0,extra:0},3:{headline:0,bloco1:0,bloco2:0,extra:0},4:{headline:0,bloco1:0,bloco2:0,extra:0},5:{headline:-18,bloco1:-8,bloco2:23,extra:0},6:{headline:11,bloco1:-18,bloco2:0,extra:0},7:{headline:-32,bloco1:0,bloco2:21,extra:0},8:{headline:0,bloco1:0,bloco2:0,extra:0},9:{headline:0,bloco1:0,bloco2:0,extra:0}}
+  },
+  impact: {
+    font:'poppins',
+    colors:{bg:'#0A0A0A',text:'#FFFFFF',accent:'#FFFFFF',accent2:'#AAAAAA',handle:'@glendonassis',copyright:'© COPYRIGHT 2025'},
+    sizes:{1:{headline:72,bloco1:34,bloco2:24,extra:15},2:{headline:72,bloco1:34,bloco2:24,extra:15},3:{headline:72,bloco1:34,bloco2:24,extra:15},4:{headline:72,bloco1:34,bloco2:24,extra:15},5:{headline:80,bloco1:40,bloco2:30,extra:15},6:{headline:78,bloco1:40,bloco2:30,extra:15},7:{headline:78,bloco1:40,bloco2:41,extra:15},8:{headline:80,bloco1:40,bloco2:30,extra:15},9:{headline:80,bloco1:40,bloco2:38,extra:15}},
+    offsets:{1:{headline:0,bloco1:0,bloco2:0,extra:0},2:{headline:0,bloco1:0,bloco2:0,extra:0},3:{headline:0,bloco1:0,bloco2:0,extra:0},4:{headline:0,bloco1:0,bloco2:0,extra:0},5:{headline:-18,bloco1:-8,bloco2:23,extra:0},6:{headline:11,bloco1:-18,bloco2:0,extra:0},7:{headline:-32,bloco1:0,bloco2:21,extra:0},8:{headline:0,bloco1:0,bloco2:0,extra:0},9:{headline:0,bloco1:0,bloco2:0,extra:0}}
+  },
+  statement: {
+    font:'poppins',
+    colors:{bg:'#EAEAE4',text:'#1A1A1A',accent:'#AAAAAA',accent2:'#888888',handle:'@glendonassis',copyright:'© COPYRIGHT 2025'},
+    sizes:{1:{headline:72,bloco1:34,bloco2:24,extra:15},2:{headline:72,bloco1:34,bloco2:24,extra:15},3:{headline:72,bloco1:34,bloco2:24,extra:15},4:{headline:72,bloco1:34,bloco2:24,extra:15},5:{headline:80,bloco1:40,bloco2:30,extra:15},6:{headline:78,bloco1:40,bloco2:30,extra:15},7:{headline:78,bloco1:40,bloco2:41,extra:15},8:{headline:80,bloco1:40,bloco2:30,extra:15},9:{headline:80,bloco1:40,bloco2:38,extra:15}},
+    offsets:{1:{headline:0,bloco1:0,bloco2:0,extra:0},2:{headline:0,bloco1:0,bloco2:0,extra:0},3:{headline:0,bloco1:0,bloco2:0,extra:0},4:{headline:0,bloco1:0,bloco2:0,extra:0},5:{headline:-141,bloco1:-143,bloco2:0,extra:0},6:{headline:11,bloco1:-18,bloco2:0,extra:0},7:{headline:-90,bloco1:0,bloco2:-23,extra:0},8:{headline:0,bloco1:0,bloco2:0,extra:0},9:{headline:0,bloco1:0,bloco2:0,extra:0}}
+  },
+  statement_duo: {
+    font:'poppins',
+    colors:{bg:'#EAEAE4',text:'#1A1A1A',accent:'#AAAAAA',accent2:'#888888',handle:'@glendonassis',copyright:'© COPYRIGHT 2025'},
+    sizes:{1:{headline:72,bloco1:34,bloco2:24,extra:15},2:{headline:72,bloco1:34,bloco2:24,extra:15},3:{headline:72,bloco1:34,bloco2:24,extra:15},4:{headline:72,bloco1:34,bloco2:24,extra:15},5:{headline:80,bloco1:40,bloco2:30,extra:15},6:{headline:72,bloco1:34,bloco2:24,extra:15},7:{headline:72,bloco1:34,bloco2:24,extra:15},8:{headline:72,bloco1:34,bloco2:24,extra:15},9:{headline:72,bloco1:34,bloco2:24,extra:15}},
+    offsets:{1:{headline:0,bloco1:0,bloco2:0,extra:0},2:{headline:0,bloco1:0,bloco2:0,extra:0},3:{headline:0,bloco1:0,bloco2:0,extra:0},4:{headline:0,bloco1:0,bloco2:0,extra:0},5:{headline:0,bloco1:0,bloco2:0,extra:0},6:{headline:0,bloco1:0,bloco2:0,extra:0},7:{headline:0,bloco1:0,bloco2:0,extra:0},8:{headline:0,bloco1:0,bloco2:0,extra:0},9:{headline:0,bloco1:0,bloco2:0,extra:0}}
+  },
+  clean_duo: {
+    font:'poppins',
+    colors:{bg:'#2B2B2B',text:'#FFFFFF',accent:'#C9A96E',accent2:'rgba(255,255,255,0.45)',handle:'@glendonassis',copyright:'© COPYRIGHT 2025'},
+    sizes:{1:{headline:72,bloco1:38,bloco2:24,extra:15},2:{headline:72,bloco1:38,bloco2:24,extra:15},3:{headline:72,bloco1:38,bloco2:24,extra:15},4:{headline:72,bloco1:38,bloco2:24,extra:15},5:{headline:72,bloco1:38,bloco2:24,extra:15},6:{headline:72,bloco1:38,bloco2:24,extra:15},7:{headline:72,bloco1:38,bloco2:24,extra:15},8:{headline:72,bloco1:38,bloco2:24,extra:15},9:{headline:72,bloco1:38,bloco2:24,extra:15}},
+    offsets:{1:{headline:0,bloco1:0,bloco2:0,extra:0},2:{headline:0,bloco1:0,bloco2:0,extra:0},3:{headline:0,bloco1:0,bloco2:0,extra:0},4:{headline:0,bloco1:0,bloco2:0,extra:0},5:{headline:0,bloco1:0,bloco2:0,extra:0},6:{headline:0,bloco1:0,bloco2:0,extra:0},7:{headline:0,bloco1:0,bloco2:0,extra:0},8:{headline:0,bloco1:0,bloco2:0,extra:0},9:{headline:0,bloco1:0,bloco2:0,extra:0}}
+  },
+  impact_duo: {
+    font:'poppins',
+    colors:{bg:'#0A0A0A',text:'#FFFFFF',accent:'#FFFFFF',accent2:'rgba(255,255,255,0.38)',handle:'@glendonassis',copyright:'© COPYRIGHT 2025'},
+    sizes:{1:{headline:80,bloco1:36,bloco2:24,extra:15},2:{headline:80,bloco1:36,bloco2:24,extra:15},3:{headline:80,bloco1:36,bloco2:24,extra:15},4:{headline:80,bloco1:36,bloco2:24,extra:15},5:{headline:80,bloco1:36,bloco2:24,extra:15},6:{headline:80,bloco1:36,bloco2:24,extra:15},7:{headline:80,bloco1:36,bloco2:24,extra:15},8:{headline:80,bloco1:36,bloco2:24,extra:15},9:{headline:80,bloco1:36,bloco2:24,extra:15}},
+    offsets:{1:{headline:0,bloco1:0,bloco2:0,extra:0},2:{headline:0,bloco1:0,bloco2:0,extra:0},3:{headline:0,bloco1:0,bloco2:0,extra:0},4:{headline:0,bloco1:0,bloco2:0,extra:0},5:{headline:0,bloco1:0,bloco2:0,extra:0},6:{headline:0,bloco1:0,bloco2:0,extra:0},7:{headline:0,bloco1:0,bloco2:0,extra:0},8:{headline:0,bloco1:0,bloco2:0,extra:0},9:{headline:0,bloco1:0,bloco2:0,extra:0}}
+  }
+};
+
 const VISUAL_STYLES = {
   clean: {
     label: 'Q21 Case',
@@ -438,6 +478,18 @@ const VISUAL_STYLES = {
     desc: 'Variação bilíngue premium: headline em português e bloco 1 com a mesma ideia em inglês.',
     bg: '#EAEAE4', text: '#1A1A1A', accent: '#AAAAAA', accent2: '#888888',
     preview: {bg:'#EAEAE4', accent:'#1A1A1A', label:'Duo'}
+  },
+  clean_duo: {
+    label: 'Q21 Case Duo',
+    desc: 'Case bilíngue: headline em português, eco em inglês. Fundo escuro com presença dourada.',
+    bg: '#2B2B2B', text: '#FFFFFF', accent: '#C9A96E', accent2: 'rgba(255,255,255,0.45)',
+    preview: {bg:'#2B2B2B', accent:'#C9A96E', label:'CD'}
+  },
+  impact_duo: {
+    label: 'Q21 Impact Duo',
+    desc: 'Impact bilíngue: frase forte em português, eco em inglês. Alto contraste máximo.',
+    bg: '#0A0A0A', text: '#FFFFFF', accent: '#FFFFFF', accent2: 'rgba(255,255,255,0.38)',
+    preview: {bg:'#0A0A0A', accent:'#FFFFFF', label:'ID'}
   }
 };
 
@@ -1077,6 +1129,159 @@ function renderBoxImage(s,topPx=750){
   return `<img src="${s.image}" style="position:absolute;top:${topPx+offY(s,'bloco2')}px;left:60px;right:60px;width:960px;height:420px;object-fit:cover;object-position:${focal};border-radius:18px;z-index:2">`;
 }
 
+// ── Q21 CASE DUO RENDERER ─────────────────────────────────────────────────────
+// Regra visual:
+// - HEADLINE = frase principal em português (branco, grande)
+// - BLOCO 1  = a mesma ideia em inglês (dourado/accent, menor, separada por linha dourada)
+// - BLOCO 2  = apoio opcional (branco dimmed)
+// - EXTRA    = fonte/assinatura
+function renderCleanDuo(s,c,fontKey){
+  const total=state.slides.length,counter=`${s.num}/${total}`;
+  const hs=sz(s,'headline',72),b1s=sz(s,'bloco1',34),b2s=sz(s,'bloco2',24),exs=sz(s,'extra',15);
+  const bg=c.bg||'#2B2B2B';
+  const mainColor=c.text||'#FFFFFF';
+  const echoColor=c.accent2||'rgba(255,255,255,0.45)';
+  const accentColor=c.accent||'#C9A96E';
+  const fam=(FONTS[fontKey||state.font]&&FONTS[fontKey||state.font].family)||"'Inter',Arial,sans-serif";
+
+  function estimatedLines(txt,cpl){
+    return String(txt||'').split('\n').filter(Boolean).reduce((sum,l)=>sum+Math.max(1,Math.ceil(l.trim().length/cpl)),0);
+  }
+
+  const hHtml=parseInline(brk(s.headline||''),accentColor);
+  const b1Html=s.bloco1?parseInline(brk(s.bloco1),accentColor):'';
+  const b2Html=s.bloco2?parseInline(brk(s.bloco2),accentColor):'';
+
+  const headlineTop=290+offY(s,'headline');
+  const hLines=estimatedLines(s.headline,18);
+  const hHeight=hLines*hs*1.1;
+
+  // Separator + EN echo logo abaixo do headline
+  const sepTop=headlineTop+hHeight+32;
+  const b1Top=sepTop+44+offY(s,'bloco1');
+
+  const b1Lines=s.bloco1?estimatedLines(s.bloco1,26):0;
+  const b1Height=b1Lines*b1s*1.22;
+  const b2MinTop=b1Top+b1Height+48;
+  const b2DesiredTop=840+offY(s,'bloco2');
+  const bloco2Top=Math.max(b2DesiredTop,b2MinTop);
+  const extraBottom=92-offY(s,'extra');
+
+  const tagHtml=s.tag?`<div style="position:absolute;top:62px;left:70px;font-size:12px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:${accentColor};font-family:'Inter',sans-serif;opacity:.85">${s.tag}</div>`:'';
+
+  // Separator linha dourada + label EN
+  const sepHtml=b1Html?`
+    <div style="position:absolute;top:${sepTop}px;left:70px;display:flex;align-items:center;gap:14px">
+      <div style="width:48px;height:1.5px;background:${accentColor};opacity:.6"></div>
+      <span style="font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:${accentColor};opacity:.7;font-family:'Inter',sans-serif">EN</span>
+    </div>`:'';
+
+  const extraHtml=s.extra?`<div style="position:absolute;bottom:${extraBottom}px;left:70px;right:70px;font-size:${exs}px;font-weight:500;color:${echoColor};font-family:'Inter',sans-serif;letter-spacing:.5px">${parseInline(brk(s.extra),accentColor)}</div>`:'';
+
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&family=DM+Sans:wght@300;400;500;700;800&family=Manrope:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Oswald:wght@400;500;600;700&family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+  <style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${bg};font-family:${fam}}</style>
+  </head><body>
+  <div style="width:1080px;height:1350px;background:${bg};position:relative;overflow:hidden">
+    ${renderTopHalfImage(s)}${renderBoxImage(s,760)}
+    ${tagHtml}
+    <div style="position:absolute;top:48px;right:50px;background:rgba(255,255,255,0.08);border:1px solid rgba(201,169,110,0.25);border-radius:40px;padding:10px 22px;font-size:20px;color:rgba(255,255,255,0.55);font-weight:600;font-family:'Inter',sans-serif">${counter}</div>
+
+    <h1 style="position:absolute;top:${headlineTop}px;left:70px;right:70px;font-size:${hs}px;font-weight:800;line-height:1.06;color:${ec(s,'headline',mainColor)};font-family:${fam};letter-spacing:-1.5px">${hHtml}</h1>
+
+    ${sepHtml}
+
+    ${b1Html?`<p style="position:absolute;top:${b1Top}px;left:70px;right:90px;font-size:${b1s}px;font-weight:500;line-height:1.3;color:${ec(s,'bloco1',accentColor)};font-family:${fam};letter-spacing:-.1px;opacity:.9">${b1Html}</p>`:''}
+
+    ${b2Html?`<p style="position:absolute;top:${bloco2Top}px;left:70px;right:100px;font-size:${b2s}px;font-weight:400;line-height:1.45;color:${ec(s,'bloco2',echoColor)};font-family:${fam}">${b2Html}</p>`:''}
+
+    ${extraHtml}
+
+    <div style="position:absolute;bottom:0;left:0;right:0;height:62px;border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between;padding:0 50px">
+      <span style="font-size:15px;color:rgba(255,255,255,0.25);font-family:'Inter',sans-serif;letter-spacing:1px;text-transform:uppercase">Q21</span>
+      <span style="font-size:16px;color:rgba(255,255,255,0.4);font-family:'Inter',sans-serif">${c.handle||'@glendonassis'}</span>
+      <span style="font-size:13px;color:rgba(201,169,110,0.4);font-family:'Inter',sans-serif;letter-spacing:1px;text-transform:uppercase">ARRASTA →</span>
+    </div>
+  </div>`;
+}
+
+// ── Q21 IMPACT DUO RENDERER ───────────────────────────────────────────────────
+// Regra visual:
+// - HEADLINE = frase principal em português (branco, weight 900, enorme)
+// - BLOCO 1  = a mesma ideia em inglês (branco dimmed, sem linha separadora — contraste puro)
+// - BLOCO 2  = apoio opcional (branco muito dimmed)
+// - EXTRA    = fonte/assinatura
+function renderImpactDuo(s,c,fontKey){
+  const total=state.slides.length,counter=`${s.num}/${total}`;
+  const hs=sz(s,'headline',82),b1s=sz(s,'bloco1',34),b2s=sz(s,'bloco2',23),exs=sz(s,'extra',15);
+  const bg=c.bg||'#0A0A0A';
+  const mainColor=c.text||'#FFFFFF';
+  const echoColor=c.accent2||'rgba(255,255,255,0.38)';
+  const accentColor=c.accent||'#FFFFFF';
+  const fam=(FONTS[fontKey||state.font]&&FONTS[fontKey||state.font].family)||"'Inter',Arial,sans-serif";
+  const copyright=state.colors.copyright||'© COPYRIGHT 2025';
+
+  function estimatedLines(txt,cpl){
+    return String(txt||'').split('\n').filter(Boolean).reduce((sum,l)=>sum+Math.max(1,Math.ceil(l.trim().length/cpl)),0);
+  }
+
+  const hHtml=parseInline(brk(s.headline||''),accentColor);
+  const b1Html=s.bloco1?parseInline(brk(s.bloco1),'rgba(255,255,255,0.55)'):'';
+  const b2Html=s.bloco2?parseInline(brk(s.bloco2),'rgba(255,255,255,0.35)'):'';
+
+  const headlineTop=270+offY(s,'headline');
+  const hLines=estimatedLines(s.headline,16);
+  const hHeight=hLines*hs*1.08;
+
+  // EN label discreto antes do bloco1
+  const sepTop=headlineTop+hHeight+28;
+  const b1Top=sepTop+36+offY(s,'bloco1');
+
+  const b1Lines=s.bloco1?estimatedLines(s.bloco1,26):0;
+  const b1Height=b1Lines*b1s*1.22;
+  const b2MinTop=b1Top+b1Height+44;
+  const b2DesiredTop=820+offY(s,'bloco2');
+  const bloco2Top=Math.max(b2DesiredTop,b2MinTop);
+  const extraBottom=104-offY(s,'extra');
+
+  const tagHtml=s.tag?`<div style="position:absolute;top:62px;left:70px;font-size:12px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:rgba(255,255,255,0.45);font-family:'Inter',sans-serif">${s.tag}</div>`:'';
+
+  // Separador Impact Duo: só um traço branco e label EN — sem cor, máximo contraste
+  const sepHtml=b1Html?`
+    <div style="position:absolute;top:${sepTop}px;left:70px;display:flex;align-items:center;gap:14px">
+      <div style="width:40px;height:1px;background:rgba(255,255,255,0.25)"></div>
+      <span style="font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.3);font-family:'Inter',sans-serif">EN</span>
+    </div>`:'';
+
+  const extraHtml=s.extra?`<div style="position:absolute;bottom:${extraBottom}px;left:70px;right:140px;font-size:${exs}px;font-weight:600;color:${ec(s,'extra','rgba(255,255,255,0.3)')};font-family:'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;z-index:2">${parseInline(brk(s.extra),accentColor)}</div>`:'';
+
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&family=DM+Sans:wght@300;400;500;700;800&family=Manrope:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Oswald:wght@400;500;600;700&family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+  <style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${bg};font-family:${fam}}</style>
+  </head><body>
+  <div style="width:1080px;height:1350px;background:${bg};position:relative;overflow:hidden">
+    ${renderTopHalfImage(s)}${renderBoxImage(s,780)}
+    ${tagHtml}
+    <div style="position:absolute;top:48px;right:50px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:50px;padding:10px 22px;font-size:20px;color:rgba(255,255,255,0.5);font-weight:700;font-family:'Inter',sans-serif;z-index:2">${counter}</div>
+
+    <h1 style="position:absolute;top:${headlineTop}px;left:70px;right:60px;font-size:${hs}px;font-weight:900;line-height:1.04;color:${ec(s,'headline',mainColor)};font-family:${fam};letter-spacing:-2.5px">${hHtml}</h1>
+
+    ${sepHtml}
+
+    ${b1Html?`<p style="position:absolute;top:${b1Top}px;left:70px;right:80px;font-size:${b1s}px;font-weight:400;line-height:1.32;color:${ec(s,'bloco1',echoColor)};font-family:${fam};letter-spacing:-.2px">${b1Html}</p>`:''}
+
+    ${b2Html?`<p style="position:absolute;top:${bloco2Top}px;left:70px;right:100px;font-size:${b2s}px;font-weight:400;line-height:1.45;color:${ec(s,'bloco2','rgba(255,255,255,0.25)')};font-family:${fam}">${b2Html}</p>`:''}
+
+    ${extraHtml}
+
+    <div style="position:absolute;bottom:0;left:0;right:0;height:64px;border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between;padding:0 50px;z-index:2">
+      <span style="font-size:13px;color:rgba(255,255,255,0.2);font-family:'Inter',sans-serif;letter-spacing:1.5px;text-transform:uppercase">${copyright}</span>
+      <span style="font-size:15px;color:rgba(255,255,255,0.4);font-family:'Inter',sans-serif;letter-spacing:.5px">${c.handle||'@glendonassis'}</span>
+      <span style="font-size:12px;color:rgba(255,255,255,0.2);font-family:'Inter',sans-serif;letter-spacing:1px;text-transform:uppercase">ARRASTA →</span>
+    </div>
+  </div>`;
+}
+
 // ── MAIN RENDERER DISPATCHER ───────────────────────────────────────────────────
 function renderSlide(slide,colors,fontKey){
   const c=(slide.el_colors&&slide.el_colors.slide_bg)
@@ -1088,6 +1293,8 @@ function renderSlide(slide,colors,fontKey){
   if(vs==='serif') return renderSerif(slide,c,fontKey);
   if(vs==='statement') return renderStatement(slide,c,fontKey);
   if(vs==='statement_duo') return renderSans(slide,c,fontKey);
+  if(vs==='clean_duo') return renderCleanDuo(slide,c,fontKey);
+  if(vs==='impact_duo') return renderImpactDuo(slide,c,fontKey);
   const fn=MAG_RENDERERS[slide.type]||rMagCapa;
   return fn(slide,colors,fontKey);
 }
@@ -1501,7 +1708,21 @@ function selectVisual(key){
 function applyDefaultVisual(key){
   state.visual=key;
   const vs=VISUAL_STYLES[key];
-  state.colors.bg=vs.bg;state.colors.text=vs.text;state.colors.accent=vs.accent;state.colors.accent2=vs.accent2;
+  const base=HARDCODED_BASES[key];
+  if(base){
+    // Aplica cores e fonte do preset configurado
+    Object.assign(state.colors,base.colors);
+    state.font=base.font;
+    // Aplica sizes e offsets em cada slide sem alterar o conteúdo
+    state.slides=state.slides.map(sl=>{
+      const s=makeSlide(sl);
+      if(base.sizes&&base.sizes[sl.num]) s.sizes=Object.assign({},s.sizes,base.sizes[sl.num]);
+      if(base.offsets&&base.offsets[sl.num]) s.offsets=Object.assign({},s.offsets,base.offsets[sl.num]);
+      return s;
+    });
+  } else {
+    state.colors.bg=vs.bg;state.colors.text=vs.text;state.colors.accent=vs.accent;state.colors.accent2=vs.accent2;
+  }
   if(key==='statement_duo') applyDuoLayoutDefaults();
   syncColorPickers();
   toast(`✓ Visual: ${vs.label}`,'ok');
