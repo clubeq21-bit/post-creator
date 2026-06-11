@@ -1809,7 +1809,8 @@ function brk(t){return String(t||'').replace(/\n/g,'<br>');}
 function parseInline(t,accent){return String(t||'').replace(/\*(.*?)\*/g,`<span style="color:${accent}">$1</span>`);}
 
 function renderStudentImageBg(s, overlay='dark'){
-  if(!s.image || s.imagePos==='float') return '';
+  // Só renderiza fundo full-bleed para imagePos==='background'
+  if(!s.image || s.imagePos!=='background') return '';
   const ov = overlay==='light'
     ? 'linear-gradient(90deg,rgba(248,246,240,.92),rgba(248,246,240,.74),rgba(248,246,240,.36))'
     : overlay==='warm'
@@ -1818,9 +1819,11 @@ function renderStudentImageBg(s, overlay='dark'){
   return `<div style="position:absolute;inset:0;background:url('${s.image}') center/cover no-repeat;z-index:0"></div><div style="position:absolute;inset:0;background:${ov};z-index:1"></div>`;
 }
 function renderStudentFloatImage(s, side='right'){
-  if(!s.image || s.imagePos==='background') return '';
+  // Só renderiza float para imagePos==='float'
+  if(!s.image || s.imagePos!=='float') return '';
+  const focal=s.imageFocal||'center center';
   const pos = side==='left' ? 'left:60px;right:auto' : 'right:60px;left:auto';
-  return `<img src="${s.image}" style="position:absolute;top:210px;${pos};width:390px;height:520px;object-fit:cover;border-radius:34px;box-shadow:0 30px 90px rgba(0,0,0,.28);z-index:2">`;
+  return `<img src="${s.image}" style="position:absolute;top:210px;${pos};width:390px;height:520px;object-fit:cover;object-position:${focal};border-radius:34px;box-shadow:0 30px 90px rgba(0,0,0,.28);z-index:2">`;
 }
 function studentTextColor(s,c,dark=false){return s.image&&s.imagePos==='background' ? (dark?'#15110E':'#fff') : c.text;}
 function studentMutedColor(s,c){return s.image&&s.imagePos==='background' ? 'rgba(255,255,255,.72)' : c.accent2;}
@@ -2091,15 +2094,23 @@ function renderSerif(s,c,fk){
   const lineColor = isDark ? 'rgba(244,239,230,0.25)' : 'rgba(122,82,48,0.3)';
   const handleColor = isDark ? 'rgba(244,239,230,0.5)' : 'rgba(122,82,48,0.5)';
 
-  // Photo as full-bleed background
+  // Photo — 4 modos: background, float, top_half, box
+  const isSerifBg=s.image&&s.imagePos==='background';
+  const isSerifFloat=s.image&&s.imagePos==='float';
   let photoBg = '';
   let overlay = '';
-  if(s.image){
+  let serifFloatImg = '';
+  if(isSerifBg){
     photoBg = `<div style="position:absolute;inset:0;background:url('${s.image}') center/cover no-repeat;filter:grayscale(30%);z-index:0"></div>`;
     overlay = `<div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.55) 55%,rgba(0,0,0,0.82) 100%);z-index:1"></div>`;
+  } else if(isSerifFloat){
+    const focal=s.imageFocal||'center center';
+    serifFloatImg=`<img src="${s.image}" style="position:absolute;bottom:120px;right:50px;width:370px;max-height:430px;object-fit:cover;object-position:${focal};border-radius:14px;box-shadow:0 24px 80px rgba(0,0,0,0.4);z-index:1">`;
   }
-  const z = s.image ? 'z-index:2' : '';
-  const textOnPhoto = s.image ? '#F4EFE6' : null;
+  const serifTopHalf=(!isSerifBg&&!isSerifFloat)?renderTopHalfImage(s):'';
+  const serifBox=(!isSerifBg&&!isSerifFloat)?renderBoxImage(s,760):'';
+  const z = isSerifBg ? 'z-index:2' : '';
+  const textOnPhoto = isSerifBg ? '#F4EFE6' : null;
   const finalHeadline = textOnPhoto || headlineColor;
   const finalBody = textOnPhoto ? 'rgba(244,239,230,0.88)' : bodyColor;
   const finalBg = s.image ? '#0A0A0A' : bg;
@@ -2181,10 +2192,10 @@ function renderSerif(s,c,fk){
   <style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${finalBg}}</style>
   </head><body>
   <div style="width:1080px;height:1350px;background:${finalBg};position:relative;overflow:hidden">
-    ${photoBg}${overlay}
+    ${photoBg}${overlay}${serifFloatImg}${serifTopHalf}${serifBox}
     ${mainContent}
-    <div style="position:absolute;bottom:55px;left:0;right:0;text-align:center;font-family:${f.family};font-size:13px;font-weight:300;letter-spacing:3px;text-transform:uppercase;color:${s.image?'rgba(244,239,230,0.45)':handleColor};${z}">${c.handle||'@seuperfil'}</div>
-    <div style="position:absolute;bottom:88px;right:60px;font-family:${f.family};font-size:12px;color:${s.image?'rgba(244,239,230,0.3)':handleColor};letter-spacing:1px;${z}">${String(s.num).padStart(2,'0')}/${String(total).padStart(2,'0')}</div>
+    <div style="position:absolute;bottom:55px;left:0;right:0;text-align:center;font-family:${f.family};font-size:13px;font-weight:300;letter-spacing:3px;text-transform:uppercase;color:${isSerifBg?'rgba(244,239,230,0.45)':handleColor};${z}">${c.handle||'@seuperfil'}</div>
+    <div style="position:absolute;bottom:88px;right:60px;font-family:${f.family};font-size:12px;color:${isSerifBg?'rgba(244,239,230,0.3)':handleColor};letter-spacing:1px;${z}">${String(s.num).padStart(2,'0')}/${String(total).padStart(2,'0')}</div>
   </div>`;
 }
 
@@ -2454,11 +2465,13 @@ function renderTransformacao(s,c,fk){
   const tc=studentTextColor(s,c);
   const bgLayers=renderStudentImageBg(s,'light');
   const floatImg=renderStudentFloatImage(s,'left');
+  const topHalfHtml=renderTopHalfImage(s);
+  const boxHtml=renderBoxImage(s,520);
   const topBox=s.image&&s.imagePos==='float'?470:430;
   return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">${GFONTS_ALL}<style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${c.bg};font-family:${f.family}}</style></head><body>
   <div style="width:1080px;height:1350px;background:${c.bg};position:relative;overflow:hidden;color:${tc}">
     ${bgLayers||`<div style="position:absolute;inset:0;background:linear-gradient(135deg,${c.bg},#fffaf0)"></div>`}
-    ${floatImg}
+    ${floatImg}${topHalfHtml}${boxHtml}
     <div style="position:absolute;inset:0;z-index:2">
       <div style="position:absolute;top:58px;left:70px;font-size:13px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:${c.accent2};font-family:${f.family}">${s.tag||'Transformação'}</div>
       <h1 style="position:absolute;top:${132+offY(s,'headline')}px;left:${s.image&&s.imagePos==='float'?'500px':'70px'};right:70px;text-align:${s.image&&s.imagePos==='float'?'left':'center'};font-size:${hs}px;line-height:1.03;font-weight:900;letter-spacing:-2px;color:${ec(s,'headline',tc)};font-family:${f.family}">${parseInline(brk(s.headline),c.accent)}</h1>
@@ -2478,9 +2491,11 @@ function renderMetodo(s,c,fk){
   const bgLayers=renderStudentImageBg(s,'light');
   const tc=studentTextColor(s,c,true);
   const floatImg=renderStudentFloatImage(s,'right');
+  const topHalfHtml=renderTopHalfImage(s);
+  const boxHtml=renderBoxImage(s,520);
   const rightPad=s.image&&s.imagePos==='float'?'510px':'70px';
   return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">${GFONTS_ALL}<style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${c.bg};font-family:${f.family}}</style></head><body>
-  <div style="width:1080px;height:1350px;background:${c.bg};position:relative;overflow:hidden;color:${tc}">${bgLayers||`<div style="position:absolute;inset:0;background:${c.bg}"></div><div style="position:absolute;right:-160px;top:-160px;width:520px;height:520px;border-radius:50%;background:${c.accent};opacity:.12"></div>`}${floatImg}<div style="position:absolute;inset:0;z-index:2"><div style="position:absolute;top:54px;left:70px;width:78px;height:78px;border-radius:24px;background:${c.accent};display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px;font-weight:900;font-family:${f.family}">${String(s.num).padStart(2,'0')}</div><div style="position:absolute;top:72px;left:170px;font-size:13px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:${c.accent2};font-family:${f.family}">${s.tag||'Método'}</div><h1 style="position:absolute;top:${205+offY(s,'headline')}px;left:70px;right:${rightPad};font-size:${hs}px;line-height:1.02;font-weight:900;letter-spacing:-2px;color:${ec(s,'headline',tc)};font-family:${f.family}">${parseInline(brk(s.headline),c.accent)}</h1><p style="position:absolute;top:${560+offY(s,'bloco1')}px;left:74px;right:${rightPad};font-family:${f.family};font-size:${b1s}px;line-height:1.45;font-weight:600;color:${ec(s,'bloco1',tc)}">${parseInline(brk(s.bloco1||''),c.accent)}</p>${s.bloco2?`<div style="position:absolute;top:${760+offY(s,'bloco2')}px;left:70px;right:${rightPad};padding:28px 32px;border-radius:28px;background:${hasBg?'rgba(255,255,255,.82)':'rgba(201,169,110,.11)'};border:1px solid rgba(201,169,110,.24);font-family:${f.family};font-size:${b2s}px;line-height:1.5;font-weight:700;color:${ec(s,'bloco2',tc)}">${parseInline(brk(s.bloco2),c.accent)}</div>`:''}${s.extra?`<div style="position:absolute;bottom:${88-offY(s,'extra')}px;left:70px;right:70px;font-family:${f.family};font-size:${exs}px;font-weight:800;color:${ec(s,'extra',c.accent2)}">${parseInline(brk(s.extra),c.accent)}</div>`:''}<div style="position:absolute;bottom:42px;right:70px;font-family:${f.family};font-size:13px;font-weight:700;color:${c.accent2}">${c.handle||'@seuperfil'}</div></div></div>`;
+  <div style="width:1080px;height:1350px;background:${c.bg};position:relative;overflow:hidden;color:${tc}">${bgLayers||`<div style="position:absolute;inset:0;background:${c.bg}"></div><div style="position:absolute;right:-160px;top:-160px;width:520px;height:520px;border-radius:50%;background:${c.accent};opacity:.12"></div>`}${floatImg}${topHalfHtml}${boxHtml}<div style="position:absolute;inset:0;z-index:2"><div style="position:absolute;top:54px;left:70px;width:78px;height:78px;border-radius:24px;background:${c.accent};display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px;font-weight:900;font-family:${f.family}">${String(s.num).padStart(2,'0')}</div><div style="position:absolute;top:72px;left:170px;font-size:13px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:${c.accent2};font-family:${f.family}">${s.tag||'Método'}</div><h1 style="position:absolute;top:${205+offY(s,'headline')}px;left:70px;right:${rightPad};font-size:${hs}px;line-height:1.02;font-weight:900;letter-spacing:-2px;color:${ec(s,'headline',tc)};font-family:${f.family}">${parseInline(brk(s.headline),c.accent)}</h1><p style="position:absolute;top:${560+offY(s,'bloco1')}px;left:74px;right:${rightPad};font-family:${f.family};font-size:${b1s}px;line-height:1.45;font-weight:600;color:${ec(s,'bloco1',tc)}">${parseInline(brk(s.bloco1||''),c.accent)}</p>${s.bloco2?`<div style="position:absolute;top:${760+offY(s,'bloco2')}px;left:70px;right:${rightPad};padding:28px 32px;border-radius:28px;background:${hasBg?'rgba(255,255,255,.82)':'rgba(201,169,110,.11)'};border:1px solid rgba(201,169,110,.24);font-family:${f.family};font-size:${b2s}px;line-height:1.5;font-weight:700;color:${ec(s,'bloco2',tc)}">${parseInline(brk(s.bloco2),c.accent)}</div>`:''}${s.extra?`<div style="position:absolute;bottom:${88-offY(s,'extra')}px;left:70px;right:70px;font-family:${f.family};font-size:${exs}px;font-weight:800;color:${ec(s,'extra',c.accent2)}">${parseInline(brk(s.extra),c.accent)}</div>`:''}<div style="position:absolute;bottom:42px;right:70px;font-family:${f.family};font-size:13px;font-weight:700;color:${c.accent2}">${c.handle||'@seuperfil'}</div></div></div>`;
 }
 
 function renderContraste(s,c,fk){
@@ -2489,7 +2504,9 @@ function renderContraste(s,c,fk){
   const hasBg=s.image&&s.imagePos==='background';
   const bgLayers=renderStudentImageBg(s,'dark');
   const floatImg=renderStudentFloatImage(s,'right');
-  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">${GFONTS_ALL}<style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${c.bg};font-family:${f.family}}</style></head><body><div style="width:1080px;height:1350px;background:${c.bg};position:relative;overflow:hidden;color:${c.text}">${bgLayers||`<div style="position:absolute;inset:0;background:linear-gradient(135deg,#101114,#1b1d23)"></div>`}${floatImg}<div style="position:absolute;inset:0;z-index:2"><div style="position:absolute;top:58px;left:70px;font-size:13px;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:${c.accent};font-family:${f.family}">${s.tag||'Contraste'}</div><h1 style="position:absolute;top:${128+offY(s,'headline')}px;left:70px;right:${s.image&&s.imagePos==='float'?'520px':'70px'};font-size:${hs}px;line-height:1.04;font-weight:800;letter-spacing:-2px;color:${ec(s,'headline',c.text)};font-family:${f.family}">${parseInline(brk(s.headline),c.accent)}</h1><div style="position:absolute;top:${470+offY(s,'bloco1')}px;left:58px;width:464px;min-height:430px;border-radius:34px;background:${hasBg?'rgba(0,0,0,.46)':'rgba(255,255,255,.06)'};border:1px solid rgba(255,255,255,.14);padding:36px;backdrop-filter:blur(8px)"><div style="font-size:14px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:${c.accent2};margin-bottom:28px">Lado A</div><p style="font-size:${b1s}px;line-height:1.32;font-weight:700;color:${ec(s,'bloco1','#fff')};font-family:${f.family}">${parseInline(brk(s.bloco1||''),c.accent2)}</p></div><div style="position:absolute;top:${470+offY(s,'bloco2')}px;right:58px;width:464px;min-height:430px;border-radius:34px;background:${c.accent};padding:36px;box-shadow:0 24px 80px rgba(0,0,0,.22)"><div style="font-size:14px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:rgba(0,0,0,.45);margin-bottom:28px">Lado B</div><p style="font-size:${b2s}px;line-height:1.32;font-weight:800;color:#111;font-family:${f.family}">${parseInline(brk(s.bloco2||''),'#111')}</p></div><div style="position:absolute;top:626px;left:495px;width:90px;height:90px;border-radius:50%;background:#fff;color:#111;display:flex;align-items:center;justify-content:center;font-size:27px;font-weight:900;font-family:${f.family};box-shadow:0 20px 50px rgba(0,0,0,.28)">VS</div>${s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;text-align:center;font-size:${exs}px;font-weight:700;color:${ec(s,'extra',c.accent)};font-family:${f.family}">${parseInline(brk(s.extra),c.accent)}</div>`:''}<div style="position:absolute;bottom:38px;right:70px;font-size:15px;font-weight:700;color:rgba(249,250,251,.54);font-family:${f.family}">${c.handle||'@seuperfil'}</div></div></div>`;
+  const topHalfHtml=renderTopHalfImage(s);
+  const boxHtml=renderBoxImage(s,500);
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">${GFONTS_ALL}<style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${c.bg};font-family:${f.family}}</style></head><body><div style="width:1080px;height:1350px;background:${c.bg};position:relative;overflow:hidden;color:${c.text}">${bgLayers||`<div style="position:absolute;inset:0;background:linear-gradient(135deg,#101114,#1b1d23)"></div>`}${floatImg}${topHalfHtml}${boxHtml}<div style="position:absolute;inset:0;z-index:2"><div style="position:absolute;top:58px;left:70px;font-size:13px;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:${c.accent};font-family:${f.family}">${s.tag||'Contraste'}</div><h1 style="position:absolute;top:${128+offY(s,'headline')}px;left:70px;right:${s.image&&s.imagePos==='float'?'520px':'70px'};font-size:${hs}px;line-height:1.04;font-weight:800;letter-spacing:-2px;color:${ec(s,'headline',c.text)};font-family:${f.family}">${parseInline(brk(s.headline),c.accent)}</h1><div style="position:absolute;top:${470+offY(s,'bloco1')}px;left:58px;width:464px;min-height:430px;border-radius:34px;background:${hasBg?'rgba(0,0,0,.46)':'rgba(255,255,255,.06)'};border:1px solid rgba(255,255,255,.14);padding:36px;backdrop-filter:blur(8px)"><div style="font-size:14px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:${c.accent2};margin-bottom:28px">Lado A</div><p style="font-size:${b1s}px;line-height:1.32;font-weight:700;color:${ec(s,'bloco1','#fff')};font-family:${f.family}">${parseInline(brk(s.bloco1||''),c.accent2)}</p></div><div style="position:absolute;top:${470+offY(s,'bloco2')}px;right:58px;width:464px;min-height:430px;border-radius:34px;background:${c.accent};padding:36px;box-shadow:0 24px 80px rgba(0,0,0,.22)"><div style="font-size:14px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:rgba(0,0,0,.45);margin-bottom:28px">Lado B</div><p style="font-size:${b2s}px;line-height:1.32;font-weight:800;color:#111;font-family:${f.family}">${parseInline(brk(s.bloco2||''),'#111')}</p></div><div style="position:absolute;top:626px;left:495px;width:90px;height:90px;border-radius:50%;background:#fff;color:#111;display:flex;align-items:center;justify-content:center;font-size:27px;font-weight:900;font-family:${f.family};box-shadow:0 20px 50px rgba(0,0,0,.28)">VS</div>${s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;text-align:center;font-size:${exs}px;font-weight:700;color:${ec(s,'extra',c.accent)};font-family:${f.family}">${parseInline(brk(s.extra),c.accent)}</div>`:''}<div style="position:absolute;bottom:38px;right:70px;font-size:15px;font-weight:700;color:rgba(249,250,251,.54);font-family:${f.family}">${c.handle||'@seuperfil'}</div></div></div>`;
 }
 
 // ── IMAGE POSITION HELPERS ────────────────────────────────────────────────────
