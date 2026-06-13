@@ -389,33 +389,31 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 <script>
 
-// ── FIREBASE SYNC ─────────────────────────────────────────────────────────────
-// Preencha com os dados do seu projeto Firebase:
-// firebase.google.com → seu projeto → Project Settings → Web app
+// ── FIREBASE + IMGBB SYNC ─────────────────────────────────────────────────────
 const FB_CONFIG = {
-  apiKey:      "COLE_AQUI_O_apiKey",
-  databaseURL: "COLE_AQUI_O_databaseURL",  // ex: "https://meu-projeto-default-rtdb.firebaseio.com"
-  storageBucket: "COLE_AQUI_O_storageBucket", // ex: "meu-projeto.appspot.com"
+  apiKey:      "AIzaSyDPu6gZNzwiV6CMz2jltgONnzApQZ0TvG8",
+  databaseURL: "https://post-creator-q21-default-rtdb.firebaseio.com",
+  storageBucket: "post-creator-q21.firebasestorage.app",
 };
+// Chave do ImgBB para upload gratuito de imagens (sem plano pago)
+// Crie em: https://api.imgbb.com → Get API key (grátis, sem cartão)
+const IMGBB_KEY = "COLE_AQUI_SUA_KEY_DO_IMGBB";
+
 // Chave única que identifica este estado na nuvem
 const FB_KEY = 'glendon_private_v1';
 
-let _fbDb = null, _fbStorage = null, _fbPushTimer = null;
+let _fbDb = null, _fbPushTimer = null;
 
-// Distingue URL de Storage de base64 local
+// Distingue URL pública de base64 local
 function _fbIsUrl(img){ return img && (img.startsWith('http://') || img.startsWith('https://')); }
 
 function _fbInit(){
-  if(!FB_CONFIG.apiKey || FB_CONFIG.apiKey === 'COLE_AQUI_O_apiKey') return;
   try{
     if(!firebase.apps.length) firebase.initializeApp(FB_CONFIG);
     _fbDb = firebase.database();
-    if(FB_CONFIG.storageBucket && FB_CONFIG.storageBucket !== 'COLE_AQUI_O_storageBucket'){
-      _fbStorage = firebase.storage();
-    }
+
     _fbIndicator('syncing');
     _fbLoad(()=>{ _fbIndicator('ok'); });
   }catch(e){ console.warn('[Firebase] init falhou:', e); _fbIndicator('off'); }
@@ -472,20 +470,30 @@ function _fbPush(){
   }, 2000);
 }
 
-// Upload de imagem para Firebase Storage → retorna URL pública
-function _fbUploadImage(num, blob, onSuccess){
-  if(!_fbStorage){ onSuccess(null); return; }
+// Upload de imagem para ImgBB → retorna URL pública permanente
+function _uploadImage(num, blob, onSuccess){
+  if(!IMGBB_KEY || IMGBB_KEY === 'COLE_AQUI_SUA_KEY_DO_IMGBB'){ onSuccess(null); return; }
   _fbIndicator('syncing');
-  const path = `${FB_KEY}/slide-${num}-${Date.now()}.jpg`;
-  _fbStorage.ref(path).put(blob, {contentType:'image/jpeg'})
-    .then(snap => snap.ref.getDownloadURL())
-    .then(url => { _fbIndicator('ok'); onSuccess(url); })
-    .catch(e => {
-      console.warn('[Firebase Storage]', e);
-      _fbIndicator('off');
-      toast('Imagem salva localmente (Storage indisponível)','ok');
-      onSuccess(null);
-    });
+  const reader = new FileReader();
+  reader.onload = e => {
+    const base64 = e.target.result.split(',')[1];
+    const fd = new FormData();
+    fd.append('key', IMGBB_KEY);
+    fd.append('image', base64);
+    fetch('https://api.imgbb.com/1/upload', {method:'POST', body:fd})
+      .then(r => r.json())
+      .then(data => {
+        if(data.success){ _fbIndicator('ok'); onSuccess(data.data.url); }
+        else { throw new Error(data.error?.message || 'ImgBB error'); }
+      })
+      .catch(e => {
+        console.warn('[ImgBB]', e);
+        _fbIndicator('off');
+        toast('Imagem salva localmente (ImgBB indisponível)','ok');
+        onSuccess(null);
+      });
+  };
+  reader.readAsDataURL(blob);
 }
 
 function _fbIndicator(status){
@@ -1530,17 +1538,17 @@ function handleImageUpload(num,file){
       canvas.width=w;canvas.height=h;
       canvas.getContext('2d').drawImage(img,0,0,w,h);
 
-      if(_fbStorage){
-        // Sobe para Firebase Storage e salva a URL
+      if(IMGBB_KEY && IMGBB_KEY !== 'COLE_AQUI_SUA_KEY_DO_IMGBB'){
+        // Sobe para ImgBB (grátis) e salva a URL pública
         canvas.toBlob(blob=>{
           if(!blob) return;
-          _fbUploadImage(num, blob, url=>{
+          _uploadImage(num, blob, url=>{
             if(url){
               const sl=state.slides.find(s=>s.num===num);
               if(sl){sl.image=url;sl.imagePos=sl.imagePos||'float';sl.imageFocal=sl.imageFocal||'center center';saveState();reloadPreview(num);updateImagePreview(num,url);}
               toast('☁️ Imagem salva na nuvem!','ok');
             } else {
-              // Fallback base64 se Storage falhou
+              // Fallback base64 local
               const data=canvas.toDataURL('image/jpeg',0.8);
               const sl=state.slides.find(s=>s.num===num);
               if(sl){sl.image=data;saveState();reloadPreview(num);updateImagePreview(num,data);}
