@@ -317,9 +317,16 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
       <input class="fi" id="handleInput" value="@seuperfil" oninput="debounce(()=>updateHandle(this.value),400)">
       <div class="sec-title" style="margin-top:20px">Copyright / Rodapé</div>
       <input class="fi" id="copyrightInput" value="© COPYRIGHT 2025" oninput="debounce(()=>updateCopyright(this.value),400)">
+      <div class="sec-title" style="margin-top:20px">Sincronizar entre dispositivos</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:12px;line-height:1.6">Exporte a configuração completa — textos, cores, fontes e imagens — e importe no celular ou computador.</div>
+      <div style="display:flex;gap:8px;margin-bottom:8px">
+        <button onclick="exportarEstado()" style="flex:1;background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.3);border-radius:6px;color:var(--gold);font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;padding:9px 10px;cursor:pointer;transition:all .15s" onmouseover="this.style.background='rgba(201,169,110,0.18)'" onmouseout="this.style.background='rgba(201,169,110,0.1)'">↑ Exportar config</button>
+        <label style="flex:1;display:flex;align-items:center;justify-content:center;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.3);border-radius:6px;color:#60A5FA;font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;padding:9px 10px;cursor:pointer;transition:all .15s" onmouseover="this.style.background='rgba(59,130,246,0.18)'" onmouseout="this.style.background='rgba(59,130,246,0.1)'">↓ Importar config<input type="file" accept=".json" onchange="importarEstado(this.files[0])" style="display:none"></label>
+      </div>
+      <div style="font-size:10px;color:var(--muted);line-height:1.7">Exportar → transferir o .json → Importar no outro dispositivo.</div>
       <div class="sec-title" style="margin-top:20px">Status</div>
       <div style="margin-top:4px"><div style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(63,185,80,0.1);border:1px solid rgba(63,185,80,0.25);border-radius:12px;font-size:11px;color:var(--green);font-weight:600"><span>●</span> Post Creator Student v4.4</div></div>
-      <div style="font-size:11px;color:var(--muted);line-height:1.8;margin-top:10px">Export: PNG 1080×1350px via browser<br>Storage: localStorage</div>
+      <div style="font-size:11px;color:var(--muted);line-height:1.8;margin-top:10px">Export: PNG 1080×1350px via browser<br>Storage: localStorage + JSON export</div>
     </div>
   </div>
 </div>
@@ -3174,7 +3181,15 @@ function openModal(){buildTmplGrid();document.getElementById('modalBg').classLis
 function closeModal(){document.getElementById('modalBg').classList.remove('show');}
 function confirmarTemplate(){
   if(!selectedTemplate)return;
-  state.template=selectedTemplate;state.slides=TEMPLATES[selectedTemplate].slides.map(makeSlide);
+  // Preserve images from current slides before switching template
+  const imgMap={};
+  state.slides.forEach(s=>{if(s.image)imgMap[s.num]={image:s.image,imagePos:s.imagePos,imageFocal:s.imageFocal};});
+  state.template=selectedTemplate;
+  state.slides=TEMPLATES[selectedTemplate].slides.map(sl=>{
+    const s=makeSlide(sl);
+    if(imgMap[sl.num]){s.image=imgMap[sl.num].image;s.imagePos=imgMap[sl.num].imagePos;s.imageFocal=imgMap[sl.num].imageFocal;}
+    return s;
+  });
   saveState();buildTexto();buildGrid();closeModal();updateCanvasInfo();
   toast(`✓ Template "${TEMPLATES_META[selectedTemplate].label}" carregado`,'ok');
 }
@@ -3587,6 +3602,39 @@ function mobileRemoveImage(){
   if(!mobileSelectedSlide)return;
   removeImage(mobileSelectedSlide);
   renderMobileEditorBody(getMobileSlide(mobileSelectedSlide));
+}
+
+// ── EXPORTAR / IMPORTAR ESTADO COMPLETO ──────────────────────────────────────
+function exportarEstado(){
+  try{
+    const blob=new Blob([JSON.stringify(state)],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const link=document.createElement('a');
+    link.download='pc-config-'+new Date().toISOString().slice(0,10)+'.json';
+    link.href=url;document.body.appendChild(link);link.click();link.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1500);
+    toast('✅ Configuração exportada! Transfira o arquivo para o outro dispositivo.','ok');
+  }catch(e){toast('❌ Erro ao exportar.','err');}
+}
+function importarEstado(file){
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=(e)=>{
+    try{
+      const parsed=JSON.parse(e.target.result);
+      if(parsed.slides&&parsed.slides.length>0){
+        Object.assign(state,parsed);
+        state.slides=state.slides.map(makeSlide);
+        if(!VISUAL_STYLES[state.visual])state.visual='clean';
+        saveState();syncColorPickers();
+        buildTexto();buildFontes();buildVisual();buildGrid();buildTmplGrid();updateCanvasInfo();
+        const hi=document.getElementById('handleInput');if(hi)hi.value=state.colors.handle||'@seuperfil';
+        const ci=document.getElementById('copyrightInput');if(ci)ci.value=state.colors.copyright||'© COPYRIGHT 2025';
+        toast('✅ Configuração importada! Tudo restaurado.','ok');
+      }else{toast('❌ Arquivo inválido ou vazio.','err');}
+    }catch(e){toast('❌ Erro ao ler o arquivo.','err');}
+  };
+  reader.readAsText(file);
 }
 
 // ── TOAST ──────────────────────────────────────────────────────────────────────
