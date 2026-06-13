@@ -399,7 +399,7 @@ const FB_CONFIG = {
 };
 // Chave do ImgBB para upload gratuito de imagens (sem plano pago)
 // Crie em: https://api.imgbb.com → Get API key (grátis, sem cartão)
-const IMGBB_KEY = "COLE_AQUI_SUA_KEY_DO_IMGBB";
+const IMGBB_KEY = "7a8882b25d5b07f75e68a4f299194623";
 
 // Chave única que identifica este estado na nuvem
 const FB_KEY = 'glendon_private_v1';
@@ -443,6 +443,7 @@ function _fbLoad(cb){
     try{ localStorage.setItem('pc_state',JSON.stringify(state)); }catch(e){}
     if(cb) cb();
     syncColorPickers();
+    const ni=document.getElementById('nomeInput');if(ni)ni.value=state.nome||'meu-carrossel';
     document.getElementById('handleInput').value = state.colors.handle||'@glendonassis';
     document.getElementById('copyrightInput').value = state.colors.copyright||'© COPYRIGHT 2025';
     buildTexto(); buildFontes(); buildVisual(); buildGrid(); buildTmplGrid(); updateCanvasInfo();
@@ -1816,7 +1817,8 @@ function buildTexto(){
     posFields.forEach(([elName,lbl])=>{
       const dv=(slide.offsets&&slide.offsets[elName])||0;
       const row=document.createElement('div');row.className='sz-row';
-      row.innerHTML=`<span class="sz-lbl">${lbl}</span><input type="range" class="sz-slider" min="-400" max="600" value="${dv}" data-num="${slide.num}" data-el="${elName}" id="pos-${slide.num}-${elName}" oninput="onOffsetChange(this)"><span class="sz-val" id="pv-${slide.num}-${elName}">${dv>0?'+':''}${dv}px</span>`;
+      row.style.cssText='flex-wrap:wrap;gap:6px';
+      row.innerHTML=`<span class="sz-lbl">${lbl}</span><input type="range" class="sz-slider" min="-800" max="800" value="${dv}" data-num="${slide.num}" data-el="${elName}" id="pos-${slide.num}-${elName}" oninput="onOffsetChange(this)" style="flex:1;min-width:80px"><input type="number" style="width:62px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:11px;padding:3px 6px;text-align:center" min="-800" max="800" value="${dv}" id="posn-${slide.num}-${elName}" oninput="onOffsetNumChange(this)" data-num="${slide.num}" data-el="${elName}"><button style="background:rgba(125,133,144,0.15);border:none;border-radius:6px;color:var(--muted);font-size:10px;padding:3px 8px;cursor:pointer" onclick="resetOffset(${slide.num},'${elName}')" title="Resetar para 0">↺</button>`;
       posSec.appendChild(row);
     });
     body.appendChild(posSec);
@@ -1857,13 +1859,31 @@ function applySlide(num){
   saveState();reloadPreview(num);toast(`✓ Texto aplicado ao slide ${num}`,'ok');
 }
 function onOffsetChange(el){
-  const num=parseInt(el.dataset.num),elName=el.dataset.el,val=parseInt(el.value);
+  const num=parseInt(el.dataset.num),elName=el.dataset.el,val=parseInt(el.value)||0;
   const sl=state.slides.find(s=>s.num===num);if(!sl)return;
   if(!sl.offsets)sl.offsets={headline:0,bloco1:0,bloco2:0,extra:0};
   sl.offsets[elName]=val;
-  const lbl=document.getElementById(`pv-${num}-${elName}`);
-  if(lbl)lbl.textContent=(val>0?'+':'')+val+'px';
+  const ni=document.getElementById(`posn-${num}-${elName}`);if(ni)ni.value=val;
   debounce(()=>{saveState();reloadPreview(num);},150,`pos-${num}-${elName}`);
+}
+function onOffsetNumChange(el){
+  const num=parseInt(el.dataset.num),elName=el.dataset.el;
+  let val=parseInt(el.value)||0;
+  val=Math.max(-800,Math.min(800,val));
+  el.value=val;
+  const sl=state.slides.find(s=>s.num===num);if(!sl)return;
+  if(!sl.offsets)sl.offsets={headline:0,bloco1:0,bloco2:0,extra:0};
+  sl.offsets[elName]=val;
+  const rng=document.getElementById(`pos-${num}-${elName}`);if(rng)rng.value=val;
+  debounce(()=>{saveState();reloadPreview(num);},150,`pos-${num}-${elName}`);
+}
+function resetOffset(num,elName){
+  const sl=state.slides.find(s=>s.num===num);if(!sl)return;
+  if(!sl.offsets)sl.offsets={headline:0,bloco1:0,bloco2:0,extra:0};
+  sl.offsets[elName]=0;
+  const rng=document.getElementById(`pos-${num}-${elName}`);if(rng)rng.value=0;
+  const ni=document.getElementById(`posn-${num}-${elName}`);if(ni)ni.value=0;
+  saveState();reloadPreview(num);
 }
 function onSizeChange(el){
   const num=parseInt(el.dataset.num),elName=el.dataset.el,val=parseInt(el.value);
@@ -2410,9 +2430,9 @@ function renderMobileEditorBody(slide){
 
 function mobileRangeControl(slide,key,type){
   const value=type==='size'?((slide.sizes&&slide.sizes[key])||40):((slide.offsets&&slide.offsets[key])||0);
-  const min=type==='size'?14:-180;
-  const max=type==='size'?180:180;
-  const step=type==='size'?2:5;
+  const min=type==='size'?14:-800;
+  const max=type==='size'?200:800;
+  const step=type==='size'?2:10;
   const suffix=type==='size'?'px':(value>0?'+':'')+value+'px';
   const labelValue=type==='size'?`${value}px`:`${value>0?'+':''}${value}px`;
   return `<div class="mobile-control">
@@ -2449,8 +2469,8 @@ function mobileStep(key,type,delta){
   const slide=getMobileSlide(mobileSelectedSlide);if(!slide)return;
   let val=type==='size'?((slide.sizes&&slide.sizes[key])||40):((slide.offsets&&slide.offsets[key])||0);
   val+=delta;
-  if(type==='size')val=Math.max(14,Math.min(180,val));
-  else val=Math.max(-180,Math.min(180,val));
+  if(type==='size')val=Math.max(14,Math.min(200,val));
+  else val=Math.max(-800,Math.min(800,val));
   if(type==='size'){
     if(!slide.sizes)slide.sizes={};slide.sizes[key]=val;
   }else{
@@ -2539,12 +2559,6 @@ function init(){
   try{buildVisual();}catch(e){console.error('buildVisual:',e);}
   try{
     buildGrid();
-    var g=document.getElementById('slidesGrid');
-    var info=document.getElementById('canvasTitle');
-    if(g&&info){
-      var cards=g.querySelectorAll('.slide-card');
-      info.textContent=(state.slides.length)+' slides | '+cards.length+' cards | grid:'+g.offsetWidth+'x'+g.offsetHeight;
-    }
   }catch(e){
     console.error('buildGrid error:',e);
     var g=document.getElementById('slidesGrid');
