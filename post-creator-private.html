@@ -389,6 +389,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 <script>
 
 // ── FIREBASE SYNC ─────────────────────────────────────────────────────────────
@@ -397,18 +398,24 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 const FB_CONFIG = {
   apiKey:      "COLE_AQUI_O_apiKey",
   databaseURL: "COLE_AQUI_O_databaseURL",  // ex: "https://meu-projeto-default-rtdb.firebaseio.com"
+  storageBucket: "COLE_AQUI_O_storageBucket", // ex: "meu-projeto.appspot.com"
 };
-// Chave única que identifica este estado na nuvem (pode trocar para algo pessoal)
+// Chave única que identifica este estado na nuvem
 const FB_KEY = 'glendon_private_v1';
 
-let _fbDb = null, _fbPushTimer = null, _fbReady = false;
+let _fbDb = null, _fbStorage = null, _fbPushTimer = null;
+
+// Distingue URL de Storage de base64 local
+function _fbIsUrl(img){ return img && (img.startsWith('http://') || img.startsWith('https://')); }
 
 function _fbInit(){
   if(!FB_CONFIG.apiKey || FB_CONFIG.apiKey === 'COLE_AQUI_O_apiKey') return;
   try{
     if(!firebase.apps.length) firebase.initializeApp(FB_CONFIG);
     _fbDb = firebase.database();
-    _fbReady = true;
+    if(FB_CONFIG.storageBucket && FB_CONFIG.storageBucket !== 'COLE_AQUI_O_storageBucket'){
+      _fbStorage = firebase.storage();
+    }
     _fbIndicator('syncing');
     _fbLoad(()=>{ _fbIndicator('ok'); });
   }catch(e){ console.warn('[Firebase] init falhou:', e); _fbIndicator('off'); }
@@ -419,19 +426,24 @@ function _fbLoad(cb){
   _fbDb.ref(FB_KEY).once('value').then(snap=>{
     const remote = snap.val();
     if(!remote || !remote.slides || !remote.slides.length){ if(cb) cb(); return; }
-    // Preserva imagens locais (não sobem para nuvem)
+    // Preserva apenas imagens base64 locais (URLs do Storage já vêm da nuvem)
     const localImgs = {};
-    (state.slides||[]).forEach(s=>{ if(s.image) localImgs[s.num]={image:s.image,imagePos:s.imagePos,imageFocal:s.imageFocal}; });
+    (state.slides||[]).forEach(s=>{
+      if(s.image && !_fbIsUrl(s.image))
+        localImgs[s.num]={image:s.image,imagePos:s.imagePos,imageFocal:s.imageFocal};
+    });
     Object.assign(state, remote);
     state.slides = state.slides.map(sl=>{
       const s = makeSlide(sl);
-      if(localImgs[sl.num]){ s.image=localImgs[sl.num].image; s.imagePos=localImgs[sl.num].imagePos; s.imageFocal=localImgs[sl.num].imageFocal; }
+      // Usa imagem local somente se não houver URL do Storage na nuvem
+      if(!s.image && localImgs[sl.num]){
+        s.image=localImgs[sl.num].image; s.imagePos=localImgs[sl.num].imagePos; s.imageFocal=localImgs[sl.num].imageFocal;
+      }
       return s;
     });
     if(!VISUAL_STYLES[state.visual]) state.visual='clean';
     try{ localStorage.setItem('pc_state',JSON.stringify(state)); }catch(e){}
     if(cb) cb();
-    // Rebuild UI after remote load
     syncColorPickers();
     document.getElementById('handleInput').value = state.colors.handle||'@glendonassis';
     document.getElementById('copyrightInput').value = state.colors.copyright||'© COPYRIGHT 2025';
@@ -444,16 +456,36 @@ function _fbPush(){
   if(!_fbDb) return;
   clearTimeout(_fbPushTimer);
   _fbPushTimer = setTimeout(()=>{
-    // Strip imagens antes de subir (base64 é grande demais para free tier)
     const payload = Object.assign({}, state, {
       _ts: Date.now(),
-      slides: state.slides.map(s=>{ const c=Object.assign({},s); delete c.image; return c; })
+      slides: state.slides.map(s=>{
+        const c = Object.assign({},s);
+        // Sobe URLs do Storage normalmente; strip base64 (grande demais)
+        if(c.image && !_fbIsUrl(c.image)) delete c.image;
+        return c;
+      })
     });
     _fbIndicator('syncing');
     _fbDb.ref(FB_KEY).set(payload)
       .then(()=>_fbIndicator('ok'))
       .catch(e=>{ console.warn('[Firebase] push falhou:', e); _fbIndicator('off'); });
-  }, 2000); // espera 2s de inatividade antes de subir
+  }, 2000);
+}
+
+// Upload de imagem para Firebase Storage → retorna URL pública
+function _fbUploadImage(num, blob, onSuccess){
+  if(!_fbStorage){ onSuccess(null); return; }
+  _fbIndicator('syncing');
+  const path = `${FB_KEY}/slide-${num}-${Date.now()}.jpg`;
+  _fbStorage.ref(path).put(blob, {contentType:'image/jpeg'})
+    .then(snap => snap.ref.getDownloadURL())
+    .then(url => { _fbIndicator('ok'); onSuccess(url); })
+    .catch(e => {
+      console.warn('[Firebase Storage]', e);
+      _fbIndicator('off');
+      toast('Imagem salva localmente (Storage indisponível)','ok');
+      onSuccess(null);
+    });
 }
 
 function _fbIndicator(status){
@@ -1497,9 +1529,30 @@ function handleImageUpload(num,file){
       if(h>maxH){w=Math.round(w*maxH/h);h=maxH;}
       canvas.width=w;canvas.height=h;
       canvas.getContext('2d').drawImage(img,0,0,w,h);
-      const data=canvas.toDataURL('image/jpeg',0.8);
-      const sl=state.slides.find(s=>s.num===num);
-      if(sl){sl.image=data;saveState();reloadPreview(num);updateImagePreview(num,data);}
+
+      if(_fbStorage){
+        // Sobe para Firebase Storage e salva a URL
+        canvas.toBlob(blob=>{
+          if(!blob) return;
+          _fbUploadImage(num, blob, url=>{
+            if(url){
+              const sl=state.slides.find(s=>s.num===num);
+              if(sl){sl.image=url;sl.imagePos=sl.imagePos||'float';sl.imageFocal=sl.imageFocal||'center center';saveState();reloadPreview(num);updateImagePreview(num,url);}
+              toast('☁️ Imagem salva na nuvem!','ok');
+            } else {
+              // Fallback base64 se Storage falhou
+              const data=canvas.toDataURL('image/jpeg',0.8);
+              const sl=state.slides.find(s=>s.num===num);
+              if(sl){sl.image=data;saveState();reloadPreview(num);updateImagePreview(num,data);}
+            }
+          });
+        },'image/jpeg',0.82);
+      } else {
+        // Sem Firebase: salva como base64 no localStorage
+        const data=canvas.toDataURL('image/jpeg',0.8);
+        const sl=state.slides.find(s=>s.num===num);
+        if(sl){sl.image=data;saveState();reloadPreview(num);updateImagePreview(num,data);}
+      }
     };
     img.src=e.target.result;
   };
