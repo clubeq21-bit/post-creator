@@ -2258,8 +2258,8 @@ function renderSans(s,c){
   const hlBase    = 460;
 
   const headlineTop = hlBase + offY(s,'headline');
-  const bloco2Top   = headlineTop + estHlH + offY(s,'bloco2');
-  const bloco1Top   = headlineTop - 80 + offY(s,'bloco1');
+  const bloco1Top   = 380    + offY(s,'bloco1');
+  const bloco2Top   = 700    + offY(s,'bloco2');
 
   const tagHtml   = s.tag   ? `<div style="position:absolute;top:60px;left:70px;font-size:13px;font-weight:500;letter-spacing:5px;text-transform:uppercase;color:#999999;font-family:'Inter',sans-serif">${s.tag}</div>` : '';
   const extraHtml = s.extra ? `<div style="position:absolute;bottom:${90-offY(s,'extra')}px;left:70px;right:70px;font-size:${sz(s,'extra',16)}px;font-weight:400;color:${ec(s,'extra','#999999')};font-family:'Inter',sans-serif;letter-spacing:1px">${parseInline(brk(s.extra),grayText)}</div>` : '';

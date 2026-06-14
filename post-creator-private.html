@@ -1235,19 +1235,8 @@ function renderSans(s,c,fontKey){
   }
 
   const headlineTop = 290 + offY(s,'headline');
-  const hLines = estimatedLines(rawHeadline, 19);
-  const hHeight = hLines * hs * 1.08;
-
-  const b1MinTop = headlineTop + hHeight + 56;
-  const b1DesiredTop = 540 + offY(s,'bloco1');
-  const bloco1Top = Math.max(b1DesiredTop, b1MinTop);
-
-  const b1Lines = rawBloco1 ? estimatedLines(rawBloco1, 28) : 0;
-  const b1Height = b1Lines * b1s * 1.22;
-
-  const b2MinTop = bloco1Top + b1Height + 60;
-  const b2DesiredTop = bloco1Top + b1Height + 70 + offY(s,'bloco2');
-  const bloco2Top = Math.max(b2DesiredTop, b2MinTop);
+  const bloco1Top  = 560 + offY(s,'bloco1');
+  const bloco2Top  = 860 + offY(s,'bloco2');
 
   const extraBottom = 92 - offY(s,'extra');
 
@@ -1361,15 +1350,9 @@ function renderCleanDuo(s,c,fontKey){
   const b2Html=s.bloco2?parseInline(brk(s.bloco2),accentColor):'';
 
   const headlineTop=290+offY(s,'headline');
-  const hLines=estimatedLines(s.headline,18);
-  const hHeight=hLines*hs*1.1;
-  const sepTop=headlineTop+hHeight+32;
-  const b1Top=sepTop+44+offY(s,'bloco1');
-  const b1Lines=s.bloco1?estimatedLines(s.bloco1,26):0;
-  const b1Height=b1Lines*b1s*1.22;
-  const b2MinTop=b1Top+b1Height+48;
-  const b2DesiredTop=840+offY(s,'bloco2');
-  const bloco2Top=Math.max(b2DesiredTop,b2MinTop);
+  const sepTop=530+offY(s,'bloco1');
+  const b1Top=sepTop+44;
+  const bloco2Top=840+offY(s,'bloco2');
   const extraBottom=92-offY(s,'extra');
   // float: texto não invade imagem à direita
   const textRight=isFloat?'460px':'70px';
@@ -1457,15 +1440,9 @@ function renderImpactDuo(s,c,fontKey){
   const b2Html=s.bloco2?parseInline(brk(s.bloco2),'rgba(255,255,255,0.35)'):'';
 
   const headlineTop=270+offY(s,'headline');
-  const hLines=estimatedLines(s.headline,16);
-  const hHeight=hLines*hs*1.08;
-  const sepTop=headlineTop+hHeight+28;
-  const b1Top=sepTop+36+offY(s,'bloco1');
-  const b1Lines=s.bloco1?estimatedLines(s.bloco1,26):0;
-  const b1Height=b1Lines*b1s*1.22;
-  const b2MinTop=b1Top+b1Height+44;
-  const b2DesiredTop=820+offY(s,'bloco2');
-  const bloco2Top=Math.max(b2DesiredTop,b2MinTop);
+  const sepTop=520+offY(s,'bloco1');
+  const b1Top=sepTop+36;
+  const bloco2Top=820+offY(s,'bloco2');
   const extraBottom=104-offY(s,'extra');
   const textRight=isFloat?'460px':'80px';
 
