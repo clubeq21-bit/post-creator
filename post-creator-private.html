@@ -566,7 +566,7 @@ const HARDCODED_BASES = {
   statement_duo: {
     font:'poppins',
     colors:{bg:'#EAEAE4',text:'#1A1A1A',accent:'#AAAAAA',accent2:'#888888',handle:'@glendonassis',copyright:'© COPYRIGHT 2025'},
-    sizes:{1:{headline:72,bloco1:34,bloco2:24,extra:15},2:{headline:72,bloco1:34,bloco2:24,extra:15},3:{headline:72,bloco1:34,bloco2:24,extra:15},4:{headline:72,bloco1:34,bloco2:24,extra:15},5:{headline:80,bloco1:40,bloco2:30,extra:15},6:{headline:72,bloco1:34,bloco2:24,extra:15},7:{headline:72,bloco1:34,bloco2:24,extra:15},8:{headline:72,bloco1:34,bloco2:24,extra:15},9:{headline:72,bloco1:34,bloco2:24,extra:15}},
+    sizes:{1:{headline:72,bloco1:52,bloco2:24,extra:15},2:{headline:72,bloco1:52,bloco2:24,extra:15},3:{headline:72,bloco1:52,bloco2:24,extra:15},4:{headline:72,bloco1:52,bloco2:24,extra:15},5:{headline:80,bloco1:58,bloco2:30,extra:15},6:{headline:72,bloco1:52,bloco2:24,extra:15},7:{headline:72,bloco1:52,bloco2:24,extra:15},8:{headline:72,bloco1:52,bloco2:24,extra:15},9:{headline:72,bloco1:52,bloco2:24,extra:15}},
     offsets:{1:{headline:0,bloco1:0,bloco2:0,extra:0},2:{headline:0,bloco1:0,bloco2:0,extra:0},3:{headline:0,bloco1:0,bloco2:0,extra:0},4:{headline:0,bloco1:0,bloco2:0,extra:0},5:{headline:0,bloco1:0,bloco2:0,extra:0},6:{headline:0,bloco1:0,bloco2:0,extra:0},7:{headline:0,bloco1:0,bloco2:0,extra:0},8:{headline:0,bloco1:0,bloco2:0,extra:0},9:{headline:0,bloco1:0,bloco2:0,extra:0}}
   },
   clean_duo: {
@@ -1266,14 +1266,20 @@ function renderSans(s,c,fontKey){
   }
   const sansZ=isSansBg?'z-index:3;position:relative':'';
   const sansTextRight=isSansFloat?'460px':'110px';
-  // textos viram branco quando há fundo de imagem
+  // textos: headline vira branco com fundo de imagem; bloco1 (EN) mantém dourado em ambos os casos
   const sansH=isSansBg?'#FFFFFF':(ec(s,'headline',darkText)||darkText);
-  const sansB1=isSansBg?'rgba(255,255,255,0.65)':(ec(s,'bloco1',grayText)||grayText);
-  const sansB2=isSansBg?'rgba(255,255,255,0.5)':(ec(s,'bloco2',darkText)||darkText);
+  const sansB1=ec(s,'bloco1',grayText)||grayText; // dourado sempre — hierarquia visual igual ao PT, diferenciado só pela cor
+  const sansB2=isSansBg?'rgba(255,255,255,0.55)':(ec(s,'bloco2',darkText)||darkText);
   const sansHandle=isSansBg?'rgba(255,255,255,0.4)':'#555555';
 
   const tagHtml = s.tag ? `<div style="position:absolute;top:60px;left:70px;font-size:13px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:${isSansBg?'rgba(255,255,255,0.5)':'#999999'};font-family:'Inter',sans-serif;${sansZ}">${s.tag}</div>` : '';
-  const extraHtml = s.extra ? `<div style="position:absolute;bottom:${extraBottom}px;left:70px;right:70px;font-size:${exs}px;font-weight:500;color:${ec(s,'extra',isSansBg?'rgba(255,255,255,0.45)':'#8A8A8A')};font-family:'Inter',sans-serif;letter-spacing:.8px;line-height:1.35;${sansZ}">${parseInline(brk(s.extra),grayText)}</div>` : '';
+  // Extra bilíngue: se houver 2 linhas (separadas por \n), 1ª em cor normal, 2ª em dourado
+  const extraLines = s.extra ? String(s.extra).split('\n').filter(Boolean) : [];
+  const extraColor = ec(s,'extra',isSansBg?'rgba(255,255,255,0.5)':'#8A8A8A');
+  const extraInnerHtml = extraLines.length >= 2
+    ? `<span style="color:${extraColor}">${parseInline(extraLines[0],grayText)}</span><br><span style="color:${grayText}">${parseInline(extraLines.slice(1).join(' '),grayText)}</span>`
+    : (extraLines[0] ? parseInline(extraLines[0], grayText) : '');
+  const extraHtml = extraLines.length ? `<div style="position:absolute;bottom:${extraBottom}px;left:70px;right:70px;font-size:${exs}px;font-weight:500;font-family:'Inter',sans-serif;letter-spacing:.8px;line-height:1.6;${sansZ}">${extraInnerHtml}</div>` : '';
 
   return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cormorant+Garamond:wght@500;600;700&family=Playfair+Display:wght@600;700;800&family=Montserrat:wght@500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
@@ -1286,7 +1292,7 @@ function renderSans(s,c,fontKey){
 
     <h1 style="position:absolute;top:${headlineTop}px;left:70px;right:${sansTextRight};font-size:${hs}px;font-weight:800;line-height:1.06;color:${sansH};font-family:${fam};letter-spacing:-1.4px;${sansZ}">${hHtml}</h1>
 
-    ${b1Html?`<p style="position:absolute;top:${bloco1Top}px;left:70px;right:${sansTextRight};font-size:${b1s}px;font-weight:600;line-height:1.24;color:${sansB1};font-family:${fam};letter-spacing:-.2px;${sansZ}">${b1Html}</p>`:''}
+    ${b1Html?`<p style="position:absolute;top:${bloco1Top}px;left:70px;right:${sansTextRight};font-size:${b1s}px;font-weight:800;line-height:1.1;color:${sansB1};font-family:${fam};letter-spacing:-1px;${sansZ}">${b1Html}</p>`:''}
 
     ${b2Html?`<p style="position:absolute;top:${bloco2Top}px;left:70px;right:${sansTextRight};font-size:${b2s}px;font-weight:500;line-height:1.35;color:${sansB2};font-family:${fam};opacity:.72;${sansZ}">${b2Html}</p>`:''}
 
@@ -1301,7 +1307,7 @@ function applyDuoLayoutDefaults(){
     const s = makeSlide(sl);
     s.sizes = Object.assign({}, s.sizes || {}, {
       headline:72,
-      bloco1:34,
+      bloco1:52,
       bloco2:24,
       extra:15
     });
