@@ -1234,19 +1234,19 @@ function renderSans(s,c,fontKey){
     return lines.reduce((sum,line)=>sum+Math.max(1,Math.ceil(line.trim().length/charsPerLine)),0);
   }
 
-  const headlineTop = 330 + offY(s,'headline');
+  const headlineTop = 290 + offY(s,'headline');
   const hLines = estimatedLines(rawHeadline, 19);
   const hHeight = hLines * hs * 1.08;
 
-  const b1MinTop = headlineTop + hHeight + 76;
-  const b1DesiredTop = 650 + offY(s,'bloco1');
+  const b1MinTop = headlineTop + hHeight + 56;
+  const b1DesiredTop = 540 + offY(s,'bloco1');
   const bloco1Top = Math.max(b1DesiredTop, b1MinTop);
 
   const b1Lines = rawBloco1 ? estimatedLines(rawBloco1, 28) : 0;
   const b1Height = b1Lines * b1s * 1.22;
 
-  const b2MinTop = bloco1Top + b1Height + 70;
-  const b2DesiredTop = 850 + offY(s,'bloco2');
+  const b2MinTop = bloco1Top + b1Height + 60;
+  const b2DesiredTop = bloco1Top + b1Height + 70 + offY(s,'bloco2');
   const bloco2Top = Math.max(b2DesiredTop, b2MinTop);
 
   const extraBottom = 92 - offY(s,'extra');
