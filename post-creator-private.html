@@ -2412,11 +2412,24 @@ function renderMobileEditorBody(slide){
     return;
   }
   if(mobileEditorTab==='image'){
-    body.innerHTML=`<div class="mobile-control"><div class="mobile-control-label"><span>Imagem do slide</span></div><input class="mobile-field" type="file" accept="image/*" onchange="mobileImageUpload(this.files[0])"></div>
-    <div class="mobile-img-actions">
-      <button class="mobile-action-btn ${(slide.imagePos||'float')==='float'?'active':''}" onclick="mobileSetImagePos('float')">Flutuar</button>
-      <button class="mobile-action-btn ${slide.imagePos==='background'?'active':''}" onclick="mobileSetImagePos('background')">Fundo</button>
+    const hasImg=!!slide.image;
+    const pos=slide.imagePos||'float';
+    const focalHtml=hasImg&&['top_half','box'].includes(pos)?buildFocalGrid(slide.num,slide.imageFocal||'center center',slide.image):'';
+    body.innerHTML=`
+    <div class="mobile-control">
+      <div class="mobile-control-label"><span>Imagem do slide</span></div>
+      <input class="mobile-field" type="file" accept="image/*" onchange="mobileImageUpload(this.files[0])">
     </div>
+    <div style="margin-bottom:12px">
+      <div style="font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Posição da imagem</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <button class="mobile-action-btn ${pos==='float'?'active':''}" onclick="mobileSetImagePos('float')">Flutuar</button>
+        <button class="mobile-action-btn ${pos==='background'?'active':''}" onclick="mobileSetImagePos('background')">Fundo</button>
+        <button class="mobile-action-btn ${pos==='top_half'?'active':''}" onclick="mobileSetImagePos('top_half')">Meio sup.</button>
+        <button class="mobile-action-btn ${pos==='box'?'active':''}" onclick="mobileSetImagePos('box')">Caixa</button>
+      </div>
+    </div>
+    ${focalHtml}
     <button class="mobile-action-btn" style="width:100%;margin-top:10px;color:var(--red)" onclick="mobileRemoveImage()">Remover imagem</button>`;
   }
 }
