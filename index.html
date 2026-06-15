@@ -462,6 +462,7 @@ const TEMPLATES_META = {
   lista:        {label:'Lista Numerada',     desc:'Erros, dicas ou passos numerados.',                  icon:'🔢'},
   storytelling: {label:'Storytelling/Case', desc:'Conta uma história ou caso real com resultado.',      icon:'🎬'},
   comparativo:  {label:'Comparativo A vs B', desc:'Contrasta dois perfis ou caminhos.',                 icon:'⚖️'},
+  feminino_raiz:{label:'Feminino Raiz',      desc:'Lista numerada com títulos poéticos e imagem de fundo. Cada item tem um nome metafórico e frase de encerramento em itálico.', icon:'🌿'},
 };
 const SLIDE_LABELS = {capa:'Capa',contexto:'Contexto',dados:'Dados',virada:'Virada',dois_col:'Desenvolvimento 1',cenarios:'Desenvolvimento 2',sintese:'Síntese',aplicacao:'Aplicação',cta:'CTA'};
 const FIELDS = {tag:{label:'TAG',type:'input'},headline:{label:'HEADLINE (use *palavra* para destaque)',type:'textarea',rows:4},bloco1:{label:'BLOCO 1',type:'textarea',rows:5},bloco2:{label:'BLOCO 2',type:'textarea',rows:4},extra:{label:'EXTRA',type:'textarea',rows:2}};
@@ -516,6 +517,17 @@ const TEMPLATES = {
     {num:7,type:'sintese',tag:'O Padrão',headline:'O Perfil B\nsempre faz\numa coisa\nque o A não faz.',bloco1:'Hábito → Decisão → Comportamento → Resultado',bloco2:'Não é disciplina. Não é motivação.\nÉ um sistema que o Perfil B construiu.'},
     {num:8,type:'aplicacao',tag:'Qual Você É?',headline:'Você é\no Perfil A\nou o\nPerfil B?',bloco1:'PARE DE SER PERFIL A: O comportamento a abandonar\nCOMECE A SER PERFIL B: O comportamento a adotar',bloco2:'Teste 1: Como você age diante de [situação 1]?\nTeste 2: Como você age diante de [situação 2]?'},
     {num:9,type:'cta',tag:'Ação',headline:'Salva\nesse\nCARROSSEL.',bloco1:'Você vai lembrar quando estiver agindo como Perfil A.',bloco2:'Quer virar Perfil B? Manda "PERFIL" no direct.'},
+  ]},
+  feminino_raiz:{label:'Feminino Raiz',slides:[
+    {num:1,type:'capa',tag:'',headline:'X [COISA]\nQUE PODEM\n*TRANSFORMAR*\nSUA VIDA.',bloco1:'E a número X vai te surpreender.',bloco2:''},
+    {num:2,type:'contexto',tag:'Hábito 1',headline:'[TÍTULO\nPOÉTICO\nDO ITEM]',bloco1:'A frase principal que explica o hábito.\nO que significa na prática.',bloco2:'A frase de encerramento em itálico.\nO insight que fica.'},
+    {num:3,type:'dados',tag:'Hábito 2',headline:'[TÍTULO\nMETAFÓRICO\nDO ITEM]',bloco1:'A frase principal de desenvolvimento.\nO que você precisa entender sobre isso.',bloco2:'A frase que fecha com impacto.\nO leitor não consegue ignorar.',extra:''},
+    {num:4,type:'virada',tag:'Hábito 3',headline:'[TÍTULO\nPOÉTICO\nDO ITEM]',bloco1:'Primeiro bloco de desenvolvimento.\nO contexto e o porquê.',bloco2:'A conclusão que provoca ação.\nA frase que fica na cabeça.'},
+    {num:5,type:'dois_col',tag:'Hábito 4',headline:'[TÍTULO\nMETAFÓRICO\nDO ITEM]',bloco1:'Primeira parte da explicação.\nO que acontece quando você aplica.\nO detalhe que faz diferença.',bloco2:'Segunda parte do desenvolvimento.\nA virada de perspectiva.\nA frase que ancora o leitor.'},
+    {num:6,type:'cenarios',tag:'Hábito 5',headline:'[TÍTULO\nPOÉTICO\nDO ITEM]',bloco1:'Primeiro bloco — a pergunta que incomoda.\nO que o leitor já sabe mas ignora.',bloco2:'Segundo bloco — a resposta.\nO caminho que o leitor precisa tomar.',extra:'A frase de fechamento em itálico.'},
+    {num:7,type:'sintese',tag:'Hábito 6',headline:'[TÍTULO\nMETAFÓRICO\nDO ITEM]',bloco1:'O bloco principal de desenvolvimento.\nA ideia que muda a perspectiva.',bloco2:'A frase final que resume tudo.\nO insight que o leitor vai salvar.'},
+    {num:8,type:'aplicacao',tag:'Hábito 7',headline:'[TÍTULO\nPOÉTICO\nDO ITEM]',bloco1:'O desenvolvimento do último hábito.\nO que ele significa para a jornada.',bloco2:'A frase de encerramento da lista.\nA que conecta tudo o que veio antes.'},
+    {num:9,type:'cta',tag:'',headline:'',bloco1:'A frase final sobreposta à imagem.\nA que resume toda a jornada do carrossel.',bloco2:'@seuarrobaaui'},
   ]},
 };
 
