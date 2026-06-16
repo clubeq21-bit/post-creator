@@ -433,7 +433,8 @@ const VISUAL_STYLES = {
   contraste: {label:'Contraste',desc:'Erro vs acerto, mito vs verdade, antes vs depois, aparência vs realidade.',bg:'#101114',text:'#F9FAFB',accent:'#E7B456',accent2:'#EF6A4D',preview:{bg:'#101114',accent:'#E7B456',label:'VS'}},
   serif: {label:'Editorial',desc:'Modelo elegante para posicionamento, autoridade, reflexão e marca pessoal.',bg:'#F4EFE6',text:'#1A1209',accent:'#C9A961',accent2:'#7A5230',preview:{bg:'#F4EFE6',accent:'#7A5230',label:'Ed'}},
   magazine: {label:'Revista',desc:'Modelo visual e dinâmico com aparência de matéria, destaque ou capa digital.',bg:'#0F1115',text:'#FFFFFF',accent:'#F5C542',accent2:'#9CA3AF',preview:{bg:'#0F1115',accent:'#F5C542',label:'Mg'}},
-  editorial_premium: {label:'Editorial Premium',desc:'Fotos full bleed, Cormorant Garamond italic, caixas dark. Tom sofisticado e clínico.',bg:'#2A1608',text:'#F0E9DF',accent:'#C8A97E',accent2:'#8B6B4E',preview:{bg:'#2A1608',accent:'#C8A97E',label:'Ep'}}
+  editorial_premium: {label:'Editorial Premium',desc:'Fotos full bleed, Cormorant Garamond italic, caixas dark. Tom sofisticado e clínico.',bg:'#2A1608',text:'#F0E9DF',accent:'#C8A97E',accent2:'#8B6B4E',preview:{bg:'#2A1608',accent:'#C8A97E',label:'Ep'}},
+  feminino_raiz: {label:'Feminino Raiz',desc:'Foto de fundo com overlay natural, número fantasma, título bold centralizado e frase de encerramento manuscrita. Tom enraizado e feminino.',bg:'#1C2E1C',text:'#FFFFFF',accent:'#C4878A',accent2:'rgba(255,255,255,0.82)',preview:{bg:'#2D4A2D',accent:'#C4878A',label:'FR'}}
 };
 
 // ── FONTS ──────────────────────────────────────────────────────────────────────
@@ -2019,7 +2020,7 @@ function rMagCta(s,c,fk){
 const MAG_RENDERERS={capa:rMagCapa,contexto:rMagContexto,dados:rMagDados,virada:rMagVirada,dois_col:rMagDoisCol,cenarios:rMagCenarios,sintese:rMagSintese,aplicacao:rMagAplicacao,cta:rMagCta};
 
 // Link único com todas as fontes disponíveis — usado em todos os renderers
-const GFONTS_ALL=`<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&family=DM+Sans:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=Sora:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Oswald:wght@300;400;500;600;700&family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Serif+Display:ital@0;1&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">`;
+const GFONTS_ALL=`<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&family=DM+Sans:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=Sora:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Oswald:wght@300;400;500;600;700&family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Serif+Display:ital@0;1&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">`;
 
 // ── CLEAN RENDERER ─────────────────────────────────────────────────────────────
 function renderClean(s,c,fk){
@@ -2662,6 +2663,82 @@ function renderEditorialPremium(s,c,fk){
 }
 
 // ── MAIN RENDERER DISPATCHER ───────────────────────────────────────────────────
+// ── FEMININO RAIZ RENDERER ────────────────────────────────────────────────────
+function renderFemininoRaiz(s,c,fk){
+  const sans="'Poppins','Nunito',Arial,sans-serif";
+  const script="'Caveat',cursive";
+  const hs=sz(s,'headline',64),b1s=sz(s,'bloco1',30),b2s=sz(s,'bloco2',34),exs=sz(s,'extra',18);
+  const rose=c.accent||'#C4878A';
+  const isCapa=s.type==='capa';
+  const hasImg=!!s.image;
+  const imgPos=s.imagePos||'background';
+  const focal=s.imageFocal||'center center';
+
+  // Camada de imagem de fundo + overlay
+  let bgLayer;
+  if(hasImg&&imgPos==='background'){
+    bgLayer=`<div style="position:absolute;inset:0;z-index:0"><img src="${s.image}" style="width:100%;height:100%;object-fit:cover;object-position:${focal}"></div><div style="position:absolute;inset:0;background:rgba(0,0,0,${isCapa?'0.38':'0.44'});z-index:1"></div>`;
+  } else if(hasImg&&imgPos==='top_half'){
+    bgLayer=`${renderTopHalfImage(s)}<div style="position:absolute;inset:0;background:${c.bg};z-index:0"></div>`;
+  } else if(hasImg&&imgPos==='box'){
+    bgLayer=`${renderBoxImage(s,700)}<div style="position:absolute;inset:0;background:${c.bg};z-index:0"></div>`;
+  } else {
+    bgLayer=`<div style="position:absolute;inset:0;background:linear-gradient(160deg,#2D4A2D,#1a2e1a,#0f1f0f);z-index:0"></div><div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(196,135,138,0.08),transparent 60%);z-index:1"></div>`;
+  }
+
+  // Número fantasma no fundo
+  const ghostNum=`<div style="position:absolute;top:-40px;left:50%;transform:translateX(-50%);font-family:'Cormorant Garamond',Georgia,serif;font-size:480px;font-weight:700;font-style:italic;color:rgba(255,255,255,0.09);line-height:1;z-index:2;user-select:none;pointer-events:none">${s.num}</div>`;
+
+  const handle=c.handle||'@seuperfil';
+
+  if(isCapa){
+    // CAPA: número grande topo + headline mesclada + pílula accent
+    const lines=(s.headline||'').split('\n');
+    const lastLine=lines.pop()||'';
+    const topLines=lines.join('\n');
+    return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">${GFONTS_ALL}<style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;font-family:${sans}}</style></head><body>
+    <div style="width:1080px;height:1350px;position:relative;overflow:hidden;color:#fff">
+      ${bgLayer}
+      <div style="position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 80px">
+        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:${Math.round(hs*2.2)}px;font-weight:700;font-style:italic;color:#fff;line-height:0.85;margin-bottom:24px;opacity:0.92">${s.tag||''}</div>
+        ${topLines?`<h1 style="font-family:${sans};font-size:${hs}px;font-weight:700;line-height:1.12;color:#fff;margin-bottom:32px">${parseInline(brk(topLines),rose)}</h1>`:''}
+        ${lastLine?`<div style="background:${rose};border-radius:999px;padding:14px 38px;font-family:${sans};font-size:${Math.round(hs*0.72)}px;font-weight:600;color:#fff;line-height:1.2">${parseInline(lastLine,rose)}</div>`:''}
+        ${s.bloco1?`<p style="margin-top:36px;font-family:${sans};font-size:${b1s}px;font-weight:400;color:rgba(255,255,255,0.88);line-height:1.4">${parseInline(brk(s.bloco1),rose)}</p>`:''}
+      </div>
+      <div style="position:absolute;bottom:38px;left:0;right:0;text-align:center;font-family:${sans};font-size:18px;font-weight:400;color:rgba(255,255,255,0.62);z-index:4">${handle}</div>
+    </div></body></html>`;
+  }
+
+  // SLIDES INTERNOS (hábitos 1–7) e CTA
+  const isCta=s.type==='cta';
+  if(isCta){
+    // CTA: só quote sobreposto grande + handle
+    return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">${GFONTS_ALL}<style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;font-family:${sans}}</style></head><body>
+    <div style="width:1080px;height:1350px;position:relative;overflow:hidden;color:#fff">
+      ${bgLayer}
+      <div style="position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 100px;gap:40px">
+        ${s.bloco1?`<p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:${Math.round(b1s*1.4)}px;font-weight:600;font-style:italic;line-height:1.28;color:#fff">${parseInline(brk(s.bloco1),rose)}</p>`:''}
+        ${s.bloco2?`<p style="font-family:${sans};font-size:${b2s}px;font-weight:500;color:rgba(255,255,255,0.75);line-height:1.4">${parseInline(brk(s.bloco2),rose)}</p>`:''}
+      </div>
+      <div style="position:absolute;bottom:38px;left:0;right:0;text-align:center;font-family:${sans};font-size:18px;font-weight:400;color:rgba(255,255,255,0.62);z-index:4">${handle}</div>
+    </div></body></html>`;
+  }
+
+  // SLIDE DE HÁBITO padrão
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">${GFONTS_ALL}<style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;font-family:${sans}}</style></head><body>
+  <div style="width:1080px;height:1350px;position:relative;overflow:hidden;color:#fff">
+    ${bgLayer}
+    ${ghostNum}
+    <div style="position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 90px;gap:32px">
+      <h2 style="font-family:${sans};font-size:${hs}px;font-weight:700;line-height:1.10;color:${ec(s,'headline','#fff')}">${parseInline(brk(s.headline),rose)}</h2>
+      ${s.bloco1?`<p style="font-family:${sans};font-size:${b1s}px;font-weight:400;line-height:1.48;color:${ec(s,'bloco1','rgba(255,255,255,0.90)')}">${parseInline(brk(s.bloco1),rose)}</p>`:''}
+      ${s.bloco2?`<p style="font-family:${script};font-size:${b2s}px;font-weight:500;line-height:1.38;color:${ec(s,'bloco2','rgba(255,255,255,0.95)')};border-bottom:2px solid rgba(255,255,255,0.45);padding-bottom:8px">${parseInline(brk(s.bloco2),rose)}</p>`:''}
+      ${s.extra?`<p style="font-family:${script};font-size:${exs}px;color:${ec(s,'extra','rgba(255,255,255,0.72)')}">${parseInline(brk(s.extra),rose)}</p>`:''}
+    </div>
+    <div style="position:absolute;bottom:38px;left:0;right:0;text-align:center;font-family:${sans};font-size:18px;font-weight:400;color:rgba(255,255,255,0.55);z-index:4">${handle}</div>
+  </div></body></html>`;
+}
+
 function renderSlide(slide,colors,fontKey){
   // Aplica override de cor de fundo por slide
   const c = (slide.el_colors&&slide.el_colors.slide_bg)
@@ -2674,6 +2751,7 @@ function renderSlide(slide,colors,fontKey){
   if(vs==='contraste') return renderContraste(slide,c,fontKey);
   if(vs==='serif') return renderSerif(slide,c,fontKey);
   if(vs==='editorial_premium') return renderEditorialPremium(slide,c,fontKey);
+  if(vs==='feminino_raiz') return renderFemininoRaiz(slide,c,fontKey);
   const fn=MAG_RENDERERS[slide.type]||rMagCapa;
   return fn(slide,c,fontKey);
 }
