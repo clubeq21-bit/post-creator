@@ -1319,7 +1319,7 @@ function renderTopHalfImage(s){
 function renderBoxImage(s,topPx=750){
   if(!s.image||s.imagePos!=='box') return '';
   const focal=s.imageFocal||'center center';
-  return `<div style="position:absolute;top:${topPx+offY(s,'bloco2')}px;left:60px;right:60px;height:420px;overflow:hidden;border-radius:18px;z-index:2"><img src="${s.image}" style="width:100%;height:100%;object-fit:cover;object-position:${focal};display:block"></div>`;
+  return `<div style="position:absolute;top:${topPx+offY(s,'bloco2')}px;left:60px;width:960px;height:420px;overflow:hidden;border-radius:18px;z-index:2"><img src="${s.image}" style="width:960px;height:420px;object-fit:cover;object-position:${focal};display:block"></div>`;
 }
 
 // ── Q21 CASE DUO RENDERER ─────────────────────────────────────────────────────
