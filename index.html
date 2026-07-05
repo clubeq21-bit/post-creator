@@ -2828,7 +2828,7 @@ function parseCarrossel(raw) {
   const slideStart = raw.search(/(?:##\s*)?SLIDE\s+0?1\b/i);
   if (slideStart === -1) return { filled: 0, visual: null, template: null };
   const slidesSection = raw.substring(slideStart);
-  const chunks = slidesSection.split(/(?=(?:##\s*)?SLIDE\s+\d+\b)/i).filter(s => s.trim());
+  const chunks = slidesSection.split(/(?=(?:##\s*)?SLIDE\s+\d+\b)/i).filter(s => s.trim() && /SLIDE\s+\d+/i.test(s));
 
   let filled = 0;
   chunks.forEach((chunk, i) => {
