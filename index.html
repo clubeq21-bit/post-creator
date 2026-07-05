@@ -2784,10 +2784,9 @@ function closePasteModal() {
 function getField(block, name) {
   const esc = name.replace(/\s+/g, '\\s+');
   const nextLabels = 'TAG|HEADLINE|BLOCO\\s+1|BLOCO\\s+2|EXTRA';
-  // Usa [ \t]* em vez de \s* para não consumir o \n separador entre campos vazios.
-  // Flag 'm' permite que ^ no lookahead case com início de linha,
-  // capturando o parar mesmo quando o \n já foi consumido pelo \n? do prefixo.
-  const re = new RegExp(esc + ':[ \\t]*\\n?([\\s\\S]*?)(?=(?:^|\\n)[ \\t]*(?:' + nextLabels + '):|\\n---\\s*\\n|$)', 'im');
+  // \s no lookahead cobre tanto campos na mesma linha (espaço) como em linha nova (\n)
+  // Não consumimos o espaço/newline após o : para que o lookahead detecte o próximo campo corretamente
+  const re = new RegExp(esc + ':([\\s\\S]*?)(?=\\s(?:' + nextLabels + '):|\\n---\\s*\\n|$)', 'i');
   const m = block.match(re);
   if (!m || !m[1]) return '';
   let result = m[1]
@@ -2795,7 +2794,6 @@ function getField(block, name) {
     .map(l => l.replace(/\s+$/, ''))
     .join('\n')
     .trim();
-  // Strip any accidental label at the start of extracted content
   result = result.replace(/^(?:TAG|HEADLINE|BLOCO\s+1|BLOCO\s+2|EXTRA):\s*/i, '').trim();
   return result;
 }
@@ -2826,11 +2824,11 @@ function parseCarrossel(raw) {
     else detectedTemplate = 'explicativo';
   }
 
-  // Separar slides — divide antes de cada ## SLIDE
-  const slideStart = raw.search(/##\s*SLIDE\s+0?1/i);
+  // Separar slides — aceita com ou sem ## antes de SLIDE
+  const slideStart = raw.search(/(?:##\s*)?SLIDE\s+0?1\b/i);
   if (slideStart === -1) return { filled: 0, visual: null, template: null };
   const slidesSection = raw.substring(slideStart);
-  const chunks = slidesSection.split(/(?=##\s*SLIDE\s+\d+)/i).filter(s => s.trim());
+  const chunks = slidesSection.split(/(?=(?:##\s*)?SLIDE\s+\d+\b)/i).filter(s => s.trim());
 
   let filled = 0;
   chunks.forEach((chunk, i) => {
