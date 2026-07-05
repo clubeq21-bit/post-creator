@@ -3751,9 +3751,9 @@ function renderMobileEditorBody(slide){
 
 function mobileRangeControl(slide,key,type){
   const value=type==='size'?((slide.sizes&&slide.sizes[key])||40):((slide.offsets&&slide.offsets[key])||0);
-  const min=type==='size'?14:-180;
-  const max=type==='size'?180:180;
-  const step=type==='size'?2:5;
+  const min=type==='size'?14:-800;
+  const max=type==='size'?200:800;
+  const step=type==='size'?2:10;
   const suffix=type==='size'?'px':(value>0?'+':'')+value+'px';
   const labelValue=type==='size'?`${value}px`:`${value>0?'+':''}${value}px`;
   return `<div class="mobile-control">
