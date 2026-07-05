@@ -2601,7 +2601,7 @@ function renderFemininoRaiz(s,c,fk){
   } else if(hasImg&&imgPos==='box'){
     bgLayer=`${renderBoxImage(s,700)}<div style="position:absolute;inset:0;background:${c.bg};z-index:0"></div>`;
   } else {
-    bgLayer=`<div style="position:absolute;inset:0;background:linear-gradient(160deg,#2D4A2D,#1a2e1a,#0f1f0f);z-index:0"></div><div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(196,135,138,0.08),transparent 60%);z-index:1"></div>`;
+    bgLayer=`<div style="position:absolute;inset:0;background:${c.bg||'#1C2E1C'};z-index:0"></div><div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(196,135,138,0.08),transparent 60%);z-index:1"></div>`;
   }
 
   // Número fantasma no fundo
