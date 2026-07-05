@@ -114,6 +114,9 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .card-foot{padding:9px 12px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border2)}
 .card-name{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:0.5px;text-transform:uppercase}
 .card-num{font-size:11px;color:rgba(125,133,144,0.5);letter-spacing:2px;font-family:monospace}
+.card-img-btn{font-size:13px;cursor:pointer;padding:3px 7px;border-radius:4px;transition:all .15s;opacity:0.55;border:1px solid transparent;line-height:1}
+.card-img-btn:hover{opacity:1;background:rgba(201,169,110,0.12);border-color:rgba(201,169,110,0.3)}
+.card-img-btn.has-img{opacity:1;color:var(--gold)}
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(13,17,23,0.92);z-index:600;align-items:center;justify-content:center}
 .modal-bg.show{display:flex}
 .modal{background:var(--panel);border:1px solid var(--border2);border-radius:12px;width:760px;max-height:88vh;overflow-y:auto;padding:32px}
@@ -2868,6 +2871,13 @@ function renderSlide(slide,colors,fontKey){
 }
 
 // ── IMAGE UPLOAD ───────────────────────────────────────────────────────────────
+function cardImageUpload(num,file){
+  if(!file)return;
+  handleImageUpload(num,file);
+  // After upload, mark the card button as has-img
+  const btn=document.getElementById(`card-img-btn-${num}`);
+  if(btn){btn.classList.add('has-img');btn.title='Trocar imagem';}
+}
 function handleImageUpload(num,file){
   if(!file)return;
   const reader=new FileReader();
@@ -2901,6 +2911,8 @@ function updateImagePreview(num,data){
   if(thumb){thumb.src=data;thumb.style.display='block';}
   if(rm) rm.style.display='inline-block';
   if(posRow) posRow.style.display='flex';
+  const btn=document.getElementById(`card-img-btn-${num}`);
+  if(btn){btn.classList.add('has-img');btn.title='Trocar imagem';}
 }
 function removeImage(num){
   const sl=state.slides.find(s=>s.num===num);
@@ -2911,6 +2923,8 @@ function removeImage(num){
   if(thumb){thumb.src='';thumb.style.display='none';}
   if(rm) rm.style.display='none';
   if(posRow) posRow.style.display='none';
+  const btn=document.getElementById(`card-img-btn-${num}`);
+  if(btn){btn.classList.remove('has-img');btn.title='Adicionar imagem';}
 }
 function setImagePos(num,pos){
   const sl=state.slides.find(s=>s.num===num);
@@ -3337,8 +3351,13 @@ function buildGrid(){
   console.log('[PC] buildGrid start, slides:',state.slides.length,'grid:',grid?'ok':'null');
   state.slides.forEach(slide=>{
     const card=document.createElement('div');card.className='slide-card';card.id=`card-${slide.num}`;
+    const hasImg=!!slide.image;
     card.innerHTML=`<div class="thumb-wrap"><iframe srcdoc="" id="ifr-${slide.num}" scrolling="no" onload="scaleIfr(${slide.num})"></iframe></div>
-      <div class="card-foot"><span class="card-name">${SLIDE_LABELS[slide.type]||slide.type}</span><span class="card-num">${String(slide.num).padStart(2,'0')}</span></div>`;
+      <div class="card-foot">
+        <span class="card-name">${SLIDE_LABELS[slide.type]||slide.type}</span>
+        <label class="card-img-btn${hasImg?' has-img':''}" id="card-img-btn-${slide.num}" title="${hasImg?'Trocar imagem':'Adicionar imagem'}" onclick="event.stopPropagation()">📷<input type="file" accept="image/*" style="display:none" onchange="cardImageUpload(${slide.num},this.files[0])"></label>
+        <span class="card-num">${String(slide.num).padStart(2,'0')}</span>
+      </div>`;
     card.onclick=()=>{if(window.innerWidth<=768){openMobileSlideEditor(slide.num,'size');return;}switchTab(document.querySelector('[data-tab="texto"]'));const hd=document.getElementById(`hd-${slide.num}`);if(!hd.classList.contains('open'))toggleSec(slide.num);setTimeout(()=>document.getElementById(`sec-${slide.num}`).scrollIntoView({behavior:'smooth',block:'start'}),150);};
     grid.appendChild(card);reloadPreview(slide.num);
   });
@@ -3717,10 +3736,13 @@ function renderMobileEditorBody(slide){
     return;
   }
   if(mobileEditorTab==='image'){
-    body.innerHTML=`<div class="mobile-control"><div class="mobile-control-label"><span>Imagem do slide</span></div><input class="mobile-field" type="file" accept="image/*" onchange="mobileImageUpload(this.files[0])"></div>
-    <div class="mobile-img-actions">
-      <button class="mobile-action-btn ${(slide.imagePos||'float')==='float'?'active':''}" onclick="mobileSetImagePos('float')">Flutuar</button>
-      <button class="mobile-action-btn ${slide.imagePos==='background'?'active':''}" onclick="mobileSetImagePos('background')">Fundo</button>
+    const pos=slide.imagePos||'float';
+    body.innerHTML=`<div class="mobile-control"><div class="mobile-control-label"><span>Imagem do slide</span></div><label style="display:block;width:100%;padding:12px;background:rgba(201,169,110,0.08);border:1.5px dashed rgba(201,169,110,0.4);border-radius:10px;text-align:center;cursor:pointer;color:var(--gold);font-size:13px;font-weight:600">📷 ${slide.image?'Trocar imagem':'Adicionar imagem'}<input type="file" accept="image/*" style="display:none" onchange="mobileImageUpload(this.files[0])"></label></div>
+    <div class="mobile-img-actions" style="grid-template-columns:1fr 1fr;margin-top:12px">
+      <button class="mobile-action-btn ${pos==='float'?'active':''}" onclick="mobileSetImagePos('float')">Flutuar</button>
+      <button class="mobile-action-btn ${pos==='background'?'active':''}" onclick="mobileSetImagePos('background')">Fundo</button>
+      <button class="mobile-action-btn ${pos==='top_half'?'active':''}" onclick="mobileSetImagePos('top_half')">Meio sup.</button>
+      <button class="mobile-action-btn ${pos==='box'?'active':''}" onclick="mobileSetImagePos('box')">Caixa</button>
     </div>
     <button class="mobile-action-btn" style="width:100%;margin-top:10px;color:var(--red)" onclick="mobileRemoveImage()">Remover imagem</button>`;
   }
