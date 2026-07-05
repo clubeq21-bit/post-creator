@@ -117,6 +117,10 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .card-img-btn{font-size:13px;cursor:pointer;padding:3px 7px;border-radius:4px;transition:all .15s;opacity:0.55;border:1px solid transparent;line-height:1;background:transparent;color:inherit}
 .card-img-btn:hover{opacity:1;background:rgba(201,169,110,0.12);border-color:rgba(201,169,110,0.3)}
 .card-img-btn.has-img{opacity:1;color:var(--gold)}
+.card-dl-btn{font-size:12px;cursor:pointer;padding:3px 7px;border-radius:4px;transition:all .15s;opacity:0.45;border:1px solid transparent;line-height:1;background:transparent;color:inherit;font-weight:700}
+.card-dl-btn:hover{opacity:1;background:rgba(59,130,246,0.12);border-color:rgba(59,130,246,0.35);color:#60A5FA}
+.card-dl-btn:disabled{opacity:0.25;cursor:not-allowed}
+@media(max-width:768px){.card-dl-btn{display:none}}
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(13,17,23,0.92);z-index:600;align-items:center;justify-content:center}
 .modal-bg.show{display:flex}
 .modal{background:var(--panel);border:1px solid var(--border2);border-radius:12px;width:760px;max-height:88vh;overflow-y:auto;padding:32px}
@@ -2039,6 +2043,22 @@ function selectFont(key){
   reloadAll();updateCanvasInfo();toast(`✓ Fonte: ${FONTS[key].label}`,'ok');
 }
 
+// ── DOWNLOAD SLIDE ÚNICO ────────────────────────────────────────────────────────
+async function downloadSlide(num){
+  if(window.innerWidth<=768)return;
+  const slide=state.slides.find(s=>s.num===num);
+  if(!slide)return;
+  const btn=document.getElementById(`card-dl-btn-${num}`);
+  if(btn){btn.disabled=true;btn.textContent='…';}
+  try{
+    const nome=(document.getElementById('nomeInput')?.value.trim()||'carrossel');
+    await document.fonts.ready;
+    const blob=await gerarSlidePNG(slide);
+    baixarBlob(blob,`${nome}_slide_${String(num).padStart(2,'0')}.png`);
+  }catch(e){console.error('downloadSlide:',e);}
+  finally{if(btn){btn.disabled=false;btn.textContent='↓';}}
+}
+
 // ── GRID ───────────────────────────────────────────────────────────────────────
 function buildGrid(){
   const grid=document.getElementById('slidesGrid');grid.innerHTML='';
@@ -2051,6 +2071,7 @@ function buildGrid(){
       <div class="card-foot">
         <span class="card-name">${SLIDE_LABELS[slide.type]||slide.type}</span>
         <button class="card-img-btn${hasImg?' has-img':''}" id="card-img-btn-${slide.num}" title="${hasImg?'Trocar imagem':'Adicionar imagem'}" onclick="event.stopPropagation();document.getElementById('card-file-${slide.num}').value='';document.getElementById('card-file-${slide.num}').click()">📷</button>
+        <button class="card-dl-btn" id="card-dl-btn-${slide.num}" title="Baixar este slide (PNG)" onclick="event.stopPropagation();downloadSlide(${slide.num})">↓</button>
         <span class="card-num">${String(slide.num).padStart(2,'0')}</span>
       </div>`;
     card.onclick=()=>{if(window.innerWidth<=768){openMobileSlideEditor(slide.num,'size');return;}switchTab(document.querySelector('[data-tab="texto"]'));const hd=document.getElementById(`hd-${slide.num}`);if(!hd.classList.contains('open'))toggleSec(slide.num);setTimeout(()=>{const el=document.getElementById(`sec-${slide.num}`);if(!el)return;const pane=el.closest('.tab-content');if(pane)pane.scrollTo({top:el.offsetTop,behavior:'smooth'});window.scrollTo(0,0);},150);};
