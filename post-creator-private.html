@@ -2053,7 +2053,7 @@ function buildGrid(){
         <button class="card-img-btn${hasImg?' has-img':''}" id="card-img-btn-${slide.num}" title="${hasImg?'Trocar imagem':'Adicionar imagem'}" onclick="event.stopPropagation();document.getElementById('card-file-${slide.num}').value='';document.getElementById('card-file-${slide.num}').click()">📷</button>
         <span class="card-num">${String(slide.num).padStart(2,'0')}</span>
       </div>`;
-    card.onclick=()=>{if(window.innerWidth<=768){openMobileSlideEditor(slide.num,'size');return;}switchTab(document.querySelector('[data-tab="texto"]'));const hd=document.getElementById(`hd-${slide.num}`);if(!hd.classList.contains('open'))toggleSec(slide.num);setTimeout(()=>document.getElementById(`sec-${slide.num}`).scrollIntoView({behavior:'smooth',block:'start'}),150);};
+    card.onclick=()=>{if(window.innerWidth<=768){openMobileSlideEditor(slide.num,'size');return;}switchTab(document.querySelector('[data-tab="texto"]'));const hd=document.getElementById(`hd-${slide.num}`);if(!hd.classList.contains('open'))toggleSec(slide.num);setTimeout(()=>{const el=document.getElementById(`sec-${slide.num}`);if(!el)return;const pane=el.closest('.tab-content');if(pane)pane.scrollTo({top:el.offsetTop,behavior:'smooth'});window.scrollTo(0,0);},150);};
     grid.appendChild(card);reloadPreview(slide.num);
   });
   console.log('[PC] buildGrid done, cards in DOM:',grid.children.length);
@@ -2352,6 +2352,7 @@ function closeMobileSlideEditor(){
 
 function openMobileSlideEditor(num,tab){
   if(window.innerWidth>768)return;
+  window.scrollTo(0,0);
   const slide=getMobileSlide(num);
   if(!slide)return;
   _closePanel();
@@ -2433,7 +2434,7 @@ function renderMobileEditorBody(slide){
   if(mobileEditorTab==='image'){
     const hasImg=!!slide.image;
     const pos=slide.imagePos||'float';
-    const focalHtml=hasImg&&['top_half','box'].includes(pos)?buildFocalGrid(slide.num,slide.imageFocal||'center center',slide.image):'';
+    const focalHtml=hasImg&&['top_half','box','background'].includes(pos)?buildFocalGrid(slide.num,slide.imageFocal||'center center',slide.image):'';
     body.innerHTML=`
     <div class="mobile-control">
       <div class="mobile-control-label"><span>Imagem do slide</span></div>
