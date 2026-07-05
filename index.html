@@ -2605,7 +2605,7 @@ function renderFemininoRaiz(s,c,fk){
   }
 
   // Número fantasma no fundo
-  const ghostNum=`<div style="position:absolute;top:-40px;left:50%;transform:translateX(-50%);font-family:'Cormorant Garamond',Georgia,serif;font-size:480px;font-weight:700;font-style:italic;color:rgba(255,255,255,0.09);line-height:1;z-index:2;user-select:none;pointer-events:none">${s.num}</div>`;
+  const ghostNum=`<div style="position:absolute;top:-40px;left:50%;transform:translateX(-50%);font-family:'Cormorant Garamond',Georgia,serif;font-size:480px;font-weight:700;font-style:italic;color:rgba(255,255,255,0.09);line-height:1;z-index:2;user-select:none;pointer-events:none">${s.num-1}</div>`;
 
   const handle=c.handle||'@seuperfil';
 
@@ -2784,7 +2784,10 @@ function closePasteModal() {
 function getField(block, name) {
   const esc = name.replace(/\s+/g, '\\s+');
   const nextLabels = 'TAG|HEADLINE|BLOCO\\s+1|BLOCO\\s+2|EXTRA';
-  const re = new RegExp(esc + ':\\s*\\n?([\\s\\S]*?)(?=\\n[ \\t]*(?:' + nextLabels + '):|\\n---\\s*\\n|$)', 'i');
+  // Usa [ \t]* em vez de \s* para não consumir o \n separador entre campos vazios.
+  // Flag 'm' permite que ^ no lookahead case com início de linha,
+  // capturando o parar mesmo quando o \n já foi consumido pelo \n? do prefixo.
+  const re = new RegExp(esc + ':[ \\t]*\\n?([\\s\\S]*?)(?=(?:^|\\n)[ \\t]*(?:' + nextLabels + '):|\\n---\\s*\\n|$)', 'im');
   const m = block.match(re);
   if (!m || !m[1]) return '';
   let result = m[1]
@@ -2793,7 +2796,6 @@ function getField(block, name) {
     .join('\n')
     .trim();
   // Strip any accidental label at the start of extracted content
-  // (agente às vezes coloca "BLOCO 2:" como primeira linha do BLOCO 1, etc.)
   result = result.replace(/^(?:TAG|HEADLINE|BLOCO\s+1|BLOCO\s+2|EXTRA):\s*/i, '').trim();
   return result;
 }
