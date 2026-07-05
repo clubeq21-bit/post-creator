@@ -3353,9 +3353,10 @@ function buildGrid(){
     const card=document.createElement('div');card.className='slide-card';card.id=`card-${slide.num}`;
     const hasImg=!!slide.image;
     card.innerHTML=`<div class="thumb-wrap"><iframe srcdoc="" id="ifr-${slide.num}" scrolling="no" onload="scaleIfr(${slide.num})"></iframe></div>
+      <input type="file" accept="image/*" id="card-file-${slide.num}" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none" onchange="cardImageUpload(${slide.num},this.files[0])">
       <div class="card-foot">
         <span class="card-name">${SLIDE_LABELS[slide.type]||slide.type}</span>
-        <label class="card-img-btn${hasImg?' has-img':''}" id="card-img-btn-${slide.num}" title="${hasImg?'Trocar imagem':'Adicionar imagem'}" onclick="event.stopPropagation()">📷<input type="file" accept="image/*" style="display:none" onchange="cardImageUpload(${slide.num},this.files[0])"></label>
+        <button class="card-img-btn${hasImg?' has-img':''}" id="card-img-btn-${slide.num}" title="${hasImg?'Trocar imagem':'Adicionar imagem'}" onclick="event.stopPropagation();document.getElementById('card-file-${slide.num}').value='';document.getElementById('card-file-${slide.num}').click()">📷</button>
         <span class="card-num">${String(slide.num).padStart(2,'0')}</span>
       </div>`;
     card.onclick=()=>{if(window.innerWidth<=768){openMobileSlideEditor(slide.num,'size');return;}switchTab(document.querySelector('[data-tab="texto"]'));const hd=document.getElementById(`hd-${slide.num}`);if(!hd.classList.contains('open'))toggleSec(slide.num);setTimeout(()=>document.getElementById(`sec-${slide.num}`).scrollIntoView({behavior:'smooth',block:'start'}),150);};
