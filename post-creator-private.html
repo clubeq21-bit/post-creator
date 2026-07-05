@@ -1534,7 +1534,7 @@ function handleImageUpload(num,file){
     const img=new Image();
     img.onload=()=>{
       const canvas=document.createElement('canvas');
-      const maxW=900,maxH=1200;
+      const maxW=1080,maxH=1350;
       let w=img.width,h=img.height;
       if(w>maxW){h=Math.round(h*maxW/w);w=maxW;}
       if(h>maxH){w=Math.round(w*maxH/h);h=maxH;}
@@ -1552,15 +1552,15 @@ function handleImageUpload(num,file){
               toast('☁️ Imagem salva na nuvem!','ok');
             } else {
               // Fallback base64 local
-              const data=canvas.toDataURL('image/jpeg',0.8);
+              const data=canvas.toDataURL('image/jpeg',0.92);
               const sl=state.slides.find(s=>s.num===num);
               if(sl){sl.image=data;saveState();reloadPreview(num);updateImagePreview(num,data);}
             }
           });
-        },'image/jpeg',0.82);
+        },'image/jpeg',0.92);
       } else {
         // Sem Firebase: salva como base64 no localStorage
-        const data=canvas.toDataURL('image/jpeg',0.8);
+        const data=canvas.toDataURL('image/jpeg',0.92);
         const sl=state.slides.find(s=>s.num===num);
         if(sl){sl.image=data;saveState();reloadPreview(num);updateImagePreview(num,data);}
       }
