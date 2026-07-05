@@ -2605,7 +2605,7 @@ function renderFemininoRaiz(s,c,fk){
   }
 
   // Número fantasma no fundo
-  const ghostNum=`<div style="position:absolute;top:-40px;left:50%;transform:translateX(-50%);font-family:'Cormorant Garamond',Georgia,serif;font-size:480px;font-weight:700;font-style:italic;color:rgba(255,255,255,0.09);line-height:1;z-index:2;user-select:none;pointer-events:none">${s.num-1}</div>`;
+  const ghostNum=`<div style="position:absolute;top:30px;left:50%;transform:translateX(-50%);font-family:'Cormorant Garamond',Georgia,serif;font-size:480px;font-weight:700;font-style:italic;color:rgba(255,255,255,0.09);line-height:1;z-index:2;user-select:none;pointer-events:none">${s.num-1}</div>`;
 
   const handle=c.handle||'@seuperfil';
 
@@ -2647,7 +2647,7 @@ function renderFemininoRaiz(s,c,fk){
   <div style="width:1080px;height:1350px;position:relative;overflow:hidden;color:#fff">
     ${bgLayer}
     ${ghostNum}
-    <div style="position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 90px;gap:32px">
+    <div style="position:absolute;left:0;right:0;top:44%;bottom:9%;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 90px;gap:32px">
       <h2 style="font-family:${sans};font-size:${hs}px;font-weight:700;line-height:1.10;color:${ec(s,'headline','#fff')}">${parseInline(brk(s.headline),rose)}</h2>
       ${s.bloco1?`<p style="font-family:${sans};font-size:${b1s}px;font-weight:400;line-height:1.48;color:${ec(s,'bloco1','rgba(255,255,255,0.90)')}">${parseInline(brk(s.bloco1),rose)}</p>`:''}
       ${s.bloco2?`<p style="font-family:${script};font-size:${b2s}px;font-weight:500;line-height:1.38;color:${ec(s,'bloco2','rgba(255,255,255,0.95)')};border-bottom:2px solid rgba(255,255,255,0.45);padding-bottom:8px">${parseInline(brk(s.bloco2),rose)}</p>`:''}
