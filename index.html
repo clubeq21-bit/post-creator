@@ -2802,16 +2802,16 @@ function parseCarrossel(raw) {
   let detectedVisual = null, detectedTemplate = null;
 
   // Detectar visual
-  const vm = raw.match(/MODELO VISUAL[^:]*:\s*\*?\*?(CLEAN FLOW|BOLD SIGNAL|SIMPLE STATEMENT|DUO STATEMENT|EDITORIAL SERIF|MAGAZINE DARK|Q21 CASE|Q21 IMPACT|Q21 STATEMENT DUO|Q21 STATEMENT|CASE CLEAN|IMPACT BOLD|SANS STATEMENT BILINGUE|SANS STATEMENT DUO|SANS STATEMENT)\*?\*?/i);
+  const vm = raw.match(/MODELO VISUAL[^:]*:\s*\*?\*?([^\n*]+)\*?\*?/i);
   if (vm) {
-    const v = vm[1].toUpperCase();
-    if (v.includes('CLEAN FLOW') || v.includes('CASE') || v.includes('CLEAN')) detectedVisual = 'clean';
-    else if (v.includes('BOLD SIGNAL') || v.includes('IMPACT')) detectedVisual = 'impact';
-    else if (v.includes('DUO') || v.includes('BILINGUE') || v.includes('BILINGUAL')) detectedVisual = 'statement';
-    else if (v.includes('SIMPLE STATEMENT') || v.includes('STATEMENT') || v.includes('SANS')) detectedVisual = 'statement';
+    const v = vm[1].trim().toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    if (v.includes('FEMININO') || v.includes('RAIZ')) detectedVisual = 'feminino_raiz';
     else if (v.includes('EDITORIAL PREMIUM') || v.includes('PREMIUM')) detectedVisual = 'editorial_premium';
-    else if (v.includes('EDITORIAL')) detectedVisual = 'serif';
-    else if (v.includes('MAGAZINE')) detectedVisual = 'magazine';
+    else if (v.includes('EDITORIAL') || v.includes('SERIF')) detectedVisual = 'serif';
+    else if (v.includes('REVISTA') || v.includes('MAGAZINE')) detectedVisual = 'magazine';
+    else if (v.includes('PRESENCA') || v.includes('PRESENÇA') || v.includes('JORNADA')) detectedVisual = 'jornada';
+    else if (v.includes('TRANSFORMACAO') || v.includes('TRANSFORMAÇÃO')) detectedVisual = 'transformacao';
+    else if (v.includes('METODO') || v.includes('MÉTODO')) detectedVisual = 'metodo';
   }
 
   // Detectar formato narrativo
