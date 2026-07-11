@@ -302,7 +302,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
       <div class="sec-title">ID Visual</div>
       <div style="font-size:11px;color:var(--muted);margin-bottom:16px;line-height:1.6">Configure aqui a base visual do carrossel: fontes, cores, handle, copyright e ajustes gerais.</div>
       <div class="sec-title">Fontes</div>
-      <div style="font-size:11px;color:var(--muted);margin-bottom:8px;line-height:1.6">Escolha uma fonte base para a identidade visual. Alguns modelos podem preservar fontes específicas para manter o layout.</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:8px;line-height:1.6">Escolha a fonte da identidade visual. A seleção será aplicada a todos os textos dos slides.</div>
       <div id="fontCards"></div>
       <div class="sec-title" style="margin-top:22px">Cores</div>
       <div class="cor-row"><div class="cor-sw" id="sw-bg" style="background:#1A1510"><input type="color" value="#1A1510" id="pk-bg" oninput="previewCor('bg',this.value)"></div><div style="flex:1"><div class="cor-nm">Background</div><div class="cor-hx" id="hx-bg">#1A1510</div></div><button class="btn-ac" onclick="aplicarCor('bg')">+ Aplicar</button></div>
@@ -2358,10 +2358,10 @@ function renderJornada(s,c,fk){
     <div style="width:1080px;height:1350px;background:${effectiveBg};position:relative;overflow:hidden;color:${c.text}">
       ${bgLayer}${topH}
       <div style="position:absolute;inset:0;z-index:2">
-        <div style="position:absolute;top:64px;left:70px;font-family:'Montserrat',Arial,sans-serif;font-size:18px;letter-spacing:.7px;text-transform:uppercase;color:rgba(255,255,255,.92);font-weight:300"><strong style="font-weight:800">${parseInline(name,c.accent2)}</strong></div>
+        <div style="position:absolute;top:64px;left:70px;font-family:${f.family};font-size:18px;letter-spacing:.7px;text-transform:uppercase;color:rgba(255,255,255,.92);font-weight:300"><strong style="font-weight:800">${parseInline(name,c.accent2)}</strong></div>
         <h1 style="position:absolute;top:${620+offY(s,'headline')}px;left:95px;right:95px;text-align:center;font-family:${f.family};font-size:${hs}px;line-height:1.10;font-weight:300;font-style:italic;letter-spacing:-1.2px;color:${ec(s,'headline','#F7F7F7')}">${parseInline(brk(s.headline),c.accent2)}</h1>
         ${s.bloco1?`<div style="position:absolute;top:${800+offY(s,'bloco1')}px;left:145px;right:145px;font-family:${f.family};font-size:${b1s}px;line-height:1.38;font-weight:700;color:${ec(s,'bloco1','#F7F7F7')};text-align:center">${parseInline(brk(s.bloco1),c.accent2)}</div>`:''}
-        ${s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;text-align:left;font-family:'Montserrat',Arial,sans-serif;font-size:${exs}px;font-weight:300;font-style:italic;letter-spacing:1.4px;text-transform:uppercase;color:${ec(s,'extra','rgba(255,255,255,.88)')}">${parseInline(s.extra,c.accent2)}</div>`:''}
+        ${s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;text-align:left;font-family:${f.family};font-size:${exs}px;font-weight:300;font-style:italic;letter-spacing:1.4px;text-transform:uppercase;color:${ec(s,'extra','rgba(255,255,255,.88)')}">${parseInline(s.extra,c.accent2)}</div>`:''}
       </div>
     </div></body></html>`;
   }
@@ -2372,10 +2372,10 @@ function renderJornada(s,c,fk){
     <div style="width:1080px;height:1350px;background:${effectiveBg};position:relative;overflow:hidden;color:${c.text}">
       ${bgLayer}${boxH}
       <div style="position:absolute;inset:0;z-index:3">
-        <div style="position:absolute;top:64px;left:70px;font-family:'Montserrat',Arial,sans-serif;font-size:18px;letter-spacing:.7px;text-transform:uppercase;color:rgba(255,255,255,.92);font-weight:300"><strong style="font-weight:800">${parseInline(name,c.accent2)}</strong></div>
+        <div style="position:absolute;top:64px;left:70px;font-family:${f.family};font-size:18px;letter-spacing:.7px;text-transform:uppercase;color:rgba(255,255,255,.92);font-weight:300"><strong style="font-weight:800">${parseInline(name,c.accent2)}</strong></div>
         <h1 style="position:absolute;top:${190+offY(s,'headline')}px;left:95px;right:95px;text-align:center;font-family:${f.family};font-size:${hs}px;line-height:1.10;font-weight:800;letter-spacing:-.8px;color:${ec(s,'headline','#F7F7F7')}">${parseInline(brk(s.headline),c.accent2)}</h1>
         ${s.bloco1?`<div style="position:absolute;top:${360+offY(s,'bloco1')}px;left:145px;right:145px;font-family:${f.family};font-size:${b1s}px;line-height:1.38;font-weight:700;color:${ec(s,'bloco1','#F7F7F7')};text-align:center">${parseInline(brk(s.bloco1),c.accent2)}</div>`:''}
-        ${s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;text-align:left;font-family:'Montserrat',Arial,sans-serif;font-size:${exs}px;font-weight:300;font-style:italic;letter-spacing:1.4px;text-transform:uppercase;color:${ec(s,'extra','rgba(255,255,255,.88)')}">${parseInline(s.extra,c.accent2)}</div>`:''}
+        ${s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;text-align:left;font-family:${f.family};font-size:${exs}px;font-weight:300;font-style:italic;letter-spacing:1.4px;text-transform:uppercase;color:${ec(s,'extra','rgba(255,255,255,.88)')}">${parseInline(s.extra,c.accent2)}</div>`:''}
       </div>
     </div></body></html>`;
   }
@@ -2417,14 +2417,14 @@ function renderJornada(s,c,fk){
   <div style="width:1080px;height:1350px;background:#050505;position:relative;overflow:hidden;color:#F7F7F7">
     ${bgImg}
     <div style="position:absolute;inset:0;z-index:2">
-      <div style="position:absolute;top:64px;left:70px;font-family:'Montserrat',Arial,sans-serif;font-size:18px;letter-spacing:.5px;text-transform:uppercase;color:rgba(255,255,255,.90);font-weight:400;font-style:italic">${parseInline(name,c.accent2)}</div>
-      ${!isCover?`<div style="position:absolute;bottom:78px;right:70px;font-family:'Montserrat',Arial,sans-serif;font-size:34px;font-weight:300;color:rgba(255,255,255,.88);letter-spacing:2px">»</div>`:''}
+      <div style="position:absolute;top:64px;left:70px;font-family:${f.family};font-size:18px;letter-spacing:.5px;text-transform:uppercase;color:rgba(255,255,255,.90);font-weight:400;font-style:italic">${parseInline(name,c.accent2)}</div>
+      ${!isCover?`<div style="position:absolute;bottom:78px;right:70px;font-family:${f.family};font-size:34px;font-weight:300;color:rgba(255,255,255,.88);letter-spacing:2px">»</div>`:''}
       <div style="position:absolute;top:${contentTop}px;bottom:${contentBottom}px;left:0;right:0;padding:${contentPad};display:flex;flex-direction:column;justify-content:center;gap:${contentGap}px;transform:translateY(${offY(s,'headline')}px)">
         <h1 style="max-width:860px;width:100%;align-self:${isCenter?'center':'flex-start'};text-align:${headAlign};font-family:${f.family};font-size:${fitHeadline}px;line-height:1.08;font-weight:${headlineWeight};letter-spacing:${isCover?'-1.2px':'-.8px'};${headlineStyle}color:${ec(s,'headline','#F7F7F7')}">${parseInline(brk(s.headline),c.accent2)}</h1>
         ${s.bloco1?`<div style="max-width:820px;width:100%;align-self:${isCenter?'center':'flex-start'};font-family:${f.family};font-size:${fitB1}px;line-height:1.46;font-weight:700;color:${ec(s,'bloco1','#F7F7F7')};text-align:${isCenter?'center':'left'};transform:translateY(${offY(s,'bloco1')}px)">${parseInline(brk(s.bloco1),c.accent2)}</div>`:''}
         ${s.bloco2?`<div style="max-width:850px;width:fit-content;align-self:${isCenter?'center':'flex-start'};background:linear-gradient(90deg,rgba(12,44,68,.96),rgba(18,58,86,.78));padding:${isCover?'12px 24px':'14px 24px'};font-family:${f.family};font-size:${fitB2}px;line-height:1.42;font-weight:300;font-style:italic;color:${ec(s,'bloco2','#F2F4F5')};text-align:${isCenter?'center':'left'};transform:translateY(${offY(s,'bloco2')}px)">${parseInline(brk(s.bloco2),c.accent2)}</div>`:''}
       </div>
-      ${s.extra?`<div style="position:absolute;bottom:${72-offY(s,'extra')}px;left:70px;right:${isCover?'70px':'125px'};text-align:left;font-family:'Montserrat',Arial,sans-serif;font-size:${fitExtra}px;line-height:1.25;font-weight:300;font-style:italic;letter-spacing:1.1px;text-transform:uppercase;color:${ec(s,'extra','rgba(255,255,255,.82)')}"><strong style="font-weight:700;font-style:normal">${parseInline(firstWord,c.accent2)}</strong>${restWords?' '+parseInline(restWords,c.accent2):''}</div>`:''}
+      ${s.extra?`<div style="position:absolute;bottom:${72-offY(s,'extra')}px;left:70px;right:${isCover?'70px':'125px'};text-align:left;font-family:${f.family};font-size:${fitExtra}px;line-height:1.25;font-weight:300;font-style:italic;letter-spacing:1.1px;text-transform:uppercase;color:${ec(s,'extra','rgba(255,255,255,.82)')}"><strong style="font-weight:700;font-style:normal">${parseInline(firstWord,c.accent2)}</strong>${restWords?' '+parseInline(restWords,c.accent2):''}</div>`:''}
     </div>
   </div></body></html>`;
 }
@@ -2501,8 +2501,9 @@ function renderBoxImage(s, topPx=750){
 // ── EDITORIAL PREMIUM RENDERER ────────────────────────────────────────────────
 function renderEditorialPremium(s,c,fk){
   const total=state.slides.length;
-  const serif="'Cormorant Garamond','Playfair Display',Georgia,serif";
-  const sans="'DM Sans','Inter',Arial,sans-serif";
+  const selectedFont=FONTS[fk]||FONTS.cormorant;
+  const serif=selectedFont.family;
+  const sans=selectedFont.family;
   const gold=c.accent||'#C8A97E';
 
   const imgPos=s.imagePos||'float';
@@ -2627,8 +2628,9 @@ function renderEditorialPremium(s,c,fk){
 // ── MAIN RENDERER DISPATCHER ───────────────────────────────────────────────────
 // ── FEMININO RAIZ RENDERER ────────────────────────────────────────────────────
 function renderFemininoRaiz(s,c,fk){
-  const sans="'Poppins','Nunito',Arial,sans-serif";
-  const script="'Caveat',cursive";
+  const selectedFont=FONTS[fk]||FONTS.poppins;
+  const sans=selectedFont.family;
+  const script=selectedFont.family;
   const fitFR=(base,text,longAt,veryLongAt,min)=>{
     const clean=String(text||'').replace(/\*/g,'');
     const lines=clean.split('\n').filter(Boolean).length;
@@ -2660,7 +2662,7 @@ function renderFemininoRaiz(s,c,fk){
   }
 
   // Número fantasma no fundo
-  const ghostNum=`<div style="position:absolute;top:0;left:0;right:0;height:520px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',Georgia,serif;font-size:480px;font-weight:700;font-style:italic;font-variant-numeric:tabular-nums;color:rgba(255,255,255,0.09);line-height:.82;z-index:2;user-select:none;pointer-events:none"><span style="display:block;width:100%;text-align:center">${s.num-1}</span></div>`;
+  const ghostNum=`<div style="position:absolute;top:0;left:0;right:0;height:520px;display:flex;align-items:center;justify-content:center;font-family:${selectedFont.family};font-size:480px;font-weight:700;font-style:italic;font-variant-numeric:tabular-nums;color:rgba(255,255,255,0.09);line-height:.82;z-index:2;user-select:none;pointer-events:none"><span style="display:block;width:100%;text-align:center">${s.num-1}</span></div>`;
 
   const handle=c.handle||'@seuperfil';
 
@@ -2673,7 +2675,7 @@ function renderFemininoRaiz(s,c,fk){
     <div style="width:1080px;height:1350px;position:relative;overflow:hidden;color:#fff">
       ${bgLayer}
       <div style="position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 80px">
-        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:${Math.round(hs*2.2)}px;font-weight:700;font-style:italic;color:#fff;line-height:0.85;margin-bottom:24px;opacity:0.92">${s.tag||''}</div>
+        <div style="font-family:${selectedFont.family};font-size:${Math.round(hs*2.2)}px;font-weight:700;font-style:italic;color:#fff;line-height:0.85;margin-bottom:24px;opacity:0.92">${s.tag||''}</div>
         ${topLines?`<h1 style="font-family:${sans};font-size:${hs}px;font-weight:700;line-height:1.12;color:${ec(s,'headline','#fff')};margin-bottom:32px;transform:translateY(${offY(s,'headline')}px)">${parseInline(brk(topLines),rose)}</h1>`:''}
         ${lastLine?`<div style="background:${rose};border-radius:999px;padding:14px 38px;font-family:${sans};font-size:${Math.round(hs*0.72)}px;font-weight:600;color:#fff;line-height:1.2;transform:translateY(${offY(s,'headline')}px)">${parseInline(lastLine,rose)}</div>`:''}
         ${s.bloco1?`<p style="margin-top:30px;font-family:${sans};font-size:${b1s}px;font-weight:400;color:${ec(s,'bloco1','rgba(255,255,255,0.88)')};line-height:1.4;transform:translateY(${offY(s,'bloco1')}px)">${parseInline(brk(s.bloco1),rose)}</p>`:''}
@@ -2694,7 +2696,7 @@ function renderFemininoRaiz(s,c,fk){
       ${s.tag?`<div style="position:absolute;top:64px;left:70px;right:70px;text-align:center;font-family:${sans};font-size:16px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.72);z-index:4">${parseInline(s.tag,rose)}</div>`:''}
       <div style="position:absolute;inset:125px 0 150px;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 100px;gap:30px">
         ${s.headline?`<h1 style="font-family:${sans};font-size:${hs}px;font-weight:700;line-height:1.12;color:${ec(s,'headline','#fff')};transform:translateY(${offY(s,'headline')}px)">${parseInline(brk(s.headline),rose)}</h1>`:''}
-        ${s.bloco1?`<p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:${Math.round(b1s*1.25)}px;font-weight:600;font-style:italic;line-height:1.28;color:${ec(s,'bloco1','#fff')};transform:translateY(${offY(s,'bloco1')}px)">${parseInline(brk(s.bloco1),rose)}</p>`:''}
+        ${s.bloco1?`<p style="font-family:${selectedFont.family};font-size:${Math.round(b1s*1.25)}px;font-weight:600;font-style:italic;line-height:1.28;color:${ec(s,'bloco1','#fff')};transform:translateY(${offY(s,'bloco1')}px)">${parseInline(brk(s.bloco1),rose)}</p>`:''}
         ${s.bloco2?`<p style="font-family:${sans};font-size:${b2s}px;font-weight:500;color:${ec(s,'bloco2','rgba(255,255,255,0.78)')};line-height:1.4;transform:translateY(${offY(s,'bloco2')}px)">${parseInline(brk(s.bloco2),rose)}</p>`:''}
       </div>
       ${s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;text-align:center;font-family:${script};font-size:${exs}px;color:${ec(s,'extra','rgba(255,255,255,.70)')};z-index:4">${parseInline(brk(s.extra),rose)}</div>`:''}
