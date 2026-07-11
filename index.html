@@ -2081,11 +2081,11 @@ function renderSerif(s,c,fk){
     const capaTag = s.tag ? `<div style="position:absolute;top:75px;left:0;right:0;text-align:center;font-family:${f.family};font-size:12px;font-weight:300;letter-spacing:4px;text-transform:uppercase;color:${s.image?'rgba(244,239,230,0.55)':handleColor};z-index:3">${s.tag}</div>` : '';
     mainContent = `
       ${capaTag}
-      <div style="position:absolute;bottom:calc(${s.extra?190:130}px - ${offY(s,'bloco1')}px);left:70px;right:70px;text-align:center;z-index:3">
+      <div style="position:absolute;bottom:${s.extra?190:130}px;left:70px;right:70px;text-align:center;z-index:3">
         <div style="width:50px;height:1px;background:${accent};margin:0 auto 28px"></div>
-        <h1 style="font-family:${f.family};font-size:${hs}px;font-weight:400;line-height:1.05;color:${finalHeadline};margin-bottom:24px">${hHtml}</h1>
-        ${b1Html?`<p style="font-family:${f.family};font-size:${b1s}px;font-weight:300;line-height:1.6;color:${finalBody}">${b1Html}</p>`:''}
-        ${b2Html?`<p style="font-family:${f.family};font-size:${b2s}px;font-weight:400;line-height:1.5;color:${s.image?accent:accent};margin-top:16px">${b2Html}</p>`:''}
+        <h1 style="font-family:${f.family};font-size:${hs}px;font-weight:400;line-height:1.05;color:${finalHeadline};margin-bottom:24px;transform:translateY(${offY(s,'headline')}px)">${hHtml}</h1>
+        ${b1Html?`<p style="font-family:${f.family};font-size:${b1s}px;font-weight:300;line-height:1.6;color:${finalBody};transform:translateY(${offY(s,'bloco1')}px)">${b1Html}</p>`:''}
+        ${b2Html?`<p style="font-family:${f.family};font-size:${b2s}px;font-weight:400;line-height:1.5;color:${s.image?accent:accent};margin-top:16px;transform:translateY(${offY(s,'bloco2')}px)">${b2Html}</p>`:''}
       </div>`;
   } else if(s.type==='dados'){
     // Large number centered
@@ -3046,8 +3046,10 @@ function buildTexto(){
     const szFields=[['headline','Headline',14,160],['bloco1','Bloco 1',14,160],['bloco2','Bloco 2',14,160],['extra','Extra',10,100]];
     szFields.forEach(([elName,lbl,min,max])=>{
       const dv=(slide.sizes&&slide.sizes[elName])||40;
+      const sliderMin=Math.min(min,dv);
+      const sliderMax=Math.max(max,dv);
       const row=document.createElement('div');row.className='sz-row';
-      row.innerHTML=`<span class="sz-lbl">${lbl}</span><input type="range" class="sz-slider" min="${min}" max="${max}" value="${dv}" data-num="${slide.num}" data-el="${elName}" id="sz-${slide.num}-${elName}" oninput="onSizeChange(this)"><span class="sz-val" id="sv-${slide.num}-${elName}">${dv}px</span>`;
+      row.innerHTML=`<span class="sz-lbl">${lbl}</span><input type="range" class="sz-slider" min="${sliderMin}" max="${sliderMax}" value="${dv}" data-num="${slide.num}" data-el="${elName}" id="sz-${slide.num}-${elName}" oninput="onSizeChange(this)"><span class="sz-val" id="sv-${slide.num}-${elName}">${dv}px</span>`;
       szSec.appendChild(row);
     });
     body.appendChild(szSec);
@@ -3685,8 +3687,10 @@ function renderMobileEditorBody(slide){
 
 function mobileRangeControl(slide,key,type){
   const value=type==='size'?((slide.sizes&&slide.sizes[key])||40):((slide.offsets&&slide.offsets[key])||0);
-  const min=type==='size'?14:-800;
-  const max=type==='size'?200:800;
+  const baseMin=type==='size'?(key==='extra'?10:14):-800;
+  const baseMax=type==='size'?(key==='headline'?240:200):800;
+  const min=Math.min(baseMin,value);
+  const max=Math.max(baseMax,value);
   const step=type==='size'?2:10;
   const suffix=type==='size'?'px':(value>0?'+':'')+value+'px';
   const labelValue=type==='size'?`${value}px`:`${value>0?'+':''}${value}px`;
@@ -3724,7 +3728,11 @@ function mobileStep(key,type,delta){
   const slide=getMobileSlide(mobileSelectedSlide);if(!slide)return;
   let val=type==='size'?((slide.sizes&&slide.sizes[key])||40):((slide.offsets&&slide.offsets[key])||0);
   val+=delta;
-  if(type==='size')val=Math.max(14,Math.min(180,val));
+  if(type==='size'){
+    const minSize=key==='extra'?10:14;
+    const maxSize=key==='headline'?240:200;
+    val=Math.max(minSize,Math.min(maxSize,val));
+  }
   else val=Math.max(-180,Math.min(180,val));
   if(type==='size'){
     if(!slide.sizes)slide.sizes={};slide.sizes[key]=val;
