@@ -435,10 +435,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // ── VISUAL STYLES ──────────────────────────────────────────────────────────────
 const VISUAL_STYLES = {
   jornada: {label:'Presença',desc:'Apresentação profissional, autoridade pessoal, serviços e posicionamento direto. Usa fundo escuro e imagem de fundo.',bg:'#050505',text:'#F7F7F7',accent:'#12324A',accent2:'#8CB7A7',preview:{bg:'#050505',accent:'#12324A',label:'Pr'}},
-  transformacao: {label:'Transformação',desc:'Antes e depois emocional, profissional ou comportamental. Ideal para provas, cases e evolução.',bg:'#F7F1E8',text:'#201812',accent:'#9B6A3D',accent2:'#7C5A42',preview:{bg:'#F7F1E8',accent:'#9B6A3D',label:'A→D'}},
-  metodo: {label:'Método',desc:'Passos, mapas, frameworks e processos simples para ensinar com clareza.',bg:'#F8F6F0',text:'#181818',accent:'#C9A96E',accent2:'#6B7280',preview:{bg:'#F8F6F0',accent:'#C9A96E',label:'01'}},
   serif: {label:'Editorial',desc:'Modelo elegante para posicionamento, autoridade, reflexão e marca pessoal.',bg:'#F4EFE6',text:'#1A1209',accent:'#C9A961',accent2:'#7A5230',preview:{bg:'#F4EFE6',accent:'#7A5230',label:'Ed'}},
-  magazine: {label:'Revista',desc:'Modelo visual e dinâmico com aparência de matéria, destaque ou capa digital.',bg:'#0F1115',text:'#FFFFFF',accent:'#F5C542',accent2:'#9CA3AF',preview:{bg:'#0F1115',accent:'#F5C542',label:'Mg'}},
   editorial_premium: {label:'Editorial Premium',desc:'Fotos full bleed, Cormorant Garamond italic, caixas dark. Tom sofisticado e clínico.',bg:'#2A1608',text:'#F0E9DF',accent:'#C8A97E',accent2:'#8B6B4E',preview:{bg:'#2A1608',accent:'#C8A97E',label:'Ep'}},
   feminino_raiz: {label:'Feminino Raiz',desc:'Foto de fundo com overlay natural, número fantasma, título bold centralizado e frase de encerramento manuscrita. Tom enraizado e feminino.',bg:'#1C2E1C',text:'#FFFFFF',accent:'#C4878A',accent2:'rgba(255,255,255,0.82)',preview:{bg:'#2D4A2D',accent:'#C4878A',label:'FR'}}
 };
@@ -474,7 +471,7 @@ const TEMPLATES_META = {
 const SLIDE_LABELS = {capa:'Capa',contexto:'Contexto',dados:'Dados',virada:'Virada',dois_col:'Desenvolvimento 1',cenarios:'Desenvolvimento 2',sintese:'Síntese',aplicacao:'Aplicação',cta:'CTA'};
 const FIELDS = {tag:{label:'TAG',type:'input'},headline:{label:'HEADLINE (use *palavra* para destaque)',type:'textarea',rows:4},bloco1:{label:'BLOCO 1',type:'textarea',rows:5},bloco2:{label:'BLOCO 2',type:'textarea',rows:4},extra:{label:'EXTRA',type:'textarea',rows:2}};
 const DEFAULT_SIZES = {
-  capa:{headline:74,bloco1:30,bloco2:30}, contexto:{headline:60,bloco1:31,bloco2:32},
+  capa:{headline:74,bloco1:30,bloco2:16}, contexto:{headline:60,bloco1:31,bloco2:32},
   dados:{headline:180,bloco1:34,bloco2:120}, virada:{headline:60,bloco1:33,bloco2:33},
   dois_col:{headline:54,bloco1:25,bloco2:25}, cenarios:{headline:60,bloco1:27,bloco2:27},
   sintese:{headline:58,bloco1:19,bloco2:30}, aplicacao:{headline:70,bloco1:26,bloco2:25},
@@ -1734,7 +1731,7 @@ try {
 // Migração de versões antigas.
 if(['clean','impact','statement','sans','passo','checklist','mito','dados','antesdepois'].includes(state.visual)) state.visual = 'jornada';
 if(state.visual==='editorial') state.visual = 'serif';
-if(state.visual==='contraste') state.visual = 'transformacao';
+if(['contraste','transformacao','metodo','magazine'].includes(state.visual)) state.visual = 'jornada';
 if(!VISUAL_STYLES[state.visual]) state.visual = 'jornada';
 
 function saveState(){try{state.appVersion=APP_VERSION;localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch(e){}}
@@ -1743,8 +1740,18 @@ function offY(s,key){return(s.offsets&&s.offsets[key])||0;}
 // ── HELPERS ────────────────────────────────────────────────────────────────────
 function sz(s,el,def){return(s.sizes&&s.sizes[el])||def;}
 function ec(s,el,fb){return(s.el_colors&&s.el_colors[el])||fb;}
-function brk(t){return String(t||'').replace(/\n/g,'<br>');}
-function parseInline(t,accent){return String(t||'').replace(/\*(.*?)\*/g,`<span style="color:${accent}">$1</span>`);}
+class SafeHtmlText extends String {}
+function escapeHtml(t){
+  return String(t||'').replace(/[&<>"']/g,ch=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  })[ch]);
+}
+function safeText(t){return t instanceof SafeHtmlText?t:new SafeHtmlText(escapeHtml(t));}
+function brk(t){return new SafeHtmlText(String(safeText(t)).replace(/\n/g,'<br>'));}
+function parseInline(t,accent){
+  const safe=String(safeText(t));
+  return safe.replace(/\*(.*?)\*/g,`<span style="color:${accent}">$1</span>`);
+}
 
 function renderStudentImageBg(s, overlay='dark'){
   // Só renderiza fundo full-bleed para imagePos==='background'
@@ -2061,6 +2068,10 @@ function renderSerif(s,c,fk){
 
   const b1Html = parseInline(brk(s.bloco1||''), accent);
   const b2Html = s.bloco2 ? parseInline(brk(s.bloco2), accent) : '';
+  const specialType=['dados','sintese','cta'].includes(s.type);
+  const universalTag=(specialType&&s.tag)?`<div style="position:absolute;top:75px;left:70px;right:70px;font-family:${f.family};font-size:12px;font-weight:400;letter-spacing:4px;text-transform:uppercase;color:${s.image?'rgba(244,239,230,0.6)':accent};z-index:3">${parseInline(s.tag,accent)}</div>`:'';
+  const needsUniversalExtra=['capa','sintese','cta'].includes(s.type);
+  const universalExtra=(needsUniversalExtra&&s.extra)?`<div style="position:absolute;bottom:105px;left:70px;right:70px;text-align:center;font-family:${f.family};font-size:${sz(s,'extra',18)}px;font-weight:400;font-style:italic;line-height:1.4;color:${s.image?accent:accent};z-index:3">${parseInline(brk(s.extra),accent)}</div>`:'';
 
   // Build content layout based on slide type
   let mainContent = '';
@@ -2070,7 +2081,7 @@ function renderSerif(s,c,fk){
     const capaTag = s.tag ? `<div style="position:absolute;top:75px;left:0;right:0;text-align:center;font-family:${f.family};font-size:12px;font-weight:300;letter-spacing:4px;text-transform:uppercase;color:${s.image?'rgba(244,239,230,0.55)':handleColor};z-index:3">${s.tag}</div>` : '';
     mainContent = `
       ${capaTag}
-      <div style="position:absolute;bottom:calc(130px - ${offY(s,'bloco1')}px);left:70px;right:70px;text-align:center;z-index:3">
+      <div style="position:absolute;bottom:calc(${s.extra?190:130}px - ${offY(s,'bloco1')}px);left:70px;right:70px;text-align:center;z-index:3">
         <div style="width:50px;height:1px;background:${accent};margin:0 auto 28px"></div>
         <h1 style="font-family:${f.family};font-size:${hs}px;font-weight:400;line-height:1.05;color:${finalHeadline};margin-bottom:24px">${hHtml}</h1>
         ${b1Html?`<p style="font-family:${f.family};font-size:${b1s}px;font-weight:300;line-height:1.6;color:${finalBody}">${b1Html}</p>`:''}
@@ -2131,7 +2142,9 @@ function renderSerif(s,c,fk){
   </head><body>
   <div style="width:1080px;height:1350px;background:${finalBg};position:relative;overflow:hidden">
     ${photoBg}${overlay}${serifFloatImg}${serifTopHalf}${serifBox}
+    ${universalTag}
     ${mainContent}
+    ${universalExtra}
     <div style="position:absolute;bottom:55px;left:0;right:0;text-align:center;font-family:${f.family};font-size:13px;font-weight:300;letter-spacing:3px;text-transform:uppercase;color:${isSerifBg?'rgba(244,239,230,0.45)':handleColor};${z}">${c.handle||'@seuperfil'}</div>
     <div style="position:absolute;bottom:88px;right:60px;font-family:${f.family};font-size:12px;color:${isSerifBg?'rgba(244,239,230,0.3)':handleColor};letter-spacing:1px;${z}">${String(s.num).padStart(2,'0')}/${String(total).padStart(2,'0')}</div>
   </div>`;
@@ -2366,32 +2379,52 @@ function renderJornada(s,c,fk){
       </div>
     </div></body></html>`;
   }
-  const bgImg=hasImg&&imgPos==='background'?`<div style="position:absolute;inset:0;background:url('${s.image}') center/cover no-repeat;filter:grayscale(1) contrast(1.12) brightness(.72);z-index:0"></div><div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.42) 0%,rgba(0,0,0,.70) 48%,rgba(0,0,0,.92) 100%);z-index:1"></div>`:`<div style="position:absolute;inset:0;background:#050505;z-index:0"></div><div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 20%,rgba(18,50,74,.20),transparent 32%),linear-gradient(180deg,#050505,#020202);z-index:1"></div><div style="position:absolute;inset:0;opacity:.18;background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);z-index:1"></div>`;
-  const centerTypes=['capa','contexto'];
+  const bgImg=hasImg&&imgPos==='background'?`<div style="position:absolute;inset:0;background:url('${s.image}') center/cover no-repeat;filter:grayscale(.72) saturate(.72) contrast(1.06) brightness(.82);z-index:0"></div><div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.20) 0%,rgba(0,0,0,.32) 30%,rgba(0,0,0,.72) 63%,rgba(0,0,0,.97) 100%);z-index:1"></div>`:`<div style="position:absolute;inset:0;background:#050505;z-index:0"></div><div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 18%,rgba(18,50,74,.16),transparent 34%),linear-gradient(180deg,#050505,#020202);z-index:1"></div><div style="position:absolute;inset:0;opacity:.14;background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);z-index:1"></div>`;
+  const centerTypes=['capa','contexto','sintese','cta'];
   const isCover=s.type==='capa';
   const isCenter=centerTypes.includes(s.type);
   const headAlign=isCover?'center':(isCenter?'center':'left');
-  const headLeft=isCover?'95px':(isCenter?'105px':'155px');
-  const headRight=isCover?'95px':(isCenter?'105px':'150px');
-  const headTop=isCover?`${560+offY(s,'headline')}px`:`${250+offY(s,'headline')}px`;
-  const bloco1Top=isCover?`${760+offY(s,'bloco1')}px`:`${510+offY(s,'bloco1')}px`;
-  const faixaTop=isCover?`${875+offY(s,'bloco2')}px`:`${630+offY(s,'bloco2')}px`;
-  const bodyLeft=isCover?'145px':(isCenter?'160px':'155px');
-  const bodyRight=isCover?'145px':(isCenter?'160px':'150px');
   const headlineWeight=isCover?300:800;
   const headlineStyle=isCover?'font-style:italic;':'font-style:normal;';
+  const textLen=t=>String(t||'').replace(/\*/g,'').length;
+  const lineCount=t=>String(t||'').split('\n').filter(Boolean).length||1;
+  const fitSize=(requested,text,opts)=>{
+    let size=Math.min(requested,opts.max);
+    const len=textLen(text),lines=lineCount(text);
+    if(len>opts.long||lines>opts.lines)size=Math.min(size,opts.medium);
+    if(len>opts.veryLong||lines>opts.manyLines)size=Math.min(size,opts.small);
+    return Math.max(opts.min,size);
+  };
+  // O Presença agora se adapta ao volume de texto sem perder a hierarquia visual.
+  const fitHeadline=fitSize(hs,s.headline,isCover
+    ?{max:64,medium:54,small:46,min:38,long:65,veryLong:105,lines:3,manyLines:5}
+    :{max:62,medium:52,small:44,min:36,long:75,veryLong:125,lines:3,manyLines:5});
+  const fitB1=fitSize(b1s,s.bloco1,isCover
+    ?{max:26,medium:23,small:20,min:18,long:95,veryLong:175,lines:3,manyLines:5}
+    :{max:30,medium:25,small:21,min:18,long:125,veryLong:230,lines:5,manyLines:8});
+  const fitB2=fitSize(b2s,s.bloco2,isCover
+    ?{max:24,medium:21,small:18,min:16,long:85,veryLong:155,lines:3,manyLines:5}
+    :{max:28,medium:24,small:20,min:18,long:115,veryLong:210,lines:4,manyLines:7});
+  const fitExtra=fitSize(exs,s.extra,{max:18,medium:16,small:14,min:13,long:85,veryLong:140,lines:2,manyLines:3});
+  const contentTop=isCover?300:(isCenter?205:180);
+  // A capa precisa de uma zona livre maior para o CTA inferior e para o rodape.
+  const contentBottom=isCover?270:175;
+  const contentPad=isCover?'0 95px':(isCenter?'0 145px':'0 125px');
+  const contentGap=isCover?30:38;
   const firstWord=String(s.extra||'').split(' ')[0]||'';
   const restWords=String(s.extra||'').split(' ').slice(1).join(' ');
   return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">${GFONTS_ALL}<style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:#050505;font-family:${f.family}}</style></head><body>
   <div style="width:1080px;height:1350px;background:#050505;position:relative;overflow:hidden;color:#F7F7F7">
     ${bgImg}
     <div style="position:absolute;inset:0;z-index:2">
-      <div style="position:absolute;top:64px;left:70px;font-family:'Montserrat',Arial,sans-serif;font-size:18px;letter-spacing:.7px;text-transform:uppercase;color:rgba(255,255,255,.92);font-weight:300"><strong style="font-weight:800">${parseInline(name,c.accent2)}</strong></div>
+      <div style="position:absolute;top:64px;left:70px;font-family:'Montserrat',Arial,sans-serif;font-size:18px;letter-spacing:.5px;text-transform:uppercase;color:rgba(255,255,255,.90);font-weight:400;font-style:italic">${parseInline(name,c.accent2)}</div>
       ${!isCover?`<div style="position:absolute;bottom:78px;right:70px;font-family:'Montserrat',Arial,sans-serif;font-size:34px;font-weight:300;color:rgba(255,255,255,.88);letter-spacing:2px">»</div>`:''}
-      <h1 style="position:absolute;top:${headTop};left:${headLeft};right:${headRight};text-align:${headAlign};font-family:${f.family};font-size:${hs}px;line-height:1.10;font-weight:${headlineWeight};letter-spacing:${isCover?'-1.2px':'-.8px'};${headlineStyle}color:${ec(s,'headline','#F7F7F7')}">${parseInline(brk(s.headline),c.accent2)}</h1>
-      ${s.bloco1?`<div style="position:absolute;top:${bloco1Top};left:${bodyLeft};right:${bodyRight};font-family:${f.family};font-size:${b1s}px;line-height:1.38;font-weight:700;color:${ec(s,'bloco1','#F7F7F7')};text-align:${isCenter?'center':'left'}">${parseInline(brk(s.bloco1),c.accent2)}</div>`:''}
-      ${s.bloco2?`<div style="position:absolute;top:${faixaTop};left:${isCenter?'170px':'155px'};right:${isCenter?'170px':'150px'};background:linear-gradient(90deg,rgba(18,50,74,.88),rgba(18,50,74,.66));padding:18px 28px;border-radius:0;font-family:${f.family};font-size:${b2s}px;line-height:1.42;font-weight:300;font-style:italic;color:${ec(s,'bloco2','#F2F4F5')};text-align:${isCenter?'center':'left'}">${parseInline(brk(s.bloco2),c.accent2)}</div>`:''}
-      ${s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;text-align:${isCover?'left':'center'};font-family:'Montserrat',Arial,sans-serif;font-size:${exs}px;line-height:1.2;font-weight:300;font-style:italic;letter-spacing:1.4px;text-transform:uppercase;color:${ec(s,'extra','rgba(255,255,255,.88)')}"><strong style="font-weight:800;font-style:normal">${parseInline(firstWord,c.accent2)}</strong>${restWords?' '+parseInline(restWords,c.accent2):''}</div>`:''}
+      <div style="position:absolute;top:${contentTop}px;bottom:${contentBottom}px;left:0;right:0;padding:${contentPad};display:flex;flex-direction:column;justify-content:center;gap:${contentGap}px;transform:translateY(${offY(s,'headline')}px)">
+        <h1 style="max-width:860px;width:100%;align-self:${isCenter?'center':'flex-start'};text-align:${headAlign};font-family:${f.family};font-size:${fitHeadline}px;line-height:1.08;font-weight:${headlineWeight};letter-spacing:${isCover?'-1.2px':'-.8px'};${headlineStyle}color:${ec(s,'headline','#F7F7F7')}">${parseInline(brk(s.headline),c.accent2)}</h1>
+        ${s.bloco1?`<div style="max-width:820px;width:100%;align-self:${isCenter?'center':'flex-start'};font-family:${f.family};font-size:${fitB1}px;line-height:1.46;font-weight:700;color:${ec(s,'bloco1','#F7F7F7')};text-align:${isCenter?'center':'left'};transform:translateY(${offY(s,'bloco1')}px)">${parseInline(brk(s.bloco1),c.accent2)}</div>`:''}
+        ${s.bloco2?`<div style="max-width:850px;width:fit-content;align-self:${isCenter?'center':'flex-start'};background:linear-gradient(90deg,rgba(12,44,68,.96),rgba(18,58,86,.78));padding:${isCover?'12px 24px':'14px 24px'};font-family:${f.family};font-size:${fitB2}px;line-height:1.42;font-weight:300;font-style:italic;color:${ec(s,'bloco2','#F2F4F5')};text-align:${isCenter?'center':'left'};transform:translateY(${offY(s,'bloco2')}px)">${parseInline(brk(s.bloco2),c.accent2)}</div>`:''}
+      </div>
+      ${s.extra?`<div style="position:absolute;bottom:${72-offY(s,'extra')}px;left:70px;right:${isCover?'70px':'125px'};text-align:left;font-family:'Montserrat',Arial,sans-serif;font-size:${fitExtra}px;line-height:1.25;font-weight:300;font-style:italic;letter-spacing:1.1px;text-transform:uppercase;color:${ec(s,'extra','rgba(255,255,255,.82)')}"><strong style="font-weight:700;font-style:normal">${parseInline(firstWord,c.accent2)}</strong>${restWords?' '+parseInline(restWords,c.accent2):''}</div>`:''}
     </div>
   </div></body></html>`;
 }
@@ -2479,7 +2512,8 @@ function renderEditorialPremium(s,c,fk){
   const isBox=hasPhoto&&imgPos==='box';
   const lightTypes=['sintese','dois_col'];
   const isLight=!isBg&&!isTopHalf&&lightTypes.includes(s.type);
-  const baseBg=slideBg(s,c)||(isLight?'#F0E9DF':'#2A1608');
+  const customSlideBg=s.el_colors&&s.el_colors.slide_bg;
+  const baseBg=customSlideBg||(isLight?'#F0E9DF':(c.bg||'#2A1608'));
   const bgColor=isBg?'#0A0805':baseBg;
   const textPrimary=isLight?'#2A1608':'#F0E9DF';
   const textMuted=isLight?'rgba(42,22,8,0.6)':'rgba(240,233,223,0.55)';
@@ -2500,7 +2534,17 @@ function renderEditorialPremium(s,c,fk){
       .replace(/_(.*?)_/g,'<em>$1</em>');
   }
 
-  const hs=sz(s,'headline',68),b1s=sz(s,'bloco1',30),b2s=sz(s,'bloco2',26);
+  const fitEP=(base,text,longAt,veryLongAt,min)=>{
+    const clean=String(text||'').replace(/\*/g,'');
+    const lines=clean.split('\n').filter(Boolean).length;
+    let size=base;
+    if(clean.length>longAt||lines>4)size=Math.round(base*.82);
+    if(clean.length>veryLongAt||lines>7)size=Math.round(base*.68);
+    return Math.max(min,size);
+  };
+  const hs=fitEP(sz(s,'headline',68),s.headline,95,155,38);
+  const b1s=fitEP(sz(s,'bloco1',30),s.bloco1,145,245,18);
+  const b2s=fitEP(sz(s,'bloco2',26),s.bloco2,125,220,17);
   const hColor=ec(s,'headline','')||(hasPhoto?'#FFFFFF':textPrimary);
   const b1Color=ec(s,'bloco1','')||(hasPhoto?'rgba(255,255,255,0.9)':textPrimary);
   const b2Color=ec(s,'bloco2','')||(hasPhoto?'rgba(255,255,255,0.78)':textMuted);
@@ -2585,7 +2629,18 @@ function renderEditorialPremium(s,c,fk){
 function renderFemininoRaiz(s,c,fk){
   const sans="'Poppins','Nunito',Arial,sans-serif";
   const script="'Caveat',cursive";
-  const hs=sz(s,'headline',64),b1s=sz(s,'bloco1',30),b2s=sz(s,'bloco2',34),exs=sz(s,'extra',18);
+  const fitFR=(base,text,longAt,veryLongAt,min)=>{
+    const clean=String(text||'').replace(/\*/g,'');
+    const lines=clean.split('\n').filter(Boolean).length;
+    let size=base;
+    if(clean.length>longAt||lines>4)size=Math.round(base*.82);
+    if(clean.length>veryLongAt||lines>7)size=Math.round(base*.68);
+    return Math.max(min,size);
+  };
+  const hs=fitFR(sz(s,'headline',64),s.headline,85,145,36);
+  const b1s=fitFR(sz(s,'bloco1',30),s.bloco1,135,230,18);
+  const b2s=fitFR(sz(s,'bloco2',34),s.bloco2,110,190,20);
+  const exs=fitFR(sz(s,'extra',18),s.extra,85,145,13);
   const rose=c.accent||'#C4878A';
   const isCapa=s.type==='capa';
   const hasImg=!!s.image;
@@ -2605,7 +2660,7 @@ function renderFemininoRaiz(s,c,fk){
   }
 
   // Número fantasma no fundo
-  const ghostNum=`<div style="position:absolute;top:30px;left:50%;transform:translateX(-50%);font-family:'Cormorant Garamond',Georgia,serif;font-size:480px;font-weight:700;font-style:italic;color:rgba(255,255,255,0.09);line-height:1;z-index:2;user-select:none;pointer-events:none">${s.num-1}</div>`;
+  const ghostNum=`<div style="position:absolute;top:0;left:0;right:0;height:520px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',Georgia,serif;font-size:480px;font-weight:700;font-style:italic;font-variant-numeric:tabular-nums;color:rgba(255,255,255,0.09);line-height:.82;z-index:2;user-select:none;pointer-events:none"><span style="display:block;width:100%;text-align:center">${s.num-1}</span></div>`;
 
   const handle=c.handle||'@seuperfil';
 
@@ -2619,10 +2674,12 @@ function renderFemininoRaiz(s,c,fk){
       ${bgLayer}
       <div style="position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 80px">
         <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:${Math.round(hs*2.2)}px;font-weight:700;font-style:italic;color:#fff;line-height:0.85;margin-bottom:24px;opacity:0.92">${s.tag||''}</div>
-        ${topLines?`<h1 style="font-family:${sans};font-size:${hs}px;font-weight:700;line-height:1.12;color:#fff;margin-bottom:32px">${parseInline(brk(topLines),rose)}</h1>`:''}
-        ${lastLine?`<div style="background:${rose};border-radius:999px;padding:14px 38px;font-family:${sans};font-size:${Math.round(hs*0.72)}px;font-weight:600;color:#fff;line-height:1.2">${parseInline(lastLine,rose)}</div>`:''}
-        ${s.bloco1?`<p style="margin-top:36px;font-family:${sans};font-size:${b1s}px;font-weight:400;color:rgba(255,255,255,0.88);line-height:1.4">${parseInline(brk(s.bloco1),rose)}</p>`:''}
+        ${topLines?`<h1 style="font-family:${sans};font-size:${hs}px;font-weight:700;line-height:1.12;color:${ec(s,'headline','#fff')};margin-bottom:32px;transform:translateY(${offY(s,'headline')}px)">${parseInline(brk(topLines),rose)}</h1>`:''}
+        ${lastLine?`<div style="background:${rose};border-radius:999px;padding:14px 38px;font-family:${sans};font-size:${Math.round(hs*0.72)}px;font-weight:600;color:#fff;line-height:1.2;transform:translateY(${offY(s,'headline')}px)">${parseInline(lastLine,rose)}</div>`:''}
+        ${s.bloco1?`<p style="margin-top:30px;font-family:${sans};font-size:${b1s}px;font-weight:400;color:${ec(s,'bloco1','rgba(255,255,255,0.88)')};line-height:1.4;transform:translateY(${offY(s,'bloco1')}px)">${parseInline(brk(s.bloco1),rose)}</p>`:''}
+        ${s.bloco2?`<p style="margin-top:22px;font-family:${script};font-size:${b2s}px;font-weight:500;color:${ec(s,'bloco2','rgba(255,255,255,0.94)')};line-height:1.3;transform:translateY(${offY(s,'bloco2')}px)">${parseInline(brk(s.bloco2),rose)}</p>`:''}
       </div>
+      ${s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;text-align:center;font-family:${sans};font-size:${exs}px;font-style:italic;color:${ec(s,'extra','rgba(255,255,255,0.70)')};z-index:4">${parseInline(brk(s.extra),rose)}</div>`:''}
       <div style="position:absolute;bottom:38px;left:0;right:0;text-align:center;font-family:${sans};font-size:18px;font-weight:400;color:rgba(255,255,255,0.62);z-index:4">${handle}</div>
     </div></body></html>`;
   }
@@ -2630,14 +2687,17 @@ function renderFemininoRaiz(s,c,fk){
   // SLIDES INTERNOS (hábitos 1–7) e CTA
   const isCta=s.type==='cta';
   if(isCta){
-    // CTA: só quote sobreposto grande + handle
+    // CTA mantém a composição poética, mas aceita o contrato universal completo.
     return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">${GFONTS_ALL}<style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;font-family:${sans}}</style></head><body>
     <div style="width:1080px;height:1350px;position:relative;overflow:hidden;color:#fff">
       ${bgLayer}
-      <div style="position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 100px;gap:40px">
-        ${s.bloco1?`<p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:${Math.round(b1s*1.4)}px;font-weight:600;font-style:italic;line-height:1.28;color:#fff">${parseInline(brk(s.bloco1),rose)}</p>`:''}
-        ${s.bloco2?`<p style="font-family:${sans};font-size:${b2s}px;font-weight:500;color:rgba(255,255,255,0.75);line-height:1.4">${parseInline(brk(s.bloco2),rose)}</p>`:''}
+      ${s.tag?`<div style="position:absolute;top:64px;left:70px;right:70px;text-align:center;font-family:${sans};font-size:16px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.72);z-index:4">${parseInline(s.tag,rose)}</div>`:''}
+      <div style="position:absolute;inset:125px 0 150px;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 100px;gap:30px">
+        ${s.headline?`<h1 style="font-family:${sans};font-size:${hs}px;font-weight:700;line-height:1.12;color:${ec(s,'headline','#fff')};transform:translateY(${offY(s,'headline')}px)">${parseInline(brk(s.headline),rose)}</h1>`:''}
+        ${s.bloco1?`<p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:${Math.round(b1s*1.25)}px;font-weight:600;font-style:italic;line-height:1.28;color:${ec(s,'bloco1','#fff')};transform:translateY(${offY(s,'bloco1')}px)">${parseInline(brk(s.bloco1),rose)}</p>`:''}
+        ${s.bloco2?`<p style="font-family:${sans};font-size:${b2s}px;font-weight:500;color:${ec(s,'bloco2','rgba(255,255,255,0.78)')};line-height:1.4;transform:translateY(${offY(s,'bloco2')}px)">${parseInline(brk(s.bloco2),rose)}</p>`:''}
       </div>
+      ${s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;text-align:center;font-family:${script};font-size:${exs}px;color:${ec(s,'extra','rgba(255,255,255,.70)')};z-index:4">${parseInline(brk(s.extra),rose)}</div>`:''}
       <div style="position:absolute;bottom:38px;left:0;right:0;text-align:center;font-family:${sans};font-size:18px;font-weight:400;color:rgba(255,255,255,0.62);z-index:4">${handle}</div>
     </div></body></html>`;
   }
@@ -2647,17 +2707,22 @@ function renderFemininoRaiz(s,c,fk){
   <div style="width:1080px;height:1350px;position:relative;overflow:hidden;color:#fff">
     ${bgLayer}
     ${ghostNum}
+    ${s.tag?`<div style="position:absolute;top:64px;left:70px;right:70px;text-align:center;font-family:${sans};font-size:16px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.70);z-index:4">${parseInline(s.tag,rose)}</div>`:''}
     <div style="position:absolute;left:0;right:0;top:44%;bottom:9%;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 90px;gap:32px">
-      <h2 style="font-family:${sans};font-size:${hs}px;font-weight:700;line-height:1.10;color:${ec(s,'headline','#fff')}">${parseInline(brk(s.headline),rose)}</h2>
-      ${s.bloco1?`<p style="font-family:${sans};font-size:${b1s}px;font-weight:400;line-height:1.48;color:${ec(s,'bloco1','rgba(255,255,255,0.90)')}">${parseInline(brk(s.bloco1),rose)}</p>`:''}
-      ${s.bloco2?`<p style="font-family:${script};font-size:${b2s}px;font-weight:500;line-height:1.38;color:${ec(s,'bloco2','rgba(255,255,255,0.95)')};border-bottom:2px solid rgba(255,255,255,0.45);padding-bottom:8px">${parseInline(brk(s.bloco2),rose)}</p>`:''}
-      ${s.extra?`<p style="font-family:${script};font-size:${exs}px;color:${ec(s,'extra','rgba(255,255,255,0.72)')}">${parseInline(brk(s.extra),rose)}</p>`:''}
+      <h2 style="font-family:${sans};font-size:${hs}px;font-weight:700;line-height:1.10;color:${ec(s,'headline','#fff')};transform:translateY(${offY(s,'headline')}px)">${parseInline(brk(s.headline),rose)}</h2>
+      ${s.bloco1?`<p style="font-family:${sans};font-size:${b1s}px;font-weight:400;line-height:1.48;color:${ec(s,'bloco1','rgba(255,255,255,0.90)')};transform:translateY(${offY(s,'bloco1')}px)">${parseInline(brk(s.bloco1),rose)}</p>`:''}
+      ${s.bloco2?`<p style="font-family:${script};font-size:${b2s}px;font-weight:500;line-height:1.38;color:${ec(s,'bloco2','rgba(255,255,255,0.95)')};border-bottom:2px solid rgba(255,255,255,0.45);padding-bottom:8px;transform:translateY(${offY(s,'bloco2')}px)">${parseInline(brk(s.bloco2),rose)}</p>`:''}
+      ${s.extra?`<p style="font-family:${script};font-size:${exs}px;color:${ec(s,'extra','rgba(255,255,255,0.72)')};transform:translateY(${offY(s,'extra')}px)">${parseInline(brk(s.extra),rose)}</p>`:''}
     </div>
     <div style="position:absolute;bottom:38px;left:0;right:0;text-align:center;font-family:${sans};font-size:18px;font-weight:400;color:rgba(255,255,255,0.55);z-index:4">${handle}</div>
   </div></body></html>`;
 }
 
 function renderSlide(slide,colors,fontKey){
+  // Todo texto do usuário chega aos templates já escapado. SafeHtmlText continua
+  // funcionando como string nas operações de split/replace dos renderizadores.
+  slide=Object.assign({},slide);
+  ['tag','headline','bloco1','bloco2','extra'].forEach(k=>{slide[k]=safeText(slide[k]);});
   // Aplica override de cor de fundo por slide
   const c = (slide.el_colors&&slide.el_colors.slide_bg)
     ? Object.assign({},colors,{bg:slide.el_colors.slide_bg})
@@ -2808,10 +2873,10 @@ function parseCarrossel(raw) {
     if (v.includes('FEMININO') || v.includes('RAIZ')) detectedVisual = 'feminino_raiz';
     else if (v.includes('EDITORIAL PREMIUM') || v.includes('PREMIUM')) detectedVisual = 'editorial_premium';
     else if (v.includes('EDITORIAL') || v.includes('SERIF')) detectedVisual = 'serif';
-    else if (v.includes('REVISTA') || v.includes('MAGAZINE')) detectedVisual = 'magazine';
+    else if (v.includes('REVISTA') || v.includes('MAGAZINE')) detectedVisual = 'jornada';
     else if (v.includes('PRESENCA') || v.includes('PRESENÇA') || v.includes('JORNADA')) detectedVisual = 'jornada';
-    else if (v.includes('TRANSFORMACAO') || v.includes('TRANSFORMAÇÃO')) detectedVisual = 'transformacao';
-    else if (v.includes('METODO') || v.includes('MÉTODO')) detectedVisual = 'metodo';
+    else if (v.includes('TRANSFORMACAO') || v.includes('TRANSFORMAÇÃO')) detectedVisual = 'jornada';
+    else if (v.includes('METODO') || v.includes('MÉTODO')) detectedVisual = 'jornada';
   }
 
   // Detectar formato narrativo
@@ -2826,23 +2891,38 @@ function parseCarrossel(raw) {
 
   // Separar slides — aceita com ou sem ## antes de SLIDE
   const slideStart = raw.search(/(?:##\s*)?SLIDE\s+0?1\b/i);
-  if (slideStart === -1) return { filled: 0, visual: null, template: null };
+  if (slideStart === -1) return { filled: 0, visual: null, template: null, slides: [], errors: ['Slide 01 não encontrado.'] };
   const slidesSection = raw.substring(slideStart);
   const chunks = slidesSection.split(/(?=(?:##\s*)?SLIDE\s+\d+\b)/i).filter(s => s.trim() && /SLIDE\s+\d+/i.test(s));
 
-  let filled = 0;
-  chunks.forEach((chunk, i) => {
-    if (i >= state.slides.length) return;
-    const sl = state.slides[i];
-    sl.tag     = getField(chunk, 'TAG');
-    sl.headline = getField(chunk, 'HEADLINE');
-    sl.bloco1  = getField(chunk, 'BLOCO 1');
-    sl.bloco2  = getField(chunk, 'BLOCO 2');
-    sl.extra   = getField(chunk, 'EXTRA');
-    filled++;
+  const parsedSlides = [];
+  const errors = [];
+  const seen = new Set();
+  chunks.forEach(chunk => {
+    const numMatch=chunk.match(/(?:##\s*)?SLIDE\s+0?(\d+)\b/i);
+    const num=numMatch?Number(numMatch[1]):0;
+    if(num<1||num>state.slides.length||seen.has(num))return;
+    seen.add(num);
+    const current=state.slides.find(s=>s.num===num);
+    if(!current)return;
+    const slide={
+      num,
+      tag:getField(chunk,'TAG'),
+      headline:getField(chunk,'HEADLINE'),
+      bloco1:getField(chunk,'BLOCO 1'),
+      bloco2:getField(chunk,'BLOCO 2'),
+      extra:getField(chunk,'EXTRA')
+    };
+    if(!slide.headline)errors.push(`Slide ${String(num).padStart(2,'0')}: HEADLINE vazia.`);
+    parsedSlides.push(slide);
   });
+  parsedSlides.sort((a,b)=>a.num-b.num);
+  if(parsedSlides.length!==state.slides.length){
+    const missing=state.slides.map(s=>s.num).filter(n=>!seen.has(n)).map(n=>String(n).padStart(2,'0'));
+    errors.push(`${parsedSlides.length} de ${state.slides.length} slides reconhecidos${missing.length?` · faltando: ${missing.join(', ')}`:''}.`);
+  }
 
-  return { filled, visual: detectedVisual, template: detectedTemplate };
+  return { filled: parsedSlides.length, visual: detectedVisual, template: detectedTemplate, slides: parsedSlides, errors };
 }
 
 function applyPaste() {
@@ -2851,16 +2931,29 @@ function applyPaste() {
 
   const result = parseCarrossel(raw);
   if (result.filled === 0) {
-    document.getElementById('pasteInfo').innerHTML = '<span style="color:var(--red)">Formato não reconhecido. Verifique o output do agente.</span>';
+    document.getElementById('pasteInfo').textContent = 'Formato não reconhecido. Verifique o output do agente.';
+    document.getElementById('pasteInfo').style.color='var(--red)';
+    return;
+  }
+  if(result.errors.length){
+    document.getElementById('pasteInfo').textContent='Não aplicado: '+result.errors.join(' ');
+    document.getElementById('pasteInfo').style.color='var(--red)';
+    toast('⚠️ Revise o conteúdo: o carrossel atual foi preservado.','err');
     return;
   }
 
+  // Só altera o estado depois que os 9 slides foram validados.
+  result.slides.forEach(incoming=>{
+    const sl=state.slides.find(s=>s.num===incoming.num);
+    if(!sl)return;
+    ['tag','headline','bloco1','bloco2','extra'].forEach(k=>{sl[k]=incoming[k];});
+  });
+
   // Aplicar visual detectado
   if (result.visual) {
-    state.visual = VISUAL_STYLES[result.visual] ? result.visual : 'passo';
-    const vs = VISUAL_STYLES[result.visual];
-    state.colors.bg = vs.bg; state.colors.text = vs.text;
-    state.colors.accent = vs.accent; state.colors.accent2 = vs.accent2;
+    const selectedVisual = VISUAL_STYLES[result.visual] ? result.visual : 'jornada';
+    applyVisualAppearance(selectedVisual,null);
+    const vs = VISUAL_STYLES[state.visual];
     syncColorPickers();
     document.querySelectorAll('.style-card').forEach(c => c.classList.remove('sel'));
     const vc = document.getElementById(`vc-${result.visual}`);
@@ -3076,17 +3169,18 @@ function buildVisual(){
   });
 }
 function selectVisual(key){
+  // Clicar novamente no modelo ativo não pode substituir o carrossel em edição
+  // pelo conteúdo do preset padrão.
+  if(state.visual===key){
+    toast(`✓ ${VISUAL_STYLES[key].label} já está selecionado`,'ok');
+    return;
+  }
   // Load saved base if exists, otherwise apply default colors
   const savedBase=localStorage.getItem(BASE_KEY_PREFIX+key);
   if(savedBase){
     try{
       const base=JSON.parse(savedBase);
-      // Keep current template but load saved slides+colors+font
-      state.visual=key;
-      if(base.colors)state.colors=Object.assign({},state.colors,base.colors);
-      if(base.slides&&base.slides.length>0)state.slides=base.slides.map(makeSlide);
-      if(base.font)state.font=base.font;
-      if(base.template)state.template=base.template;
+      applyVisualAppearance(key,base);
       syncColorPickers();
       toast(`✓ Visual: ${VISUAL_STYLES[key].label} (base salva carregada)`,'ok');
     }catch(e){applyDefaultVisual(key);}
@@ -3101,11 +3195,30 @@ function selectVisual(key){
   const btn=document.getElementById(`btn-base-${key}`);if(btn)btn.classList.add('visible');
   buildTexto();reloadAll();updateCanvasInfo();
 }
+function applyVisualAppearance(key,source){
+  const preset=VISUAL_PRESETS[key]||{};
+  const layoutSource=source&&Array.isArray(source.slides)?source.slides:(preset.slides||[]);
+  state.visual=key;
+  if(source&&source.colors)state.colors=Object.assign({},state.colors,source.colors);
+  else if(preset.colors)state.colors=Object.assign({},state.colors,preset.colors);
+  if(source&&source.font)state.font=source.font;
+  else if(preset.font)state.font=preset.font;
+  // O texto, o tipo e as imagens pertencem ao carrossel. O modelo fornece
+  // somente aparência, tamanhos e posições iniciais.
+  state.slides=state.slides.map(slide=>{
+    const layout=layoutSource.find(item=>Number(item.num)===Number(slide.num))||{};
+    const next=Object.assign({},slide);
+    if(layout.sizes)next.sizes=Object.assign({},layout.sizes);
+    if(layout.offsets)next.offsets=Object.assign({},layout.offsets);
+    next.el_colors={headline:'',bloco1:'',bloco2:'',slide_bg:''};
+    return makeSlide(next);
+  });
+}
 function applyDefaultVisual(key){
   const vs=VISUAL_STYLES[key];
-  applyPresetToState(key);
+  applyVisualAppearance(key,null);
   syncColorPickers();
-  toast(`✓ Visual: ${vs.label} · preset limpo aplicado`,'ok');
+  toast(`✓ Visual: ${vs.label} aplicado sem alterar o conteúdo`,'ok');
 }
 function saveVisualBase(key){
   const base={visual:key,colors:Object.assign({},state.colors),slides:state.slides,font:state.font,template:state.template};
@@ -3667,16 +3780,16 @@ function importarEstado(file){
   reader.onload=(e)=>{
     try{
       const parsed=JSON.parse(e.target.result);
-      if(parsed.slides&&parsed.slides.length>0){
+      if(parsed&&Array.isArray(parsed.slides)&&parsed.slides.length===9&&parsed.slides.every((s,i)=>s&&Number(s.num)===i+1&&typeof s.headline==='string')){
         Object.assign(state,parsed);
         state.slides=state.slides.map(makeSlide);
-        if(!VISUAL_STYLES[state.visual])state.visual='clean';
+        if(!VISUAL_STYLES[state.visual])state.visual='jornada';
         saveState();syncColorPickers();
         buildTexto();buildFontes();buildVisual();buildGrid();buildTmplGrid();updateCanvasInfo();
         const hi=document.getElementById('handleInput');if(hi)hi.value=state.colors.handle||'@seuperfil';
         const ci=document.getElementById('copyrightInput');if(ci)ci.value=state.colors.copyright||'© COPYRIGHT 2025';
         toast('✅ Configuração importada! Tudo restaurado.','ok');
-      }else{toast('❌ Arquivo inválido ou vazio.','err');}
+      }else{toast('❌ Configuração inválida: o arquivo precisa conter os 9 slides em ordem.','err');}
     }catch(e){toast('❌ Erro ao ler o arquivo.','err');}
   };
   reader.readAsText(file);
