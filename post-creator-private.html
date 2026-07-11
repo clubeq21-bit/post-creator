@@ -357,7 +357,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 <div class="paste-modal-bg" id="pasteBg">
   <div class="paste-modal">
     <div class="paste-modal-title">📋 Colar Carrossel</div>
-    <div class="paste-modal-sub">Cole o output do seu agente GPT abaixo. O app detecta automaticamente o visual escolhido (Q21 Case, Q21 Impact, Q21 Statement ou Q21 Statement Duo), o formato narrativo e preenche todos os 9 slides.</div>
+    <div class="paste-modal-sub">Cole o carrossel em Markdown no formato do Forest: [SLIDE 1] até [SLIDE 9], com TIPO, TAG, HEADLINE, BLOCO 1, BLOCO 2 e EXTRA. Os formatos antigos continuam compatíveis.</div>
     <textarea class="paste-ta" id="pasteTa" placeholder="Cole aqui o output completo do agente GPT..."></textarea>
     <div class="paste-footer">
       <div class="paste-info" id="pasteInfo">Aguardando conteúdo...</div>
@@ -1648,8 +1648,9 @@ function closePasteModal() {
 
 function getField(block, name) {
   const esc = name.replace(/\s+/g, '\\s+');
-  const nextLabels = 'TAG|HEADLINE|BLOCO\\s+1|BLOCO\\s+2|EXTRA';
-  const re = new RegExp(esc + ':\\s*\\n?([\\s\\S]*?)(?=\\n[ \\t]*(?:' + nextLabels + '):|\\n---\\s*\\n|$)', 'i');
+  const nextLabels = 'TIPO|TAG|HEADLINE|BLOCO\\s+1|BLOCO\\s+2|EXTRA';
+  // Aceita campos na mesma linha ou em linhas separadas e rótulos em Markdown.
+  const re = new RegExp('(?:#{1,6}\\s*)?(?:\\*\\*)?' + esc + ':?(?:\\*\\*)?\\s*:?([\\s\\S]*?)(?=\\s+(?:#{1,6}\\s*)?(?:\\*\\*)?(?:' + nextLabels + '):|\\n---\\s*\\n|$)', 'i');
   const m = block.match(re);
   if (!m || !m[1]) return '';
   let result = m[1]
@@ -1659,8 +1660,52 @@ function getField(block, name) {
     .trim();
   // Strip any accidental label at the start of extracted content
   // (agente às vezes coloca "BLOCO 2:" como primeira linha do BLOCO 1, etc.)
-  result = result.replace(/^(?:TAG|HEADLINE|BLOCO\s+1|BLOCO\s+2|EXTRA):\s*/i, '').trim();
+  result = result.replace(/^(?:TIPO|TAG|HEADLINE|BLOCO\s+1|BLOCO\s+2|EXTRA):\s*/i, '').trim();
+  // Converte destaque Markdown em negrito para o destaque de um asterisco do app.
+  result = result.replace(/\*\*(.*?)\*\*/g, '*$1*');
   return result;
+}
+
+function cleanForestMarkdown(text){
+  return String(text||'')
+    .replace(/^---\s*$/gm,'')
+    .replace(/^##\s+(?:TAG|HEADLINE|BLOCO\s+1|BLOCO\s+2|EXTRA)\s*$/gmi,'')
+    .replace(/^[-*]\s+/gm,'• ')
+    .replace(/\*\*(.*?)\*\*/gs,'*$1*')
+    .trim();
+}
+
+function parseForestGrouped(raw){
+  const sections=[];
+  const re=/(?:^|\n)#{3,6}\s*0?([1-9])\.\s*([^\n]+)\n([\s\S]*?)(?=\n#{3,6}\s*0?[1-9]\.\s*[^\n]+\n|$)/gim;
+  let match;
+  while((match=re.exec(raw))!==null){
+    const num=Number(match[1]);
+    const tag=cleanForestMarkdown(match[2]).replace(/\*+/g,'').trim();
+    const body=cleanForestMarkdown(match[3]);
+    const parts=body.split(/\n\s*\n+/).map(p=>p.trim()).filter(Boolean);
+    if(!num||!parts.length)continue;
+    const headline=parts.shift()||'';
+    const splitAt=Math.ceil(parts.length/2);
+    sections.push({
+      num,
+      tipo:'',
+      tag,
+      headline,
+      bloco1:parts.slice(0,splitAt).join('\n\n'),
+      bloco2:parts.slice(splitAt).join('\n\n'),
+      extra:''
+    });
+  }
+  sections.sort((a,b)=>a.num-b.num);
+  const seen=new Set(sections.map(s=>s.num));
+  const errors=[];
+  if(sections.length!==state.slides.length){
+    const missing=state.slides.map(s=>s.num).filter(n=>!seen.has(n)).map(n=>String(n).padStart(2,'0'));
+    errors.push(`${sections.length} de ${state.slides.length} slides reconhecidos${missing.length?` · faltando: ${missing.join(', ')}`:''}.`);
+  }
+  sections.forEach(s=>{if(!s.headline)errors.push(`Slide ${String(s.num).padStart(2,'0')}: HEADLINE vazia.`);});
+  return {slides:sections,errors};
 }
 
 function parseCarrossel(raw) {
@@ -1686,25 +1731,44 @@ function parseCarrossel(raw) {
     else detectedTemplate = 'explicativo';
   }
 
-  // Separar slides — divide antes de cada ## SLIDE
-  const slideStart = raw.search(/##\s*SLIDE\s+0?1/i);
-  if (slideStart === -1) return { filled: 0, visual: null, template: null };
+  // Aceita [SLIDE 1], SLIDE 1, ## SLIDE 1 e variações de zero à esquerda.
+  const slideMarker='(?:#{1,6}\\s*)?\\[?\\s*SLIDE\\s+0?(\\d+)\\s*\\]?';
+  const slideStart = raw.search(new RegExp('(?:#{1,6}\\s*)?\\[?\\s*SLIDE\\s+0?1\\s*\\]?','i'));
+  if (slideStart === -1){
+    // Segundo formato do Forest: ## BLOCO 1 seguido de ### 1. CAPA etc.
+    const grouped=parseForestGrouped(raw);
+    return {filled:grouped.slides.length,visual:detectedVisual,template:detectedTemplate,slides:grouped.slides,errors:grouped.errors};
+  }
   const slidesSection = raw.substring(slideStart);
-  const chunks = slidesSection.split(/(?=##\s*SLIDE\s+\d+)/i).filter(s => s.trim());
+  const chunks = slidesSection.split(new RegExp('(?=(?:#{1,6}\\s*)?\\[?\\s*SLIDE\\s+0?\\d+\\s*\\]?)','i')).filter(s => s.trim() && /SLIDE\s+0?\d+/i.test(s));
 
-  let filled = 0;
-  chunks.forEach((chunk, i) => {
-    if (i >= state.slides.length) return;
-    const sl = state.slides[i];
-    sl.tag     = getField(chunk, 'TAG');
-    sl.headline = getField(chunk, 'HEADLINE');
-    sl.bloco1  = getField(chunk, 'BLOCO 1');
-    sl.bloco2  = getField(chunk, 'BLOCO 2');
-    sl.extra   = getField(chunk, 'EXTRA');
-    filled++;
+  const parsedSlides=[];
+  const errors=[];
+  const seen=new Set();
+  chunks.forEach(chunk => {
+    const numMatch=chunk.match(new RegExp(slideMarker,'i'));
+    const num=numMatch?Number(numMatch[1]):0;
+    if(num<1||num>state.slides.length||seen.has(num))return;
+    seen.add(num);
+    const slide={
+      num,
+      tipo:getField(chunk,'TIPO'),
+      tag:getField(chunk,'TAG'),
+      headline:getField(chunk,'HEADLINE'),
+      bloco1:getField(chunk,'BLOCO 1'),
+      bloco2:getField(chunk,'BLOCO 2'),
+      extra:getField(chunk,'EXTRA')
+    };
+    if(!slide.headline)errors.push(`Slide ${String(num).padStart(2,'0')}: HEADLINE vazia.`);
+    parsedSlides.push(slide);
   });
+  parsedSlides.sort((a,b)=>a.num-b.num);
+  if(parsedSlides.length!==state.slides.length){
+    const missing=state.slides.map(s=>s.num).filter(n=>!seen.has(n)).map(n=>String(n).padStart(2,'0'));
+    errors.push(`${parsedSlides.length} de ${state.slides.length} slides reconhecidos${missing.length?` · faltando: ${missing.join(', ')}`:''}.`);
+  }
 
-  return { filled, visual: detectedVisual, template: detectedTemplate };
+  return { filled: parsedSlides.length, visual: detectedVisual, template: detectedTemplate, slides: parsedSlides, errors };
 }
 
 function applyPaste() {
@@ -1713,9 +1777,23 @@ function applyPaste() {
 
   const result = parseCarrossel(raw);
   if (result.filled === 0) {
-    document.getElementById('pasteInfo').innerHTML = '<span style="color:var(--red)">Formato não reconhecido. Verifique o output do agente.</span>';
+    document.getElementById('pasteInfo').textContent = 'Formato não reconhecido. Verifique o output do agente.';
+    document.getElementById('pasteInfo').style.color='var(--red)';
     return;
   }
+  if(result.errors.length){
+    document.getElementById('pasteInfo').textContent='Não aplicado: '+result.errors.join(' ');
+    document.getElementById('pasteInfo').style.color='var(--red)';
+    toast('⚠️ Revise o conteúdo: o carrossel atual foi preservado.','err');
+    return;
+  }
+
+  // Só substitui o conteúdo depois que os nove slides forem validados.
+  result.slides.forEach(incoming=>{
+    const sl=state.slides.find(s=>s.num===incoming.num);
+    if(!sl)return;
+    ['tag','headline','bloco1','bloco2','extra'].forEach(k=>{sl[k]=incoming[k];});
+  });
 
   // Aplicar visual detectado
   if (result.visual) {
