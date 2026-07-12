@@ -300,7 +300,15 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
   <div class="tab-content" id="tab-idvisual">
     <div style="padding:16px 12px 8px">
       <div class="sec-title">ID Visual</div>
-      <div style="font-size:11px;color:var(--muted);margin-bottom:16px;line-height:1.6">Configure aqui a base visual do carrossel: fontes, cores, handle, copyright e ajustes gerais.</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:12px;line-height:1.6">Cole o Markdown gerado pelo Agente de Identidade Visual. O branding salvo será usado em todos os modelos.</div>
+      <textarea id="brandingMarkdown" class="fi" style="width:100%;min-height:190px;resize:vertical;line-height:1.55;font-family:monospace;font-size:10px" placeholder="IDENTIDADE VISUAL&#10;FONTE&#10;Nome: Montserrat&#10;...&#10;CORES&#10;BACKGROUND&#10;HEX: #0F1115"></textarea>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px">
+        <button class="btn-ac" style="padding:9px" onclick="analisarIdVisual()">Analisar Markdown</button>
+        <button class="btn-ac" id="btnSalvarBranding" style="padding:9px" onclick="salvarIdVisual()" disabled>Salvar e aplicar</button>
+        <button class="btn-ac" style="padding:9px" onclick="restaurarIdVisual()">Restaurar branding</button>
+        <button class="btn-ac" style="padding:9px;color:var(--red)" onclick="removerIdVisual()">Remover branding</button>
+      </div>
+      <div id="brandingPreview" style="display:none;margin-top:10px;padding:10px;border:1px solid var(--border2);border-radius:6px;background:var(--panel3);font-size:10px;line-height:1.65"></div>
       <div class="sec-title">Fontes</div>
       <div style="font-size:11px;color:var(--muted);margin-bottom:8px;line-height:1.6">Escolha a fonte da identidade visual. A seleção será aplicada a todos os textos dos slides.</div>
       <div id="fontCards"></div>
@@ -459,6 +467,7 @@ const FONTS = {
   libre:     {label:'Libre Baskerville',  desc:'Sólida e séria. Tom acadêmico.',                        family:"'Libre Baskerville', Georgia, serif"},
   lora:      {label:'Lora',               desc:'Editorial suave e muito legível.',                      family:"'Lora', Georgia, serif"},
   merri:     {label:'Merriweather',       desc:'Serifada, confiável e boa para leitura.',               family:"'Merriweather', Georgia, serif"},
+  nunito_sans:{label:'Nunito Sans',       desc:'Humana, moderna e muito legível em telas.',              family:"'Nunito Sans', Arial, sans-serif"},
 };
 
 const TEMPLATES_META = {
@@ -540,6 +549,7 @@ const TEMPLATES = {
 const APP_VERSION = 'student-v4.6-presenca-layout';
 const STORAGE_KEY = 'pc_state_student_v4_6';
 const BASE_KEY_PREFIX = 'pc_base_student_v4_6_';
+const BRANDING_KEY = 'pc_branding_student_v1';
 const VISUAL_PRESETS = {
   "jornada": {
     "font": "montserrat",
@@ -1740,6 +1750,10 @@ function offY(s,key){return(s.offsets&&s.offsets[key])||0;}
 // ── HELPERS ────────────────────────────────────────────────────────────────────
 function sz(s,el,def){return(s.sizes&&s.sizes[el])||def;}
 function ec(s,el,fb){return(s.el_colors&&s.el_colors[el])||fb;}
+function colorAlpha(value,alpha){
+  const hex=colorToHex(value,'#000000').slice(1);
+  return `rgba(${parseInt(hex.slice(0,2),16)},${parseInt(hex.slice(2,4),16)},${parseInt(hex.slice(4,6),16)},${alpha})`;
+}
 class SafeHtmlText extends String {}
 function escapeHtml(t){
   return String(t||'').replace(/[&<>"']/g,ch=>({
@@ -1945,7 +1959,7 @@ function rMagCta(s,c,fk){
 const MAG_RENDERERS={capa:rMagCapa,contexto:rMagContexto,dados:rMagDados,virada:rMagVirada,dois_col:rMagDoisCol,cenarios:rMagCenarios,sintese:rMagSintese,aplicacao:rMagAplicacao,cta:rMagCta};
 
 // Link único com todas as fontes disponíveis — usado em todos os renderers
-const GFONTS_ALL=`<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&family=DM+Sans:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=Sora:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Oswald:wght@300;400;500;600;700&family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Serif+Display:ital@0;1&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">`;
+const GFONTS_ALL=`<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Nunito+Sans:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&family=DM+Sans:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=Sora:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Oswald:wght@300;400;500;600;700&family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Serif+Display:ital@0;1&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">`;
 
 // ── CLEAN RENDERER ─────────────────────────────────────────────────────────────
 function renderClean(s,c,fk){
@@ -2029,15 +2043,14 @@ function renderSerif(s,c,fk){
   const b1c=ec(s,'bloco1','');
   const b2c=ec(s,'bloco2','');
 
-  // Alternating backgrounds: odd=light, even=dark brown
-  const isDark=[2,4,6,8].includes(s.num)||(s.image&&s.imagePos==='background');
-  const bg = isDark ? '#7A5230' : '#F4EFE6';
-  const textMain = isDark ? '#F4EFE6' : '#1A1209';
-  const headlineColor = hc || (isDark ? '#F4EFE6' : '#7A5230');
-  const bodyColor = b1c || (isDark ? 'rgba(244,239,230,0.85)' : '#3A2A1A');
+  const isDark=!!(s.image&&s.imagePos==='background');
+  const bg = slideBg(s,c)||c.bg;
+  const textMain = c.text;
+  const headlineColor = hc || c.accent;
+  const bodyColor = b1c || c.text;
   const accent = c.accent || '#C9A961';
-  const lineColor = isDark ? 'rgba(244,239,230,0.25)' : 'rgba(122,82,48,0.3)';
-  const handleColor = isDark ? 'rgba(244,239,230,0.5)' : 'rgba(122,82,48,0.5)';
+  const lineColor = colorAlpha(c.accent2,.35);
+  const handleColor = c.accent2;
 
   // Photo — 4 modos: background, float, top_half, box
   const isSerifBg=s.image&&s.imagePos==='background';
@@ -2055,10 +2068,10 @@ function renderSerif(s,c,fk){
   const serifTopHalf=(!isSerifBg&&!isSerifFloat)?renderTopHalfImage(s):'';
   const serifBox=(!isSerifBg&&!isSerifFloat)?renderBoxImage(s,760):'';
   const z = isSerifBg ? 'z-index:2' : '';
-  const textOnPhoto = isSerifBg ? '#F4EFE6' : null;
+  const textOnPhoto = isSerifBg ? c.text : null;
   const finalHeadline = textOnPhoto || headlineColor;
-  const finalBody = textOnPhoto ? 'rgba(244,239,230,0.88)' : bodyColor;
-  const finalBg = s.image ? '#0A0A0A' : bg;
+  const finalBody = textOnPhoto || bodyColor;
+  const finalBg = s.image ? c.bg : bg;
 
   // Parse inline highlights
   const hHtml = parseInline(brk(s.headline||''), accent)
@@ -2069,7 +2082,7 @@ function renderSerif(s,c,fk){
   const b1Html = parseInline(brk(s.bloco1||''), accent);
   const b2Html = s.bloco2 ? parseInline(brk(s.bloco2), accent) : '';
   const specialType=['dados','sintese','cta'].includes(s.type);
-  const universalTag=(specialType&&s.tag)?`<div style="position:absolute;top:75px;left:70px;right:70px;font-family:${f.family};font-size:12px;font-weight:400;letter-spacing:4px;text-transform:uppercase;color:${s.image?'rgba(244,239,230,0.6)':accent};z-index:3">${parseInline(s.tag,accent)}</div>`:'';
+  const universalTag=(specialType&&s.tag)?`<div style="position:absolute;top:75px;left:70px;right:70px;font-family:${f.family};font-size:12px;font-weight:400;letter-spacing:4px;text-transform:uppercase;color:${s.image?c.text:accent};opacity:${s.image?'.65':'1'};z-index:3">${parseInline(s.tag,accent)}</div>`:'';
   const needsUniversalExtra=['capa','sintese','cta'].includes(s.type);
   const universalExtra=(needsUniversalExtra&&s.extra)?`<div style="position:absolute;bottom:105px;left:70px;right:70px;text-align:center;font-family:${f.family};font-size:${sz(s,'extra',18)}px;font-weight:400;font-style:italic;line-height:1.4;color:${s.image?accent:accent};z-index:3">${parseInline(brk(s.extra),accent)}</div>`:'';
 
@@ -2078,7 +2091,7 @@ function renderSerif(s,c,fk){
   
   if(s.type==='capa'){
     // Large headline at bottom with accent bar
-    const capaTag = s.tag ? `<div style="position:absolute;top:75px;left:0;right:0;text-align:center;font-family:${f.family};font-size:12px;font-weight:300;letter-spacing:4px;text-transform:uppercase;color:${s.image?'rgba(244,239,230,0.55)':handleColor};z-index:3">${s.tag}</div>` : '';
+    const capaTag = s.tag ? `<div style="position:absolute;top:75px;left:0;right:0;text-align:center;font-family:${f.family};font-size:12px;font-weight:300;letter-spacing:4px;text-transform:uppercase;color:${s.image?c.text:handleColor};opacity:${s.image?'.60':'1'};z-index:3">${s.tag}</div>` : '';
     mainContent = `
       ${capaTag}
       <div style="position:absolute;bottom:${s.extra?190:130}px;left:70px;right:70px;text-align:center;z-index:3">
@@ -2119,7 +2132,7 @@ function renderSerif(s,c,fk){
       </div>`;
   } else {
     // Default: tag fixed top, headline mid, bloco bottom
-    const tagEl = s.tag ? `<div style="position:absolute;top:75px;left:70px;right:70px;font-family:${f.family};font-size:12px;font-weight:400;letter-spacing:4px;text-transform:uppercase;color:${s.image?'rgba(244,239,230,0.6)':accent};z-index:3">${s.tag}</div>` : '';
+    const tagEl = s.tag ? `<div style="position:absolute;top:75px;left:70px;right:70px;font-family:${f.family};font-size:12px;font-weight:400;letter-spacing:4px;text-transform:uppercase;color:${s.image?c.text:accent};opacity:${s.image?'.65':'1'};z-index:3">${s.tag}</div>` : '';
     const exs=sz(s,'extra',22);
     const extraEl = s.extra ? `<div style="position:absolute;bottom:calc(110px - ${offY(s,'extra')}px);left:70px;right:70px;font-family:${f.family};font-size:${exs}px;font-weight:400;font-style:italic;line-height:1.5;color:${s.image?accent:accent};border-top:1px solid ${lineColor};padding-top:24px;z-index:3">${parseInline(s.extra,accent)}</div>` : '';
     mainContent = `
@@ -2145,8 +2158,8 @@ function renderSerif(s,c,fk){
     ${universalTag}
     ${mainContent}
     ${universalExtra}
-    <div style="position:absolute;bottom:55px;left:0;right:0;text-align:center;font-family:${f.family};font-size:13px;font-weight:300;letter-spacing:3px;text-transform:uppercase;color:${isSerifBg?'rgba(244,239,230,0.45)':handleColor};${z}">${c.handle||'@seuperfil'}</div>
-    <div style="position:absolute;bottom:88px;right:60px;font-family:${f.family};font-size:12px;color:${isSerifBg?'rgba(244,239,230,0.3)':handleColor};letter-spacing:1px;${z}">${String(s.num).padStart(2,'0')}/${String(total).padStart(2,'0')}</div>
+    <div style="position:absolute;bottom:55px;left:0;right:0;text-align:center;font-family:${f.family};font-size:13px;font-weight:300;letter-spacing:3px;text-transform:uppercase;color:${isSerifBg?c.text:handleColor};opacity:.55;${z}">${c.handle||'@seuperfil'}</div>
+    <div style="position:absolute;bottom:88px;right:60px;font-family:${f.family};font-size:12px;color:${isSerifBg?c.text:handleColor};opacity:.42;letter-spacing:1px;${z}">${String(s.num).padStart(2,'0')}/${String(total).padStart(2,'0')}</div>
   </div>`;
 }
 
@@ -2358,10 +2371,10 @@ function renderJornada(s,c,fk){
     <div style="width:1080px;height:1350px;background:${effectiveBg};position:relative;overflow:hidden;color:${c.text}">
       ${bgLayer}${topH}
       <div style="position:absolute;inset:0;z-index:2">
-        <div style="position:absolute;top:64px;left:70px;font-family:${f.family};font-size:18px;letter-spacing:.7px;text-transform:uppercase;color:rgba(255,255,255,.92);font-weight:300"><strong style="font-weight:800">${parseInline(name,c.accent2)}</strong></div>
-        <h1 style="position:absolute;top:${620+offY(s,'headline')}px;left:95px;right:95px;text-align:center;font-family:${f.family};font-size:${hs}px;line-height:1.10;font-weight:300;font-style:italic;letter-spacing:-1.2px;color:${ec(s,'headline','#F7F7F7')}">${parseInline(brk(s.headline),c.accent2)}</h1>
-        ${s.bloco1?`<div style="position:absolute;top:${800+offY(s,'bloco1')}px;left:145px;right:145px;font-family:${f.family};font-size:${b1s}px;line-height:1.38;font-weight:700;color:${ec(s,'bloco1','#F7F7F7')};text-align:center">${parseInline(brk(s.bloco1),c.accent2)}</div>`:''}
-        ${s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;text-align:left;font-family:${f.family};font-size:${exs}px;font-weight:300;font-style:italic;letter-spacing:1.4px;text-transform:uppercase;color:${ec(s,'extra','rgba(255,255,255,.88)')}">${parseInline(s.extra,c.accent2)}</div>`:''}
+        <div style="position:absolute;top:64px;left:70px;font-family:${f.family};font-size:18px;letter-spacing:.7px;text-transform:uppercase;color:${c.text};opacity:.92;font-weight:300"><strong style="font-weight:800">${parseInline(name,c.accent2)}</strong></div>
+        <h1 style="position:absolute;top:${620+offY(s,'headline')}px;left:95px;right:95px;text-align:center;font-family:${f.family};font-size:${hs}px;line-height:1.10;font-weight:300;font-style:italic;letter-spacing:-1.2px;color:${ec(s,'headline',c.text)}">${parseInline(brk(s.headline),c.accent2)}</h1>
+        ${s.bloco1?`<div style="position:absolute;top:${800+offY(s,'bloco1')}px;left:145px;right:145px;font-family:${f.family};font-size:${b1s}px;line-height:1.38;font-weight:700;color:${ec(s,'bloco1',c.text)};text-align:center">${parseInline(brk(s.bloco1),c.accent2)}</div>`:''}
+        ${s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;text-align:left;font-family:${f.family};font-size:${exs}px;font-weight:300;font-style:italic;letter-spacing:1.4px;text-transform:uppercase;color:${ec(s,'extra',c.text)};opacity:.88">${parseInline(s.extra,c.accent2)}</div>`:''}
       </div>
     </div></body></html>`;
   }
@@ -2372,14 +2385,14 @@ function renderJornada(s,c,fk){
     <div style="width:1080px;height:1350px;background:${effectiveBg};position:relative;overflow:hidden;color:${c.text}">
       ${bgLayer}${boxH}
       <div style="position:absolute;inset:0;z-index:3">
-        <div style="position:absolute;top:64px;left:70px;font-family:${f.family};font-size:18px;letter-spacing:.7px;text-transform:uppercase;color:rgba(255,255,255,.92);font-weight:300"><strong style="font-weight:800">${parseInline(name,c.accent2)}</strong></div>
-        <h1 style="position:absolute;top:${190+offY(s,'headline')}px;left:95px;right:95px;text-align:center;font-family:${f.family};font-size:${hs}px;line-height:1.10;font-weight:800;letter-spacing:-.8px;color:${ec(s,'headline','#F7F7F7')}">${parseInline(brk(s.headline),c.accent2)}</h1>
-        ${s.bloco1?`<div style="position:absolute;top:${360+offY(s,'bloco1')}px;left:145px;right:145px;font-family:${f.family};font-size:${b1s}px;line-height:1.38;font-weight:700;color:${ec(s,'bloco1','#F7F7F7')};text-align:center">${parseInline(brk(s.bloco1),c.accent2)}</div>`:''}
-        ${s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;text-align:left;font-family:${f.family};font-size:${exs}px;font-weight:300;font-style:italic;letter-spacing:1.4px;text-transform:uppercase;color:${ec(s,'extra','rgba(255,255,255,.88)')}">${parseInline(s.extra,c.accent2)}</div>`:''}
+        <div style="position:absolute;top:64px;left:70px;font-family:${f.family};font-size:18px;letter-spacing:.7px;text-transform:uppercase;color:${c.text};opacity:.92;font-weight:300"><strong style="font-weight:800">${parseInline(name,c.accent2)}</strong></div>
+        <h1 style="position:absolute;top:${190+offY(s,'headline')}px;left:95px;right:95px;text-align:center;font-family:${f.family};font-size:${hs}px;line-height:1.10;font-weight:800;letter-spacing:-.8px;color:${ec(s,'headline',c.text)}">${parseInline(brk(s.headline),c.accent2)}</h1>
+        ${s.bloco1?`<div style="position:absolute;top:${360+offY(s,'bloco1')}px;left:145px;right:145px;font-family:${f.family};font-size:${b1s}px;line-height:1.38;font-weight:700;color:${ec(s,'bloco1',c.text)};text-align:center">${parseInline(brk(s.bloco1),c.accent2)}</div>`:''}
+        ${s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;text-align:left;font-family:${f.family};font-size:${exs}px;font-weight:300;font-style:italic;letter-spacing:1.4px;text-transform:uppercase;color:${ec(s,'extra',c.text)};opacity:.88">${parseInline(s.extra,c.accent2)}</div>`:''}
       </div>
     </div></body></html>`;
   }
-  const bgImg=hasImg&&imgPos==='background'?`<div style="position:absolute;inset:0;background:url('${s.image}') center/cover no-repeat;filter:grayscale(.72) saturate(.72) contrast(1.06) brightness(.82);z-index:0"></div><div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.20) 0%,rgba(0,0,0,.32) 30%,rgba(0,0,0,.72) 63%,rgba(0,0,0,.97) 100%);z-index:1"></div>`:`<div style="position:absolute;inset:0;background:#050505;z-index:0"></div><div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 18%,rgba(18,50,74,.16),transparent 34%),linear-gradient(180deg,#050505,#020202);z-index:1"></div><div style="position:absolute;inset:0;opacity:.14;background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);z-index:1"></div>`;
+  const bgImg=hasImg&&imgPos==='background'?`<div style="position:absolute;inset:0;background:url('${s.image}') center/cover no-repeat;filter:grayscale(.72) saturate(.72) contrast(1.06) brightness(.82);z-index:0"></div><div style="position:absolute;inset:0;background:linear-gradient(180deg,${colorAlpha(c.bg,.12)} 0%,${colorAlpha(c.bg,.30)} 30%,${colorAlpha(c.bg,.76)} 63%,${colorAlpha(c.bg,.98)} 100%);z-index:1"></div>`:`<div style="position:absolute;inset:0;background:${effectiveBg};z-index:0"></div><div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 18%,${colorAlpha(c.accent,.18)},transparent 34%),linear-gradient(180deg,${effectiveBg},${colorAlpha(c.accent2,.12)});z-index:1"></div><div style="position:absolute;inset:0;opacity:.10;background-image:repeating-linear-gradient(0deg,${colorAlpha(c.text,.04)} 0px,${colorAlpha(c.text,.04)} 1px,transparent 1px,transparent 4px);z-index:1"></div>`;
   const centerTypes=['capa','contexto','sintese','cta'];
   const isCover=s.type==='capa';
   const isCenter=centerTypes.includes(s.type);
@@ -2413,18 +2426,18 @@ function renderJornada(s,c,fk){
   const contentGap=isCover?30:38;
   const firstWord=String(s.extra||'').split(' ')[0]||'';
   const restWords=String(s.extra||'').split(' ').slice(1).join(' ');
-  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">${GFONTS_ALL}<style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:#050505;font-family:${f.family}}</style></head><body>
-  <div style="width:1080px;height:1350px;background:#050505;position:relative;overflow:hidden;color:#F7F7F7">
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">${GFONTS_ALL}<style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;background:${effectiveBg};font-family:${f.family}}</style></head><body>
+  <div style="width:1080px;height:1350px;background:${effectiveBg};position:relative;overflow:hidden;color:${c.text}">
     ${bgImg}
     <div style="position:absolute;inset:0;z-index:2">
-      <div style="position:absolute;top:64px;left:70px;font-family:${f.family};font-size:18px;letter-spacing:.5px;text-transform:uppercase;color:rgba(255,255,255,.90);font-weight:400;font-style:italic">${parseInline(name,c.accent2)}</div>
-      ${!isCover?`<div style="position:absolute;bottom:78px;right:70px;font-family:${f.family};font-size:34px;font-weight:300;color:rgba(255,255,255,.88);letter-spacing:2px">»</div>`:''}
+      <div style="position:absolute;top:64px;left:70px;font-family:${f.family};font-size:18px;letter-spacing:.5px;text-transform:uppercase;color:${c.text};opacity:.90;font-weight:400;font-style:italic">${parseInline(name,c.accent2)}</div>
+      ${!isCover?`<div style="position:absolute;bottom:78px;right:70px;font-family:${f.family};font-size:34px;font-weight:300;color:${c.text};opacity:.88;letter-spacing:2px">»</div>`:''}
       <div style="position:absolute;top:${contentTop}px;bottom:${contentBottom}px;left:0;right:0;padding:${contentPad};display:flex;flex-direction:column;justify-content:center;gap:${contentGap}px;transform:translateY(${offY(s,'headline')}px)">
-        <h1 style="max-width:860px;width:100%;align-self:${isCenter?'center':'flex-start'};text-align:${headAlign};font-family:${f.family};font-size:${fitHeadline}px;line-height:1.08;font-weight:${headlineWeight};letter-spacing:${isCover?'-1.2px':'-.8px'};${headlineStyle}color:${ec(s,'headline','#F7F7F7')}">${parseInline(brk(s.headline),c.accent2)}</h1>
-        ${s.bloco1?`<div style="max-width:820px;width:100%;align-self:${isCenter?'center':'flex-start'};font-family:${f.family};font-size:${fitB1}px;line-height:1.46;font-weight:700;color:${ec(s,'bloco1','#F7F7F7')};text-align:${isCenter?'center':'left'};transform:translateY(${offY(s,'bloco1')}px)">${parseInline(brk(s.bloco1),c.accent2)}</div>`:''}
-        ${s.bloco2?`<div style="max-width:850px;width:fit-content;align-self:${isCenter?'center':'flex-start'};background:linear-gradient(90deg,rgba(12,44,68,.96),rgba(18,58,86,.78));padding:${isCover?'12px 24px':'14px 24px'};font-family:${f.family};font-size:${fitB2}px;line-height:1.42;font-weight:300;font-style:italic;color:${ec(s,'bloco2','#F2F4F5')};text-align:${isCenter?'center':'left'};transform:translateY(${offY(s,'bloco2')}px)">${parseInline(brk(s.bloco2),c.accent2)}</div>`:''}
+        <h1 style="max-width:860px;width:100%;align-self:${isCenter?'center':'flex-start'};text-align:${headAlign};font-family:${f.family};font-size:${fitHeadline}px;line-height:1.08;font-weight:${headlineWeight};letter-spacing:${isCover?'-1.2px':'-.8px'};${headlineStyle}color:${ec(s,'headline',c.text)}">${parseInline(brk(s.headline),c.accent2)}</h1>
+        ${s.bloco1?`<div style="max-width:820px;width:100%;align-self:${isCenter?'center':'flex-start'};font-family:${f.family};font-size:${fitB1}px;line-height:1.46;font-weight:700;color:${ec(s,'bloco1',c.text)};text-align:${isCenter?'center':'left'};transform:translateY(${offY(s,'bloco1')}px)">${parseInline(brk(s.bloco1),c.accent2)}</div>`:''}
+        ${s.bloco2?`<div style="max-width:850px;width:fit-content;align-self:${isCenter?'center':'flex-start'};background:linear-gradient(90deg,${colorAlpha(c.accent,.96)},${colorAlpha(c.accent,.72)});padding:${isCover?'12px 24px':'14px 24px'};font-family:${f.family};font-size:${fitB2}px;line-height:1.42;font-weight:300;font-style:italic;color:${ec(s,'bloco2',c.text)};text-align:${isCenter?'center':'left'};transform:translateY(${offY(s,'bloco2')}px)">${parseInline(brk(s.bloco2),c.accent2)}</div>`:''}
       </div>
-      ${s.extra?`<div style="position:absolute;bottom:${72-offY(s,'extra')}px;left:70px;right:${isCover?'70px':'125px'};text-align:left;font-family:${f.family};font-size:${fitExtra}px;line-height:1.25;font-weight:300;font-style:italic;letter-spacing:1.1px;text-transform:uppercase;color:${ec(s,'extra','rgba(255,255,255,.82)')}"><strong style="font-weight:700;font-style:normal">${parseInline(firstWord,c.accent2)}</strong>${restWords?' '+parseInline(restWords,c.accent2):''}</div>`:''}
+      ${s.extra?`<div style="position:absolute;bottom:${72-offY(s,'extra')}px;left:70px;right:${isCover?'70px':'125px'};text-align:left;font-family:${f.family};font-size:${fitExtra}px;line-height:1.25;font-weight:300;font-style:italic;letter-spacing:1.1px;text-transform:uppercase;color:${ec(s,'extra',c.text)};opacity:.82"><strong style="font-weight:700;font-style:normal">${parseInline(firstWord,c.accent2)}</strong>${restWords?' '+parseInline(restWords,c.accent2):''}</div>`:''}
     </div>
   </div></body></html>`;
 }
@@ -2511,13 +2524,12 @@ function renderEditorialPremium(s,c,fk){
   const isBg=hasPhoto&&imgPos==='background';
   const isTopHalf=hasPhoto&&imgPos==='top_half';
   const isBox=hasPhoto&&imgPos==='box';
-  const lightTypes=['sintese','dois_col'];
-  const isLight=!isBg&&!isTopHalf&&lightTypes.includes(s.type);
+  const isLight=false;
   const customSlideBg=s.el_colors&&s.el_colors.slide_bg;
-  const baseBg=customSlideBg||(isLight?'#F0E9DF':(c.bg||'#2A1608'));
-  const bgColor=isBg?'#0A0805':baseBg;
-  const textPrimary=isLight?'#2A1608':'#F0E9DF';
-  const textMuted=isLight?'rgba(42,22,8,0.6)':'rgba(240,233,223,0.55)';
+  const baseBg=customSlideBg||(c.bg||'#2A1608');
+  const bgColor=isBg?c.bg:baseBg;
+  const textPrimary=c.text;
+  const textMuted=c.accent2;
 
   let photoBg='',photoOverlay='';
   if(isBg){
@@ -2546,9 +2558,9 @@ function renderEditorialPremium(s,c,fk){
   const hs=fitEP(sz(s,'headline',68),s.headline,95,155,38);
   const b1s=fitEP(sz(s,'bloco1',30),s.bloco1,145,245,18);
   const b2s=fitEP(sz(s,'bloco2',26),s.bloco2,125,220,17);
-  const hColor=ec(s,'headline','')||(hasPhoto?'#FFFFFF':textPrimary);
-  const b1Color=ec(s,'bloco1','')||(hasPhoto?'rgba(255,255,255,0.9)':textPrimary);
-  const b2Color=ec(s,'bloco2','')||(hasPhoto?'rgba(255,255,255,0.78)':textMuted);
+  const hColor=ec(s,'headline','')||textPrimary;
+  const b1Color=ec(s,'bloco1','')||textPrimary;
+  const b2Color=ec(s,'bloco2','')||textMuted;
 
   // Headline: linhas alternando italic/bold
   const hLines=(s.headline||'').split('\n');
@@ -2563,9 +2575,9 @@ function renderEditorialPremium(s,c,fk){
   const b1Lines=(s.bloco1||'').split('\n').filter(l=>l.trim());
   let b1Html='';
   if(b1Lines.length>2){
-    const boxBg=isLight?'#2A1608':'rgba(18,8,2,0.88)';
+    const boxBg=colorAlpha(c.accent2,.88);
     b1Html=`<div style="margin-top:${36+offY(s,'bloco1')}px">`+
-      b1Lines.map(line=>`<div style="background:${boxBg};border-radius:6px;padding:17px 26px;margin-bottom:9px;font-family:${sans};font-size:${b1s}px;font-weight:400;line-height:1.42;color:#F0E9DF;text-align:center">${parseEP(line)}</div>`).join('')
+      b1Lines.map(line=>`<div style="background:${boxBg};border-radius:6px;padding:17px 26px;margin-bottom:9px;font-family:${sans};font-size:${b1s}px;font-weight:400;line-height:1.42;color:${c.text};text-align:center">${parseEP(line)}</div>`).join('')
     +'</div>';
   } else if(s.bloco1){
     if(hasPhoto){
@@ -2579,19 +2591,19 @@ function renderEditorialPremium(s,c,fk){
   let b2Html='';
   if(s.bloco2){
     if(hasPhoto){
-      b2Html=`<div style="background:rgba(12,5,1,0.72);border-radius:8px;padding:18px 26px;margin-top:${14+offY(s,'bloco2')}px"><p style="font-family:${sans};font-size:${b2s}px;font-weight:400;line-height:1.55;color:#F0E9DF">${parseEP(brk(s.bloco2))}</p></div>`;
+      b2Html=`<div style="background:${colorAlpha(c.accent,.72)};border-radius:8px;padding:18px 26px;margin-top:${14+offY(s,'bloco2')}px"><p style="font-family:${sans};font-size:${b2s}px;font-weight:400;line-height:1.55;color:${c.text}">${parseEP(brk(s.bloco2))}</p></div>`;
     }else{
       b2Html=`<p style="font-family:${sans};font-size:${b2s}px;line-height:1.55;color:${b2Color};margin-top:${18+offY(s,'bloco2')}px">${parseEP(brk(s.bloco2))}</p>`;
     }
   }
 
-  const tagColor=hasPhoto?'rgba(255,255,255,0.5)':(isLight?'#8B6B4E':'rgba(240,233,223,0.42)');
+  const tagColor=c.accent2;
   const tagHtml=s.tag?`<div style="position:absolute;top:62px;left:70px;font-family:${sans};font-size:13px;font-weight:500;letter-spacing:3.5px;text-transform:uppercase;color:${tagColor};${zi}">${s.tag}</div>`:'';
 
-  const extraColor=hasPhoto?'rgba(255,255,255,0.42)':(isLight?'rgba(42,22,8,0.38)':'rgba(240,233,223,0.35)');
+  const extraColor=c.accent2;
   const extraHtml=s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;font-family:${sans};font-size:${sz(s,'extra',16)}px;color:${extraColor};text-align:center;${zi}">${s.extra}</div>`:'';
 
-  const hndColor=hasPhoto?'rgba(255,255,255,0.38)':(isLight?'rgba(42,22,8,0.32)':'rgba(240,233,223,0.32)');
+  const hndColor=c.accent2;
   const handleHtml=`<div style="position:absolute;bottom:52px;right:60px;font-family:${sans};font-size:16px;color:${hndColor};letter-spacing:0.5px;${zi}">${c.handle||'@seuperfil'}</div>`;
 
   const textAlign=isLight?'center':'left';
@@ -2658,11 +2670,11 @@ function renderFemininoRaiz(s,c,fk){
   } else if(hasImg&&imgPos==='box'){
     bgLayer=`${renderBoxImage(s,700)}<div style="position:absolute;inset:0;background:${c.bg};z-index:0"></div>`;
   } else {
-    bgLayer=`<div style="position:absolute;inset:0;background:${c.bg||'#1C2E1C'};z-index:0"></div><div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(196,135,138,0.08),transparent 60%);z-index:1"></div>`;
+    bgLayer=`<div style="position:absolute;inset:0;background:${c.bg||'#1C2E1C'};z-index:0"></div><div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,${colorAlpha(c.accent,.10)},transparent 60%);z-index:1"></div>`;
   }
 
   // Número fantasma no fundo
-  const ghostNum=`<div style="position:absolute;top:0;left:0;right:0;height:520px;display:flex;align-items:center;justify-content:center;font-family:${selectedFont.family};font-size:480px;font-weight:700;font-style:italic;font-variant-numeric:tabular-nums;color:rgba(255,255,255,0.09);line-height:.82;z-index:2;user-select:none;pointer-events:none"><span style="display:block;width:100%;text-align:center">${s.num-1}</span></div>`;
+  const ghostNum=`<div style="position:absolute;top:0;left:0;right:0;height:520px;display:flex;align-items:center;justify-content:center;font-family:${selectedFont.family};font-size:480px;font-weight:700;font-style:italic;font-variant-numeric:tabular-nums;color:${c.text};opacity:.09;line-height:.82;z-index:2;user-select:none;pointer-events:none"><span style="display:block;width:100%;text-align:center">${s.num-1}</span></div>`;
 
   const handle=c.handle||'@seuperfil';
 
@@ -2672,17 +2684,17 @@ function renderFemininoRaiz(s,c,fk){
     const lastLine=lines.pop()||'';
     const topLines=lines.join('\n');
     return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">${GFONTS_ALL}<style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;font-family:${sans}}</style></head><body>
-    <div style="width:1080px;height:1350px;position:relative;overflow:hidden;color:#fff">
+    <div style="width:1080px;height:1350px;position:relative;overflow:hidden;color:${c.text}">
       ${bgLayer}
       <div style="position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 80px">
-        <div style="font-family:${selectedFont.family};font-size:${Math.round(hs*2.2)}px;font-weight:700;font-style:italic;color:#fff;line-height:0.85;margin-bottom:24px;opacity:0.92">${s.tag||''}</div>
-        ${topLines?`<h1 style="font-family:${sans};font-size:${hs}px;font-weight:700;line-height:1.12;color:${ec(s,'headline','#fff')};margin-bottom:32px;transform:translateY(${offY(s,'headline')}px)">${parseInline(brk(topLines),rose)}</h1>`:''}
-        ${lastLine?`<div style="background:${rose};border-radius:999px;padding:14px 38px;font-family:${sans};font-size:${Math.round(hs*0.72)}px;font-weight:600;color:#fff;line-height:1.2;transform:translateY(${offY(s,'headline')}px)">${parseInline(lastLine,rose)}</div>`:''}
-        ${s.bloco1?`<p style="margin-top:30px;font-family:${sans};font-size:${b1s}px;font-weight:400;color:${ec(s,'bloco1','rgba(255,255,255,0.88)')};line-height:1.4;transform:translateY(${offY(s,'bloco1')}px)">${parseInline(brk(s.bloco1),rose)}</p>`:''}
-        ${s.bloco2?`<p style="margin-top:22px;font-family:${script};font-size:${b2s}px;font-weight:500;color:${ec(s,'bloco2','rgba(255,255,255,0.94)')};line-height:1.3;transform:translateY(${offY(s,'bloco2')}px)">${parseInline(brk(s.bloco2),rose)}</p>`:''}
+        <div style="font-family:${selectedFont.family};font-size:${Math.round(hs*2.2)}px;font-weight:700;font-style:italic;color:${c.text};line-height:0.85;margin-bottom:24px;opacity:0.92">${s.tag||''}</div>
+        ${topLines?`<h1 style="font-family:${sans};font-size:${hs}px;font-weight:700;line-height:1.12;color:${ec(s,'headline',c.text)};margin-bottom:32px;transform:translateY(${offY(s,'headline')}px)">${parseInline(brk(topLines),rose)}</h1>`:''}
+        ${lastLine?`<div style="background:${rose};border-radius:999px;padding:14px 38px;font-family:${sans};font-size:${Math.round(hs*0.72)}px;font-weight:600;color:${c.text};line-height:1.2;transform:translateY(${offY(s,'headline')}px)">${parseInline(lastLine,rose)}</div>`:''}
+        ${s.bloco1?`<p style="margin-top:30px;font-family:${sans};font-size:${b1s}px;font-weight:400;color:${ec(s,'bloco1',c.text)};opacity:.88;line-height:1.4;transform:translateY(${offY(s,'bloco1')}px)">${parseInline(brk(s.bloco1),rose)}</p>`:''}
+        ${s.bloco2?`<p style="margin-top:22px;font-family:${script};font-size:${b2s}px;font-weight:500;color:${ec(s,'bloco2',c.text)};opacity:.94;line-height:1.3;transform:translateY(${offY(s,'bloco2')}px)">${parseInline(brk(s.bloco2),rose)}</p>`:''}
       </div>
-      ${s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;text-align:center;font-family:${sans};font-size:${exs}px;font-style:italic;color:${ec(s,'extra','rgba(255,255,255,0.70)')};z-index:4">${parseInline(brk(s.extra),rose)}</div>`:''}
-      <div style="position:absolute;bottom:38px;left:0;right:0;text-align:center;font-family:${sans};font-size:18px;font-weight:400;color:rgba(255,255,255,0.62);z-index:4">${handle}</div>
+      ${s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;text-align:center;font-family:${sans};font-size:${exs}px;font-style:italic;color:${ec(s,'extra',c.text)};opacity:.70;z-index:4">${parseInline(brk(s.extra),rose)}</div>`:''}
+      <div style="position:absolute;bottom:38px;left:0;right:0;text-align:center;font-family:${sans};font-size:18px;font-weight:400;color:${c.text};opacity:.62;z-index:4">${handle}</div>
     </div></body></html>`;
   }
 
@@ -2691,32 +2703,32 @@ function renderFemininoRaiz(s,c,fk){
   if(isCta){
     // CTA mantém a composição poética, mas aceita o contrato universal completo.
     return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">${GFONTS_ALL}<style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;font-family:${sans}}</style></head><body>
-    <div style="width:1080px;height:1350px;position:relative;overflow:hidden;color:#fff">
+    <div style="width:1080px;height:1350px;position:relative;overflow:hidden;color:${c.text}">
       ${bgLayer}
-      ${s.tag?`<div style="position:absolute;top:64px;left:70px;right:70px;text-align:center;font-family:${sans};font-size:16px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.72);z-index:4">${parseInline(s.tag,rose)}</div>`:''}
+      ${s.tag?`<div style="position:absolute;top:64px;left:70px;right:70px;text-align:center;font-family:${sans};font-size:16px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:${c.text};opacity:.72;z-index:4">${parseInline(s.tag,rose)}</div>`:''}
       <div style="position:absolute;inset:125px 0 150px;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 100px;gap:30px">
-        ${s.headline?`<h1 style="font-family:${sans};font-size:${hs}px;font-weight:700;line-height:1.12;color:${ec(s,'headline','#fff')};transform:translateY(${offY(s,'headline')}px)">${parseInline(brk(s.headline),rose)}</h1>`:''}
-        ${s.bloco1?`<p style="font-family:${selectedFont.family};font-size:${Math.round(b1s*1.25)}px;font-weight:600;font-style:italic;line-height:1.28;color:${ec(s,'bloco1','#fff')};transform:translateY(${offY(s,'bloco1')}px)">${parseInline(brk(s.bloco1),rose)}</p>`:''}
-        ${s.bloco2?`<p style="font-family:${sans};font-size:${b2s}px;font-weight:500;color:${ec(s,'bloco2','rgba(255,255,255,0.78)')};line-height:1.4;transform:translateY(${offY(s,'bloco2')}px)">${parseInline(brk(s.bloco2),rose)}</p>`:''}
+        ${s.headline?`<h1 style="font-family:${sans};font-size:${hs}px;font-weight:700;line-height:1.12;color:${ec(s,'headline',c.text)};transform:translateY(${offY(s,'headline')}px)">${parseInline(brk(s.headline),rose)}</h1>`:''}
+        ${s.bloco1?`<p style="font-family:${selectedFont.family};font-size:${Math.round(b1s*1.25)}px;font-weight:600;font-style:italic;line-height:1.28;color:${ec(s,'bloco1',c.text)};transform:translateY(${offY(s,'bloco1')}px)">${parseInline(brk(s.bloco1),rose)}</p>`:''}
+        ${s.bloco2?`<p style="font-family:${sans};font-size:${b2s}px;font-weight:500;color:${ec(s,'bloco2',c.text)};opacity:.78;line-height:1.4;transform:translateY(${offY(s,'bloco2')}px)">${parseInline(brk(s.bloco2),rose)}</p>`:''}
       </div>
-      ${s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;text-align:center;font-family:${script};font-size:${exs}px;color:${ec(s,'extra','rgba(255,255,255,.70)')};z-index:4">${parseInline(brk(s.extra),rose)}</div>`:''}
-      <div style="position:absolute;bottom:38px;left:0;right:0;text-align:center;font-family:${sans};font-size:18px;font-weight:400;color:rgba(255,255,255,0.62);z-index:4">${handle}</div>
+      ${s.extra?`<div style="position:absolute;bottom:${82-offY(s,'extra')}px;left:70px;right:70px;text-align:center;font-family:${script};font-size:${exs}px;color:${ec(s,'extra',c.text)};opacity:.70;z-index:4">${parseInline(brk(s.extra),rose)}</div>`:''}
+      <div style="position:absolute;bottom:38px;left:0;right:0;text-align:center;font-family:${sans};font-size:18px;font-weight:400;color:${c.text};opacity:.62;z-index:4">${handle}</div>
     </div></body></html>`;
   }
 
   // SLIDE DE HÁBITO padrão
   return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">${GFONTS_ALL}<style>*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:1350px;overflow:hidden;font-family:${sans}}</style></head><body>
-  <div style="width:1080px;height:1350px;position:relative;overflow:hidden;color:#fff">
+  <div style="width:1080px;height:1350px;position:relative;overflow:hidden;color:${c.text}">
     ${bgLayer}
     ${ghostNum}
-    ${s.tag?`<div style="position:absolute;top:64px;left:70px;right:70px;text-align:center;font-family:${sans};font-size:16px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.70);z-index:4">${parseInline(s.tag,rose)}</div>`:''}
+    ${s.tag?`<div style="position:absolute;top:64px;left:70px;right:70px;text-align:center;font-family:${sans};font-size:16px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:${c.text};opacity:.70;z-index:4">${parseInline(s.tag,rose)}</div>`:''}
     <div style="position:absolute;left:0;right:0;top:44%;bottom:9%;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 90px;gap:32px">
-      <h2 style="font-family:${sans};font-size:${hs}px;font-weight:700;line-height:1.10;color:${ec(s,'headline','#fff')};transform:translateY(${offY(s,'headline')}px)">${parseInline(brk(s.headline),rose)}</h2>
-      ${s.bloco1?`<p style="font-family:${sans};font-size:${b1s}px;font-weight:400;line-height:1.48;color:${ec(s,'bloco1','rgba(255,255,255,0.90)')};transform:translateY(${offY(s,'bloco1')}px)">${parseInline(brk(s.bloco1),rose)}</p>`:''}
-      ${s.bloco2?`<p style="font-family:${script};font-size:${b2s}px;font-weight:500;line-height:1.38;color:${ec(s,'bloco2','rgba(255,255,255,0.95)')};border-bottom:2px solid rgba(255,255,255,0.45);padding-bottom:8px;transform:translateY(${offY(s,'bloco2')}px)">${parseInline(brk(s.bloco2),rose)}</p>`:''}
-      ${s.extra?`<p style="font-family:${script};font-size:${exs}px;color:${ec(s,'extra','rgba(255,255,255,0.72)')};transform:translateY(${offY(s,'extra')}px)">${parseInline(brk(s.extra),rose)}</p>`:''}
+      <h2 style="font-family:${sans};font-size:${hs}px;font-weight:700;line-height:1.10;color:${ec(s,'headline',c.text)};transform:translateY(${offY(s,'headline')}px)">${parseInline(brk(s.headline),rose)}</h2>
+      ${s.bloco1?`<p style="font-family:${sans};font-size:${b1s}px;font-weight:400;line-height:1.48;color:${ec(s,'bloco1',c.text)};opacity:.90;transform:translateY(${offY(s,'bloco1')}px)">${parseInline(brk(s.bloco1),rose)}</p>`:''}
+      ${s.bloco2?`<p style="font-family:${script};font-size:${b2s}px;font-weight:500;line-height:1.38;color:${ec(s,'bloco2',c.text)};opacity:.95;border-bottom:2px solid ${colorAlpha(c.text,.45)};padding-bottom:8px;transform:translateY(${offY(s,'bloco2')}px)">${parseInline(brk(s.bloco2),rose)}</p>`:''}
+      ${s.extra?`<p style="font-family:${script};font-size:${exs}px;color:${ec(s,'extra',c.text)};opacity:.72;transform:translateY(${offY(s,'extra')}px)">${parseInline(brk(s.extra),rose)}</p>`:''}
     </div>
-    <div style="position:absolute;bottom:38px;left:0;right:0;text-align:center;font-family:${sans};font-size:18px;font-weight:400;color:rgba(255,255,255,0.55);z-index:4">${handle}</div>
+    <div style="position:absolute;bottom:38px;left:0;right:0;text-align:center;font-family:${sans};font-size:18px;font-weight:400;color:${c.text};opacity:.55;z-index:4">${handle}</div>
   </div></body></html>`;
 }
 
@@ -3191,6 +3203,8 @@ function selectVisual(key){
   } else {
     applyDefaultVisual(key);
   }
+  const savedBranding=getSavedBranding();
+  if(savedBranding){applyBrandingToState(savedBranding,false);syncColorPickers();buildFontes();}
   saveState();
   document.querySelectorAll('.style-card').forEach(c=>c.classList.remove('sel'));
   document.getElementById(`vc-${key}`).classList.add('sel');
@@ -3230,11 +3244,124 @@ function saveVisualBase(key){
   const badge=document.getElementById(`badge-base-${key}`);if(badge)badge.classList.add('visible');
   toast(`✓ Base do ${VISUAL_STYLES[key].label} salva!`,'ok');
 }
+let pendingBranding=null;
+function normalizeLabel(v){
+  return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
+}
+function colorToHex(value,fallback='#000000'){
+  const v=String(value||'').trim();
+  const short=v.match(/^#([0-9a-f]{3})$/i);
+  if(short)return '#'+short[1].split('').map(x=>x+x).join('').toUpperCase();
+  const full=v.match(/^#([0-9a-f]{6})$/i);
+  if(full)return '#'+full[1].toUpperCase();
+  const rgb=v.match(/^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
+  if(rgb)return '#'+rgb.slice(1,4).map(n=>Math.max(0,Math.min(255,Number(n))).toString(16).padStart(2,'0')).join('').toUpperCase();
+  return fallback;
+}
+function getSavedBranding(){
+  try{return JSON.parse(localStorage.getItem(BRANDING_KEY)||'null');}catch(e){return null;}
+}
+function findFontKey(name){
+  const target=normalizeLabel(name);
+  if(!target)return null;
+  return Object.keys(FONTS).find(key=>normalizeLabel(key)===target||normalizeLabel(FONTS[key].label)===target||normalizeLabel(FONTS[key].family.split(',')[0])===target)||null;
+}
+function markdownSectionValue(raw,label){
+  const escaped=label.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  const re=new RegExp('(?:^|\\n)\\s*(?:#{1,6}\\s*)?(?:\\*\\*)?'+escaped+'(?:\\*\\*)?\\s*\\n+\\s*([^\\n]+)','i');
+  const m=raw.match(re);
+  return m?m[1].trim().replace(/^\*\*|\*\*$/g,''):'';
+}
+function parseIdVisualMarkdown(raw){
+  const text=String(raw||'').replace(/\r/g,'').trim();
+  const errors=[];
+  if(!/IDENTIDADE\s+VISUAL/i.test(text))errors.push('Título IDENTIDADE VISUAL não encontrado.');
+  const fontName=(text.match(/(?:^|\n)\s*(?:\*\*)?(?:Nome|Fonte):(?:\*\*)?\s*([^\n]+)/i)||[])[1]?.trim().replace(/^\*\*|\*\*$/g,'')||'';
+  const fontKey=findFontKey(fontName);
+  if(!fontName)errors.push('Nome da fonte não encontrado.');
+  else if(!fontKey)errors.push(`Fonte “${fontName}” não está disponível no app.`);
+  const weights={
+    titulos:(text.match(/T[ií]tulos:\s*([^\n]+)/i)||[])[1]?.trim()||'',
+    subtitulos:(text.match(/Subt[ií]tulos:\s*([^\n]+)/i)||[])[1]?.trim()||'',
+    textos:(text.match(/Textos:\s*([^\n]+)/i)||[])[1]?.trim()||'',
+    destaques:(text.match(/Destaques:\s*([^\n]+)/i)||[])[1]?.trim()||''
+  };
+  const readHex=label=>{
+    const escaped=label.replace(/\s+/g,'\\s+');
+    const m=text.match(new RegExp('(?:^|\\n)\\s*(?:#{1,6}\\s*)?'+escaped+'\\s*\\n+\\s*HEX:\\s*(#[0-9A-Fa-f]{3,6})','i'));
+    if(m)return colorToHex(m[1],'');
+    const compactNames={BACKGROUND:'BG',TEXTO:'TEXT',DESTAQUE:'ACCENT','DESTAQUE 2':'ACCENT2'};
+    const compact=compactNames[label];
+    const cm=compact?text.match(new RegExp('(?:^|\\n)\\s*(?:\\*\\*)?'+compact+':(?:\\*\\*)?\\s*(?:\\*\\*)?(#[0-9A-Fa-f]{3,6})(?:\\*\\*)?','i')):null;
+    return cm?colorToHex(cm[1],''):'';
+  };
+  const colors={bg:readHex('BACKGROUND'),text:readHex('TEXTO'),accent:readHex('DESTAQUE'),accent2:readHex('DESTAQUE 2')};
+  Object.entries({bg:'BACKGROUND',text:'TEXTO',accent:'DESTAQUE',accent2:'DESTAQUE 2'}).forEach(([key,label])=>{if(!colors[key])errors.push(`${label}: HEX inválido ou ausente.`);});
+  const inlineValue=label=>{
+    const m=text.match(new RegExp('(?:^|\\n)\\s*(?:\\*\\*)?'+label+':(?:\\*\\*)?\\s*([^\\n]+)','i'));
+    return m?m[1].trim().replace(/^\\*\\*|\\*\\*$/g,''):'';
+  };
+  const handle=markdownSectionValue(text,'HANDLE')||inlineValue('HANDLE');
+  const copyright=markdownSectionValue(text,'COPYRIGHT')||inlineValue('COPYRIGHT');
+  if(!handle)errors.push('HANDLE não encontrado.');
+  if(!copyright)errors.push('COPYRIGHT não encontrado.');
+  return {fontName,fontKey,weights,colors,handle:normalizeLabel(handle)==='naodefinido'?'':handle,copyright,errors,source:text};
+}
+function renderBrandingPreview(branding){
+  const el=document.getElementById('brandingPreview');if(!el)return;
+  const colorRows=Object.entries(branding.colors).map(([k,v])=>`<div style="display:flex;align-items:center;gap:7px"><span style="width:15px;height:15px;border-radius:50%;background:${v};border:1px solid var(--border2)"></span><span>${k.toUpperCase()}: <strong>${v}</strong></span></div>`).join('');
+  const warnings=branding.errors.length?`<div style="color:var(--red);margin-top:7px">${branding.errors.map(escapeHtml).join('<br>')}</div>`:'<div style="color:var(--green);margin-top:7px">✓ ID Visual válida e pronta para salvar.</div>';
+  el.innerHTML=`<div><strong>Fonte:</strong> ${escapeHtml(branding.fontName||'—')}</div>${colorRows}<div><strong>Handle:</strong> ${escapeHtml(branding.handle||'Não definido')}</div><div><strong>Copyright:</strong> ${escapeHtml(branding.copyright||'—')}</div>${warnings}`;
+  el.style.display='block';
+}
+function analisarIdVisual(){
+  pendingBranding=parseIdVisualMarkdown(document.getElementById('brandingMarkdown')?.value||'');
+  renderBrandingPreview(pendingBranding);
+  const btn=document.getElementById('btnSalvarBranding');if(btn)btn.disabled=pendingBranding.errors.length>0;
+}
+function applyBrandingToState(branding,persist=true){
+  if(!branding)return;
+  if(branding.fontKey)state.font=branding.fontKey;
+  Object.assign(state.colors,branding.colors);
+  state.colors.handle=branding.handle||'';
+  state.colors.copyright=branding.copyright||'';
+  if(persist)localStorage.setItem(BRANDING_KEY,JSON.stringify(branding));
+}
+function salvarIdVisual(){
+  if(!pendingBranding||pendingBranding.errors.length){toast('Analise um Markdown válido primeiro.','err');return;}
+  applyBrandingToState(pendingBranding,true);saveState();syncColorPickers();buildFontes();
+  const hi=document.getElementById('handleInput');if(hi)hi.value=state.colors.handle||'';
+  const ci=document.getElementById('copyrightInput');if(ci)ci.value=state.colors.copyright||'';
+  reloadAll();updateCanvasInfo();toast('✓ ID Visual salva e aplicada em todos os modelos.','ok');
+}
+function restaurarIdVisual(){
+  const branding=getSavedBranding();if(!branding){toast('Nenhuma ID Visual salva.','err');return;}
+  pendingBranding=branding;applyBrandingToState(branding,false);saveState();syncColorPickers();buildFontes();
+  const ta=document.getElementById('brandingMarkdown');if(ta)ta.value=branding.source||'';
+  const hi=document.getElementById('handleInput');if(hi)hi.value=state.colors.handle||'';
+  const ci=document.getElementById('copyrightInput');if(ci)ci.value=state.colors.copyright||'';
+  renderBrandingPreview(branding);reloadAll();updateCanvasInfo();toast('✓ Branding restaurado.','ok');
+}
+function removerIdVisual(){
+  localStorage.removeItem(BRANDING_KEY);pendingBranding=null;
+  const ta=document.getElementById('brandingMarkdown');if(ta)ta.value='';
+  const pr=document.getElementById('brandingPreview');if(pr)pr.style.display='none';
+  const btn=document.getElementById('btnSalvarBranding');if(btn)btn.disabled=true;
+  toast('Branding removido. As cores atuais foram mantidas.','ok');
+}
+function updateSavedBrandingFromState(){
+  const branding=getSavedBranding();if(!branding)return;
+  branding.fontKey=state.font;branding.fontName=FONTS[state.font]?.label||branding.fontName;
+  branding.colors={bg:colorToHex(state.colors.bg),text:colorToHex(state.colors.text),accent:colorToHex(state.colors.accent),accent2:colorToHex(state.colors.accent2)};
+  branding.handle=state.colors.handle||'';branding.copyright=state.colors.copyright||'';
+  localStorage.setItem(BRANDING_KEY,JSON.stringify(branding));
+}
 function syncColorPickers(){
   ['bg','text','accent','accent2'].forEach(k=>{
-    const pk=document.getElementById(`pk-${k}`);if(pk)pk.value=state.colors[k];
+    const hex=colorToHex(state.colors[k]);
+    const pk=document.getElementById(`pk-${k}`);if(pk)pk.value=hex;
     const sw=document.getElementById(`sw-${k}`);if(sw)sw.style.background=state.colors[k];
-    const hx=document.getElementById(`hx-${k}`);if(hx)hx.textContent=state.colors[k];
+    const hx=document.getElementById(`hx-${k}`);if(hx)hx.textContent=hex;
   });
 }
 
@@ -3257,7 +3384,7 @@ function buildFontes(){
 }
 function selectFont(key){
   if(!FONTS[key]) key='inter';
-  state.font=key;saveState();
+  state.font=key;updateSavedBrandingFromState();saveState();
   const select=document.getElementById('fontSelect');
   if(select) select.value=key;
   const preview=document.getElementById('fontPreviewText');
@@ -3314,14 +3441,14 @@ function reloadPreview(num){
 function reloadAll(){state.slides.forEach(s=>reloadPreview(s.num));}
 
 // ── CORES ──────────────────────────────────────────────────────────────────────
-function previewCor(k,v){document.getElementById(`sw-${k}`).style.background=v;document.getElementById(`hx-${k}`).textContent=v;}
-function aplicarCor(k){const v=document.getElementById(`pk-${k}`).value;state.colors[k]=v;saveState();reloadAll();toast('✓ Cor aplicada','ok');}
-function aplicarTodas(){['bg','text','accent','accent2'].forEach(k=>{state.colors[k]=document.getElementById(`pk-${k}`).value;});saveState();reloadAll();toast('✓ Todas as cores aplicadas','ok');}
+function previewCor(k,v){const hex=colorToHex(v);document.getElementById(`sw-${k}`).style.background=hex;document.getElementById(`hx-${k}`).textContent=hex;}
+function aplicarCor(k){const v=colorToHex(document.getElementById(`pk-${k}`).value);state.colors[k]=v;syncColorPickers();updateSavedBrandingFromState();saveState();reloadAll();toast('✓ Cor aplicada','ok');}
+function aplicarTodas(){['bg','text','accent','accent2'].forEach(k=>{state.colors[k]=colorToHex(document.getElementById(`pk-${k}`).value);});syncColorPickers();updateSavedBrandingFromState();saveState();reloadAll();toast('✓ Todas as cores aplicadas','ok');}
 function aplicarPaleta(bg,text,accent,accent2){
-  Object.assign(state.colors,{bg,text,accent,accent2});syncColorPickers();saveState();reloadAll();toast('✓ Paleta aplicada','ok');
+  Object.assign(state.colors,{bg,text,accent,accent2});syncColorPickers();updateSavedBrandingFromState();saveState();reloadAll();toast('✓ Paleta aplicada','ok');
 }
-function updateHandle(v){state.colors.handle=v;saveState();reloadAll();}
-function updateCopyright(v){state.colors.copyright=v;saveState();reloadAll();}
+function updateHandle(v){state.colors.handle=v;updateSavedBrandingFromState();saveState();reloadAll();}
+function updateCopyright(v){state.colors.copyright=v;updateSavedBrandingFromState();saveState();reloadAll();}
 
 // ── TEMPLATE MODAL ─────────────────────────────────────────────────────────────
 let selectedTemplate=null;
@@ -3816,6 +3943,13 @@ function init(){
   document.getElementById('copyrightInput').value=state.colors.copyright||'© COPYRIGHT 2025';
   document.getElementById('nomeInput').addEventListener('input',function(){state.nome=this.value;saveState();});
   syncColorPickers();
+  const savedBranding=getSavedBranding();
+  if(savedBranding){
+    pendingBranding=savedBranding;
+    const ta=document.getElementById('brandingMarkdown');if(ta)ta.value=savedBranding.source||'';
+    const btn=document.getElementById('btnSalvarBranding');if(btn)btn.disabled=false;
+    renderBrandingPreview(savedBranding);
+  }
   try{buildTexto();}catch(e){console.error('buildTexto:',e);}
   try{buildFontes();}catch(e){console.error('buildFontes:',e);}
   try{buildVisual();}catch(e){console.error('buildVisual:',e);}
